@@ -37,7 +37,7 @@ class CViewsComments  {
         if ( $commentid  && $cc ){
             $answers = $cc->getTotalAnswers( $commentid);
         
-            return ( ! is_null( $answers[0]->rows ) && $answers[0]->rows > 1 ) ? $answers[0]->rows - 1 : 0;
+            return ( isset( $answers[0]->rows ) &&  ! is_null( $answers[0]->rows ) && $answers[0]->rows > 1 ) ? $answers[0]->rows - 1 : 0;
             
             
         }
