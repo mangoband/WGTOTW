@@ -1,0 +1,19 @@
+# http://httpd.apache.org/docs/current/mod/core.html#errordocument
+#ErrorDocument 404 /404.php
+ErrorDocument 404 "This is a Mango 404. Document is not here."
+
+Options -MultiViews
+
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+ RewriteBase  /~majo15/phpmvc/kmom5/Mango-MVC/webroot/
+#  RewriteBase /bth/phpmvc/kmom5/Mango-MVC/webroot/  
+#  # Must use RewriteBase on www.student.bth.se, Rewritebase for url /~mos/test is /~mos/test/
+   #/change/this/to/site/base/url/if/needed/
+
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  RewriteRule (.*) index.php/$1 [NC,L]
+</IfModule>

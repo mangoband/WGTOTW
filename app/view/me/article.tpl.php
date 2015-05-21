@@ -1,0 +1,1 @@
+<article><?php if(isset( $header ) ){echo $header;}?><p><?=$content?></p></article>

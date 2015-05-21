@@ -1,0 +1,60 @@
+/* comment.css */
+
+.comment{
+   /* background-color:red;*/
+    display:block;
+    border-top:1px solid gray;
+   /* border-bottom:1px solid gray;*/
+    padding-bottom:15px;
+    margin-bottom:15px;
+    clear:both;
+}
+.commentHead{
+    float:left;
+    display:inline-block;
+}
+.groupname{
+    float:right;
+    display:inline-block;
+    padding-top:8px;
+}
+.comment_id{
+    clear:both;
+    /*background-color:#eee;*/
+    padding:5px;
+    display:inline-block;
+    float:left;
+}
+
+.commentInfo{
+   /* background-color:gray;
+    width:80%;
+    float:left;*/
+}
+.commentUser{
+    float:right;
+    background-color:#eee;
+    width:24%;
+    display:inline-block;
+}
+.commentUser p{
+    margin:2px;
+}
+.commentUser input{
+    float:right;
+    margin-top:10px;
+}
+.commentContent{
+    clear:left;
+    margin:2px;
+    display:inline-block;
+    float:left;
+    
+    width:74%;
+    min-height:70px;
+    
+}
+
+.comment-form form p span{
+    color:red;
+}

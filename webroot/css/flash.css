@@ -1,0 +1,36 @@
+/* css for flash */
+
+.flash_hello,
+.flash_error,
+.flash_notice,
+.flash_warning,
+.flash_success{
+    padding:22px;
+    text-align:center;
+    font-weight:bold;
+    font-family: arial, sans-serif;
+}
+.flash_error{
+    
+    color:#fff;
+    background-color:#F00;
+}
+
+.flash_hello,
+.flash_notice{
+    
+    color:#000;
+    background-color:#fff;
+}
+
+.flash_warning{
+    
+    color:orange;
+    background-color:#000;
+}
+
+.flash_success{
+    
+    color:green;
+    background-color:#fff;
+}

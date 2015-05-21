@@ -1,0 +1,150 @@
+/**
+ * General elements
+ */
+
+@import url(figure.css);
+
+body {
+  color: #333;
+  font-family: arial, sans-serif;
+  overflow-y: scroll;
+  margin-top:0px;
+}
+a{
+	color:#8F0709;
+	text-decoration:none;
+}
+a:hover{
+	text-decoration:underline;
+	color:black;
+	
+}
+
+h1 {
+  font-size: 2.2em;
+}
+
+hr {
+  background-color: #384d0c;
+}
+/**
+ * Layout of the main page elements 
+ */
+#wrapper {
+  margin: 0 auto;
+  width: 980px; 
+  padding: 10px;
+  padding-top:0px;
+  margin-top:0px;
+}
+
+
+/**
+ * Layout for header
+ */
+#header {
+  position: relative;
+  padding-top:0px;
+  margin-bottom: 20px;
+  
+  background: -webkit-linear-gradient(left, white, white, #384d0c); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(left, white, white, #384d0c); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(left, white, white, #384d0c); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, white, white, #384d0c); /* Standard syntax */
+  border-bottom:10px solid #384d0c;
+}
+
+.sitetitle {
+  position: absolute;
+  top: 6px;
+  left: 150px;
+  font-size: 48px;
+  z-index:2;
+}
+ 
+.siteslogan {
+  position: absolute;
+  top: 65px;
+  left: 150px;
+  font-style: italic;
+  color: #666;
+  z-index:2;
+}
+
+
+/**
+ * Layout for main
+ */
+#main {
+  min-height: 20em;
+
+}
+.rightside a {
+  display:block;
+  padding-bottom:10px;
+  padding-top:0px;
+}
+.rightside{
+  position:relative;
+  top:65px;
+  left:0px;
+  display:inline-block;
+  vertical-align:top;
+  float:right;
+  
+  /*border: 1px solid blue;*/
+  width:250px;
+}
+.floatLeft{
+  float:left;
+  
+  width:60%;
+}
+.mangoBas{
+  width:70%;
+  display:inline-block;
+}
+
+/**
+ * Layout for footer
+ */
+#footer {
+  width: 980px; 
+  float:right;
+  margin-top: 40px;
+  margin-bottom:5px;
+  border-top: 1px solid #384d0c;
+  padding-top: 22px;
+}
+
+.sitefooter {
+  float:right;
+  color: #666;
+}
+
+
+/**
+ * For articles
+ */
+.article1 {
+  width: 700px;
+ /* border-right: 1px solid #384d0c;*/
+  padding-right: 1em;
+  display:inline-block;
+}
+
+.article1 h1,
+.article1 h2 {
+  border-bottom: 1px solid #384d0c;
+}
+
+.byline {
+  margin-top: 44px;
+  border-top: 1px dashed #384d0c;
+  padding-top: 22px;
+  color: #666;
+}
+
+.byline p {
+  margin-top: 0;
+}
