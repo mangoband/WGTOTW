@@ -350,7 +350,7 @@ class CViewsComments  {
         $ch = new CommentHandler( $app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
                                     'errorName' => getError(3)) );
         
-       dump( "rad: ".__LINE__." ".__METHOD__." ".$commentID);
+      
         
         //
         // fill $tags with all tags from db
@@ -367,7 +367,7 @@ class CViewsComments  {
         $content = $this->formatChildComments($res);
        
         $header = ( isset( $res['data'][0]->header) ) ? "re: ".$res['data'][0]->header : '';
-       dump( $res);
+       
         
         // make form
         $this->addNewComment( $app, ['commentid'=>null, 'parentid'=>$commentID, 'tags'=>$tags, 'selectedTags'=>$selectedTags, 'header'=>$header] );

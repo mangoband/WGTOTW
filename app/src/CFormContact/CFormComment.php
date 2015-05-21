@@ -201,10 +201,10 @@ class CFormComment extends h\CForm  {
         $category   = ( $this->Value('items' ) )     ? $this->Value('items')     : null;
         
         $tags       = ( isset( $_POST['items'] ) )   ? $_POST['items']           : ['default'];
-        dump( "rad: ".__LINE__." ".__METHOD__);
+        
        
         //$parentid && $comment && $header && $id && $tags
-     //   dump( $category);
+     
         if ( $tags && $header && $comment && $userId ){ echo "true<br />";
             $this->comments->prepareToAddNewComment( ['cid'=>$commentId, 'pid'=>$parentId, 'uid'=>$userId, 'comment'=>$comment, 'header'=>$header, 'tags'=>$tags] );
             $url = $this->app->url->create('kommentera');

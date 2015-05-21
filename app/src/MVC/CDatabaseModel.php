@@ -957,7 +957,10 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         $now = gmdate('Y-m-d H:i:s');
       
         if (  $comment && $header && $id && $tags ){
-            dump( "rad: ".__LINE__." ".__METHOD__);
+         
+            if( $this->verbose == true ){
+                dump( "rad: ".__LINE__." ".__METHOD__);
+            }
             // make stmt to comment
             $db->insert(
                     'comment',
@@ -980,7 +983,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             
             // if the post in new there are no parent and we set it self as parent
             $parentid = ( ! is_null( $parentid) )? $parentid : $lastInserted;
-            dump( "rad: ".__LINE__." ".__METHOD__);
+            
             foreach( $tags as $tag ){
         
                 //

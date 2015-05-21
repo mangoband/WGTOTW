@@ -160,12 +160,16 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
      */
     public function getGroupedComments( $db = null, $parentid = null, $type = null ){
         
-        dump($this->viewComment2Category( $db ));
+        if( $this->verbose == true ){
+            dump( "rad: ".__LINE__." ".__METHOD__." type: ".$type);
+            dump($this->viewComment2Category( $db ));
+        }
+    
         if ( $db && $type ){
-            dump( __LINE__." ".__METHOD__);
+            
             return ( $type == "child" ) ? $this->getCommentAnswersFromParentID($db, $parentid) : $this->getCommentsGroupedByParentID( $this->app->db );
         } else if ( $db && is_null( $type ) ){
-            dump( __LINE__." ".__METHOD__);
+            
             return $this->getCommentAndCategoriesAndUserID( $this->app->db, $parentid );
         }
     }
@@ -179,6 +183,9 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
      */
     public function getCommentToRespond( $commentid = null ){
         
+        if( $this->verbose == true ){
+            dump( "rad: ".__LINE__." ".__METHOD__);
+        }
         
         if (  $commentid ){
             $commentRespons = $this->getCommentAndCategoriesAndUserID( $this->app->db, $commentid, 'limit' );
@@ -215,7 +222,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
      * @return object result
      */
     public function getTagComments( $tagid = null ){
-        dump( "rad: ".__LINE__." ".__METHOD__);
+        
         // we dont need to get the comments unless a tag is picked
         if ( $tagid ){
             $res = $this->getCommentAndCategoriesAndUserID( $this->app->db, $tagid, null, 'tag');
@@ -331,12 +338,12 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
         if( $param ){
             
             if ( $param ){
-                dump( "rad: ".__LINE__ . " ". __METHOD__);
+                
                  return $this->addNewComment( $param['comment'], $param['uid'],
                                              $this->app, $param['cid'],
                                              $param['tags'], $param['pid'], $param['header'] );
             }
-            dump( "rad: ".__LINE__ . " ". __METHOD__);
+            
             $data = [
                 'tags' => ( isset( $param['items'] ) ) ? $param['items'] : ['default'],
             ];
