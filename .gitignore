@@ -18,3 +18,6 @@ Thumbs.db
 composer.json
 composer.lock
 vendor
+
+#
+coverage
