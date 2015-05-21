@@ -205,7 +205,7 @@ class CFormComment extends h\CForm  {
        
         //$parentid && $comment && $header && $id && $tags
      
-        if ( $tags && $header && $comment && $userId ){ echo "true<br />";
+        if ( $tags && $header && $comment && $userId ){ 
             $this->comments->prepareToAddNewComment( ['cid'=>$commentId, 'pid'=>$parentId, 'uid'=>$userId, 'comment'=>$comment, 'header'=>$header, 'tags'=>$tags] );
             $url = $this->app->url->create('kommentera');
             $this->app->response->redirect($url);
