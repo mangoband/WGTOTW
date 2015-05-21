@@ -3,7 +3,7 @@
  * Config-file for Anax, theme related settings, return it all as array.
  *
  */
-$css = (is_file('css/anax-project/style.php')) ? 'css/anax-project/style.php' : 'wgtotw.css';
+$css = (is_file('css/anax-project/style.php')) ? 'css/anax-project/style.php' : 'css/wgtotw.css';
 return [
 
     /**
