@@ -58,12 +58,42 @@ session_name('kmom4');
   
 });
 
-$app->router->add('comment/update/', function() use ( $app ) {
-    echo "57 insex";
-session_name('kmom4');
-//session_start();
-  $CViewController = new \Mango\CViewController( $app );
-  $CViewController->viewContent();
+$app->router->add('firstTime', function() use ( $app ) {
+  
+$url = $app->url->create('reset-user');
+$url2 = $app->url->create('reset-kommentarer');
+$url3 = $app->url->create();
+
+$currentUrl = $app->request->getCurrentUrl();
+
+if ( $app->url->getUrlType() != 'clean' ){
+    $pageUrl = explode( 'webroot/firstTime.php/', $currentUrl); 
+} else {
+    $pageUrl = explode( 'webroot/', $currentUrl); 
+}
+
+if ( !isset( $pageUrl[1])){
+    $site = 'home';
+} else {
+    $site = $pageUrl[1];
+}
+
+$tmp = explode( '/', $site );
+
+$page     = ( isset( $tmp[0] ) ) ? $tmp[0] : null;
+
+$CViewsComments = new Mango\Views\CViewsComments( $app );
+$user = null;
+$comment = null;
+
+if ( $page == 'reset-user'){
+    $CViewsComments->prepareDatabase( $app, 'user');
+    $user = '.......... Skapar databas';
+    
+} else if ( $page == 'reset-kommentarer'){
+    $CViewsComments->prepareDatabase( $app, 'comment');
+    $comment = ".......... Skapar databas <a href='{$url3}'>--> Startsida <-- </a><br />";
+}
   
 });
 $app->router->add('source', function() use ($app) {

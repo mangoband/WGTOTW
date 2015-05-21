@@ -36,7 +36,7 @@ if ( $page == 'reset-user'){
     
 } else if ( $page == 'reset-kommentarer'){
     $CViewsComments->prepareDatabase( $app, 'comment');
-    $comment = '.......... Skapar databas<br />';
+    $comment = '.......... Skapar databas <a href="index.php">--> Startsida <-- </a><br />';
 }
 
 ?>

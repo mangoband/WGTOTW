@@ -950,7 +950,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
        
         $db = $app->db;
         $ip = $app->request->getServer('REMOTE_ADDR');
-        $db->setVerbose(true);
+        $db->setVerbose(false);
         
         $latestParentID = $this->returnLatestParentID($db) + 1;
        

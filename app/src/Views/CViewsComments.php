@@ -623,7 +623,8 @@ class CViewsComments  {
             $dbModel->restoreTable( $app );    
         } else if ( $type == 'comment') {
             // create commentTable
-            $dbModel->createCommentTable( $app );    
+            $dbModel->createCommentTable( $app );
+            
         }
         
         
