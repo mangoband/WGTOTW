@@ -366,12 +366,12 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         );
      
         $now = gmdate('Y-m-d H:i:s');
-     //->andWhere("password = md5(concat($acronym, ?))");
+     
         $app->db->execute([
                 'admin',
                 'admin@dbwebb.se',
                 'Administrator',
-                //md5(concat('admin', salt)),
+                
                 password_hash('admin', PASSWORD_DEFAULT),
                 $now,
                 $now,
@@ -382,7 +382,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 'doe',
                 'doe@dbwebb.se',
                 'John/Jane Doe',
-                //md5(concat('doe', salt)),
+                
                 password_hash('doe', PASSWORD_DEFAULT),
                 $now,
                 $now,
@@ -393,7 +393,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 '007',
                 'bond@dbwebb.se',
                 'James Bond',
-                //md5(concat('bond', salt)),
+                
                 password_hash('bond', PASSWORD_DEFAULT),
                 $now,
                 $now,
@@ -425,7 +425,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             ->join("user","user.id = c.user_id")
            
             ->groupby("c2c.parent, c.id")
-            ->orderby('created desc, parentid desc, commentid desc' );
+            ->orderby('created desc, parentid desc, commentid desc, header' );
             
             $data = $db->executeFetchAll(  );
            

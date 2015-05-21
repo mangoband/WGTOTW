@@ -3,7 +3,7 @@
  * Config-file for Anax, theme related settings, return it all as array.
  *
  */
-
+$css = (is_file('css/anax-project/style.php')) ? 'css/anax-project/style.php' : 'wgtotw.css';
 return [
 
     /**
@@ -67,7 +67,7 @@ return [
         'title_append' => ' | Anax a web template',
 
         // Stylesheets
-        'stylesheets' => ['css/anax-project/style.php'],
+        'stylesheets' => [$css],
         
         // BodyTheme
         'bodyClass' => 'bodyColorGray',
