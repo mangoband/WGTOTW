@@ -25,6 +25,7 @@ class CViewController extends CViewsFlash {
         $app->session(); // Will load the session service which also starts the session
         $this->loggedInUser = \Anax\Users\User::getUserID();
         
+       
         if ( isset($_SESSION['user'])){
             $_SESSION['user'] = $_SESSION['user'];
         
@@ -62,6 +63,9 @@ class CViewController extends CViewsFlash {
         
         $param = null;
 
+     //    $dbModel = new \Anax\MVC\CDatabaseModel(  );
+     //   $dbModel->countTable( $app );
+        
         /**
          *  Get CurrentUrlType to test if index.php is going to be in url.
          */  

@@ -12,7 +12,7 @@ class UsersController implements \Anax\DI\IInjectionAware
     private $di;
     public function __construct( $di ){
         $this->di = $di;
-        dump ( $di );
+      
     }
     /**
     * List all users.

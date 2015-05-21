@@ -661,7 +661,7 @@ class CViewsComments  {
                 
                
                 foreach( $answers as $comment ){
-                    dump( $comment);
+                    
                     //if( $parentid != $comment->id ){
                         $content .= $this->createCommentStructure([
                             'header'    => $comment->header,

@@ -10,7 +10,7 @@ namespace Anax\MVC;
 class CDatabaseModel implements \Anax\DI\IInjectionAware
 {
     use \Anax\DI\TInjectable;
-    public $verbose = true;
+    public $verbose = false;
     
     function __construct(){
         //date_default_timezone_set('Europe/Stockholm');
@@ -41,7 +41,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
            if ( $db ){
                 
-            $db->setVerbose(true);
+            $db->setVerbose(false);
                 if ( $category && $popular ){
                     if( $this->verbose == true ){
                         dump( __LINE__. " ". __METHOD__." popular");
@@ -336,6 +336,21 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
     
     
     
+    
+    protected function countTable( $db  = null ){
+        if ( $db ){
+            $db->select("count(*)")
+            ->from("sqlite_master")
+            ->where("tbl_name <table_name>")
+            ->andwhere("type = table");
+            
+             $data = $db->executeFetchAll();
+         
+        }
+        
+        
+        //SELECT count(*) > 0 FROM sqlite_master where tbl_name = "<table_name>" and type="table"
+    }
     /**
      *  restore table
      *  user
@@ -343,6 +358,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
      */  
     public function restoreTable( $app ){
         
+      //  $this->countTable( $app->db );
         $app->db->dropTableIfExists('user')->execute();
      
         $app->db->createTable(
@@ -939,12 +955,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         $latestParentID = $this->returnLatestParentID($db) + 1;
        
         $now = gmdate('Y-m-d H:i:s');
-        dump( "rad: ".__LINE__." ".__METHOD__);
-        dump( $tags);
-        dump( $header);
-        dump( $comment);
-        dump( $id);
-        dump( $parentid);
+      
         if (  $comment && $header && $id && $tags ){
             dump( "rad: ".__LINE__." ".__METHOD__);
             // make stmt to comment

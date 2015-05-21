@@ -202,11 +202,7 @@ class CFormComment extends h\CForm  {
         
         $tags       = ( isset( $_POST['items'] ) )   ? $_POST['items']           : ['default'];
         dump( "rad: ".__LINE__." ".__METHOD__);
-        dump( $tags);
-        dump( $header);
-        dump( $comment);
-        dump( $userId);
-        dump( $parentId);
+       
         //$parentid && $comment && $header && $id && $tags
      //   dump( $category);
         if ( $tags && $header && $comment && $userId ){ echo "true<br />";
