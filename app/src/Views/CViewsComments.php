@@ -614,6 +614,22 @@ class CViewsComments  {
         header("Location: " . $url);
     }
     
+    public function prepareDatabase($app = null, $type = 'user' ){
+        
+        $dbModel = new \Anax\MVC\CDatabaseModel(  );
+        
+        if ( $app && $type == 'user' ){
+            // restore userTable
+            $dbModel->restoreTable( $app );    
+        } else if ( $type == 'comment') {
+            // create commentTable
+            $dbModel->createCommentTable( $app );    
+        }
+        
+        
+        
+        
+    }
     /**
      *  showComment
      *  lists comment with answers below
