@@ -42,6 +42,7 @@ if ( $page == 'reset-user'){
 ?>
 <html>
     <title>WGTOTW</title>
+    <meta charset='utf-8'/>
     <body>
         <h1>Skapa databas</h1>
         <p><a href='<?=$url?>'>Skapa/Återställ tabell för användare</a></p>
