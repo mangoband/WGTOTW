@@ -301,7 +301,7 @@ class CViewsComments  {
             // compress to only output header and date
             foreach( $result as $child ){
                 
-                dump("childid: {$child->commentid}, parent: {$parentID}");
+              
                 // create url to comment
                 $url = $this->app->url->create("kommentar/visa/".$child->commentid);
             
