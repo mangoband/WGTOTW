@@ -532,7 +532,7 @@ class CViewsComments  {
      */  
     public function addNewComment( $app, $param  = null, $commentid = null, $tags = null, $parentID = null ){
         
-        dump( "rad: ".__LINE__ ." ". __FUNCTION__ );
+    
         
         $app->theme->setVariable('gridColor', '');
         $app->theme->addStylesheet('css/comment.css');
