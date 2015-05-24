@@ -557,8 +557,7 @@ class CViewsComments  {
         // get comment user respond to
         //
         $commentToRespond = $ch->getCommentToRespond( $param['parentid'] );
-        
-       dump( $commentToRespond);
+       
         // sets header to parent comment
         $responseHeader = ( isset( $commentToRespond->header )) ? $commentToRespond->header   : '';
         $responsComment = ( isset( $commentToRespond->parent )) ? $commentToRespond->parent   : '';
@@ -730,7 +729,7 @@ class CViewsComments  {
      */
     public function userComments( $app = null, $userid = null, $show = null ){
         
-        dump( __LINE__. " ". __METHOD__." ".$userid);
+      
         if ( $app  ){
             
             $link = ( $userid) ? "anv/visa" : "anv/visa";

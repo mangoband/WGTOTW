@@ -65,7 +65,7 @@ private $online;
     */
    public function getUsers( $link = null, $position = 'sidebar' ){
       
-      dump("rad: ".__LINE__." ".__METHOD__." link: ".$link);
+     // dump("rad: ".__LINE__." ".__METHOD__." link: ".$link);
       //
       // collect users from database
       //
