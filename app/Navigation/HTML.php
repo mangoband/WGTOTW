@@ -13,7 +13,7 @@ class HTMLOutput{
             return $html;
         }
     public function doAdmin( $input ){
-        echo dump( $input );
+       
         if ( is_null( $input['item_order'] ) ){
             $input['item_order'] = 1;
         }

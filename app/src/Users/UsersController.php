@@ -275,7 +275,7 @@ class UsersController implements \Anax\DI\IInjectionAware
            ->where('active IS NOT NULL')
            ->andWhere('deleted is NULL')
            ->execute();
-    echo dump( $all );
+    
        $this->theme->setTitle("Users that are active");
        $this->views->add('users/list-all', [
            'users' => $all,

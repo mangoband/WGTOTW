@@ -201,7 +201,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             'user',
             "id = ?"
         );
-      //  die( $db->getSQL() );
+      
         $res = $db->execute([$id]);
         return $res;
         
@@ -336,7 +336,9 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
     
     
     
-    
+    /**
+     *  countTable
+     */  
     protected function countTable( $db  = null ){
         if ( $db ){
             $db->select("count(*)")

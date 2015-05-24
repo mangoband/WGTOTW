@@ -128,7 +128,7 @@ class Navigation implements \Anax\DI\IInjectionAware
                 
                 
         ]);
-        echo print_r( $this->app->database->getSQL() );
+      //  echo print_r( $this->app->database->getSQL() );
     }
     
     protected function get_pageName(){

@@ -90,6 +90,10 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         
     }
     
+    /**
+     *  prepareCommentView
+     *  @param int $tagid
+     */  
     private function prepareCommentView( $tagid = null ){
         
         // we dont need to get the comments unless a tag is picked
@@ -108,7 +112,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
      */
     public function outputTags(){
         
-        dump( "rad: ".__LINE__." ".__METHOD__);
+        
         
         // get prepared data
         $data = ( $this->output ) ? $this->output : null;
@@ -127,9 +131,6 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
      *
      */
     public function listTags( $param = null ){
-        
-        
-       // $list = [];
         
         //
         // fill $tags with all tags from db

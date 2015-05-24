@@ -49,7 +49,7 @@ class CViewsComments  {
     public function viewListWithComments( $param = null, $data = null, $isTag = false ){
         
        
-       dump("rad: ".__LINE__." ".__METHOD__);
+       
        
         // view tags from db ( CDatabaseModel)
         $this->viewPopularTags();
@@ -61,10 +61,10 @@ class CViewsComments  {
                                     'errorName' => getError(3)) );
         
         // fetch data from database
-        dump("rad: ".__LINE__." ".__METHOD__);
+        
         $comments = (  $isTag == true ) ? $data :$cc->getGroupedComments($this->app->db, null, 'parent');
         
-           dump("rad: ".__LINE__." ".__METHOD__);    
+            
         // define content & header
         $header = '<h2>Kommentarer</h2>';
         $content = "\n<table class='commentList'>";
@@ -365,7 +365,7 @@ class CViewsComments  {
         // get commentList
         $res = $ch->getCommentList( $commentID, 75, 'child' );
         $content = $this->formatChildComments($res);
-       
+       dump( $content);
         $header = ( isset( $res['data'][0]->header) ) ? "re: ".$res['data'][0]->header : '';
        
         
@@ -556,9 +556,9 @@ class CViewsComments  {
         //
         // get comment user respond to
         //
-        $commentToRespond = $ch->getCommentToRespond( $parentID );
+        $commentToRespond = $ch->getCommentToRespond( $param['parentid'] );
         
-       
+       dump( $commentToRespond);
         // sets header to parent comment
         $responseHeader = ( isset( $commentToRespond->header )) ? $commentToRespond->header   : '';
         $responsComment = ( isset( $commentToRespond->parent )) ? $commentToRespond->parent   : '';
@@ -637,7 +637,7 @@ class CViewsComments  {
      */
     public function showComment(  $commentID = null ){
         
-        dump( "rad: ".__LINE__." ".__METHOD__);
+        
         $title = "Kommentarer";
         
         $content = "<ul class='commentList'>";
@@ -730,7 +730,7 @@ class CViewsComments  {
      */
     public function userComments( $app = null, $userid = null, $show = null ){
         
-        dump ( "rad: ".__LINE__." ".__METHOD__);
+        dump( __LINE__. " ". __METHOD__." ".$userid);
         if ( $app  ){
             
             $link = ( $userid) ? "anv/visa" : "anv/visa";
