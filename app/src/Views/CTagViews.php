@@ -37,13 +37,14 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         $this->cHandler  = new CommentHandler( $this->app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
                                         'errorName' => getError(3)) );
         
-        dump($param);
+        
       
         
         switch( $param['option'] ){
             case 'view':
                 if (! $tagid ){
                     $this->prepareTagList(  );
+                    $this->btns();
                     };
                 $this->prepareCommentView( $tagid );
                 break;
@@ -216,6 +217,22 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         
         $html = ( $rows > ($inRow * $step) ) ? "</ul><ul class='{$class}'>": '';
         return $html."\n\t<li>{$boxes}</li>\n"; 
+    }
+    /************************************************************************
+     *
+     *          Output
+     *
+     ************************************************************************/
+    
+    /**
+     *  btnForUpdate
+     *  @return htmlcode
+     */
+    private function btns(){
+        
+        $form = new  \Anax\CFormContact\CFormComment( $app, $user, $ch );
+        $html = "<a href=''>[Uppdatera taggar]</a>";
+        $this->output[] = $html;
     }
     
     /**

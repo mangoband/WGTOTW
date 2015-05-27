@@ -1,0 +1,185 @@
+// structure
+
+@columns: 4;
+ body {
+  color: #333;
+  overflow-y: scroll;
+  margin-top:0px;
+  margin:0px;
+  
+}
+/* wrapper the holder for content on page */
+
+#wrapper{
+ margin: 0 auto;
+ width:@total-width;
+ max-width:960px;
+ min-height:20em;
+ 
+ /*background-repeat: repeat-y;*/
+ 
+ border-radius:15px;
+ 
+ 
+}
+
+.bottomLink{
+ margin: 22px auto;
+ position:relative;
+ top:@magicNumber;
+ text-align:center;
+ width:200px;
+ 
+}
+/* sidebar */
+#imgMe{
+float:left;
+margin-bottom:22px;
+padding:8px;
+}
+#imgMe p{
+
+vertical-align:top;
+
+.column( (@columns / 3) / 3 * 4 );
+}
+#sidebar{
+  position:relative;
+  top:76px;
+  left:0px;
+  display:inline-block;
+  vertical-align:top;
+  float:right;
+  
+}
+#sidebar article p a{
+display:block;
+}
+.timeOfDay{
+  float:right;
+  margin-top:20px;
+  
+}
+.gravatar{
+
+ border:1px solid red;
+ float:right;
+}
+a.gravatarlink{
+border:1px solid red;
+float:right;
+}
+.users, .users li{
+ margin:0 auto;
+ list-style-type:none;
+}
+
+/* footer */
+#footer{
+
+ text-align:right;
+}
+
+#flash,
+#wrap-featured,
+#wrap-main,
+#wrap-triptych,
+#wrap-footer {
+   .clearfix();
+
+}
+#navbar{
+ .column( (@columns / 3) * 2);
+ max-width:960px;
+    margin-bottom:22px;
+    display:block;
+    z-index:1;
+}
+
+#header,
+header,
+
+#flash,
+#footer {
+    .column(@columns);
+    margin-bottom:22px;
+    display:block;
+    z-index:1;
+}
+#main-wide{
+ .column(@columns);
+ display:block;
+ margin-bottom:22px;
+}
+ 
+#main {
+    .column(@columns / 3 * 2);
+    margin-bottom:22px;
+    
+    min-height:20em;
+}
+ 
+#sidebar {
+    .column(@columns / 3);
+    margin-bottom:22px;
+    
+}
+#sidebar ul p, #sidebar ul input{
+ .column(@columns  );
+}
+#sidebar .buttonbar{
+margin-top:22px;
+}
+
+
+#featured-1,
+#featured-2,
+#featured-3,
+#triptych-1,
+#triptych-2,
+#triptych-3 {
+    .column(@columns / 3);
+    margin-bottom:22px;
+    
+}
+/*
+#footer-col-1,
+#footer-col-2,
+#footer-col-3, 
+#footer-col-4  {
+    .column(@columns / 4);
+    margin-bottom: @magicNumber;
+    padding:8px;
+    
+}*/
+ 
+ 
+ /**
+ * Style for forms
+ */
+label {
+  font-size: smaller;
+}
+
+input[type=text],
+input[type=password] {
+  font-size: 1.2em;
+  width: 500px;
+}
+
+input[type=submit],
+input[type=reset] {
+  font-size: 1.2em;
+}
+
+textarea {
+  font-size: 1.2em;
+  width: 500px;
+  min-height: 200px;
+}
+
+p.buttons {
+  padding-top: 22px;
+  padding-bottom: 22px;
+} 
+

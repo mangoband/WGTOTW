@@ -1,0 +1,29 @@
+
+/* first item */
+#flash{
+ position:relative;
+/* top:-30px;*/
+}
+/* wrapper the holder for content on page */
+#wrapper{
+ margin: 0 auto;
+ width:960px;
+ min-height:20em;
+ background-image: url(../../img/grid_12_60_20.png);
+ 
+ /*z-index:10; */
+}
+#content{
+ background-image: url(../../img/grid_12_60_20.png);
+ position:relative;
+ top:120px;
+ 
+ border-radius:15px;
+ z-index:-1;
+ margin-bottom:22px;
+}
+#footer{
+/* position:relative;
+ top:50px;*/
+ text-align:right;
+}

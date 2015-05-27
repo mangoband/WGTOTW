@@ -1,0 +1,587 @@
+.primaryContainer {
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 100%;
+    width: 100%;
+}
+
+#header {
+    float: left;
+    height: 109px;
+    margin-left: 6.133126%;
+    margin-top: 0px;
+    clear: none;
+    width: 960px;
+}
+
+#timeOfDay {
+    float: right;
+    height: 56px;
+    margin-left: 0px;
+    margin-top: 17px;
+    clear: none;
+    width: 17.335612%;
+    margin-right: 0%;
+    border: 1px solid rgb(255, 172, 0);
+}
+
+#siteDescription {
+    float: left;
+    height: 92px;
+    margin-left: 0.1171875%;
+    margin-top: 17px;
+    clear: none;
+    width: 58.094076%;
+}
+
+#siteTitle {
+    float: left;
+    height: 60px;
+    margin: 0px;
+    clear: none;
+    width: 100%;
+}
+
+#siteSlogan {
+    float: left;
+    height: 20px;
+    margin: 0px;
+    clear: both;
+    width: 38.463719%;
+}
+
+#siteLogo {
+    float: left;
+    height: 109px;
+    margin: 0% 0% 0% 1.344401%;
+    clear: none;
+    width: 14.830729%;
+}
+
+#mangoLogo {
+    float: left;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    margin-left: 9%;
+    margin-top: 0px;
+    clear: none;
+    color: rgb(0, 0, 0);
+}
+
+#text {
+    float: left;
+    font-size: 48px;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1em;
+    margin: 0px;
+    clear: none;
+    min-height: 0px;
+}
+
+#text1 {
+    float: left;
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1em;
+    margin: 0px;
+    clear: none;
+    min-height: 0px;
+    font-style: italic;
+}
+
+#text2 {
+    float: left;
+    font-size: 1em;
+    width: 100%;
+    height: auto;
+    text-align: right;
+    font-weight: normal;
+    line-height: 1em;
+    margin: 0px;
+    clear: none;
+    min-height: 0px;
+    min-width: 0px;
+}
+
+#sheetLinesTop {
+    float: left;
+    height: 50px;
+    margin-left: 7.200301%;
+    margin-top: 2px;
+    clear: both;
+    width: 960px;
+}
+
+#line {
+    float: left;
+    height: 1px;
+    margin: 8px 0px 0px 0%;
+    clear: none;
+    width: 100%;
+    border: 1px solid rgb(0, 0, 0);
+    min-width: 0px;
+}
+
+#line1 {
+    float: left;
+    height: 1px;
+    margin: 8px 0px 0px 0%;
+    clear: both;
+    width: 100%;
+    border: 1px solid rgb(0, 0, 0);
+    display: block;
+    min-width: 0px;
+}
+
+#line2 {
+    float: left;
+    height: 1px;
+    margin: 8px 0px 0px 0%;
+    clear: both;
+    width: 100%;
+    border: 1px solid rgb(0, 0, 0);
+    display: block;
+    min-width: 0px;
+}
+
+#line3 {
+    float: left;
+    height: 1px;
+    margin: 8px 0px 0px 0%;
+    clear: both;
+    width: 100%;
+    border: 1px solid rgb(0, 0, 0);
+    display: block;
+    min-width: 0px;
+}
+
+#line4 {
+    float: left;
+    height: 1px;
+    margin: 8px 0px 0px 0%;
+    clear: both;
+    width: 100%;
+    border: 1px solid rgb(0, 0, 0);
+    display: block;
+    min-width: 0px;
+}
+
+#flash {
+    float: left;
+    height: 61px;
+    margin-left: 7.33248%;
+    margin-top: 2px;
+    clear: both;
+    width: 85.464437%;
+    border: 1px solid rgb(255, 172, 0);
+}
+
+#text4 {
+    float: left;
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1em;
+    margin: 0px;
+    clear: none;
+    min-height: 0px;
+}
+
+#menu {
+    float: left;
+    height: 82px;
+    margin: 2px 0% 0px 7.197518%;
+    clear: both;
+    width: 960px;
+}
+
+#text3 {
+    float: left;
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1em;
+    margin-left: 3.745117%;
+    margin-top: 28px;
+    clear: none;
+    min-height: 0px;
+}
+
+#main {
+    float: left;
+    height: 543px;
+    margin: 0px;
+    clear: none;
+    width: 69.90185%;
+    border: 1px solid rgb(255, 172, 0);
+}
+
+#sidebar {
+    float: left;
+    height: 543px;
+    margin: 1px 0px 0px;
+    clear: none;
+    width: 30.07202%;
+    border: 1px solid rgb(255, 172, 0);
+}
+
+#text5 {
+    float: left;
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1em;
+    margin: 0px;
+    clear: none;
+    min-height: 0px;
+    padding: 7px;
+}
+
+#wrap-main {
+    float: left;
+    height: auto;
+    margin: 0px 0px 0px 83.34375px;
+    clear: both;
+    width: 85.37539%;
+    border: 1px solid rgb(0, 0, 0);
+}
+
+#wrap-triptych {
+    float: left;
+    height: 244px;
+    margin-left: 7.200301%;
+    margin-top: 73px;
+    clear: both;
+    width: 85.485307%;
+}
+
+#triptych-1 {
+    float: left;
+    height: 177px;
+    margin-left: -0.02115885%;
+    margin-top: 30px;
+    clear: none;
+    width: 30.120443%;
+    border: 1px solid rgb(255, 172, 0);
+}
+
+#triptych-2 {
+    float: left;
+    height: 177px;
+    margin-left: 0.52246094%;
+    margin-top: 30px;
+    clear: none;
+    width: 29.423828%;
+    border: 1px solid rgb(255, 172, 0);
+}
+
+#triptych-3 {
+    float: left;
+    height: 171px;
+    margin-left: 8.579102%;
+    margin-top: 36px;
+    clear: none;
+    width: 29.838867%;
+    border: 1px solid rgb(255, 172, 0);
+}
+
+#text6 {
+    float: left;
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1em;
+    margin-left: 21.650443%;
+    margin-top: 100px;
+    clear: none;
+    min-height: 0px;
+}
+
+#text7 {
+    float: left;
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1em;
+    margin-left: 33.605398%;
+    margin-top: 67px;
+    clear: none;
+    min-height: 0px;
+}
+
+#text8 {
+    float: left;
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1em;
+    margin-left: 27.220056%;
+    margin-top: 67px;
+    clear: none;
+    min-height: 0px;
+}
+
+#text9 {
+    float: left;
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    text-align: left;
+    font-weight: normal;
+    line-height: 1em;
+    margin-left: 26.481736%;
+    margin-top: 77px;
+    clear: none;
+    min-height: 0px;
+}
+
+#spelar_bas_small {
+    float: left;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    margin-left: 0.50311714%;
+    margin-top: 2px;
+    clear: none;
+    color: rgb(0, 0, 0);
+    margin-right: 0%;
+}
+
+#byline {
+    float: left;
+    height: 204px;
+    margin-left: 0%;
+    margin-top: 0px;
+    clear: none;
+    width: 100%;
+}
+
+@media only screen and (max-width: 1123px) {
+    #spelar_bas_small {
+        float: left;
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        margin-left: 0.50311714%;
+        clear: none;
+        color: rgb(0, 0, 0);
+        margin-right: 0%;
+    }
+
+    #text6 {
+        margin-top: 3px;
+        margin-left: 3.144482%;
+        clear: none;
+        height: auto;
+        min-height: 147px;
+        width: 58.872306%;
+        padding: 7px;
+        margin-right: 0%;
+    }
+
+    #byline {
+        float: left;
+        height: 204px;
+        margin-left: 0%;
+        margin-top: 0px;
+        clear: none;
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 960px) {
+    #text6 {
+        margin-top: 2px;
+        margin-left: 0%;
+        clear: none;
+        height: auto;
+        min-height: 0px;
+        width: 58.832575%;
+    }
+
+    #spelar_bas_small {
+        height: auto;
+        width: auto;
+        max-width: 36.855257%;
+    }
+
+    #timeOfDay {
+        margin-right: 14.666341%;
+        margin-top: 17px;
+        clear: none;
+        width: 13.557943%;
+    }
+
+    #siteTitle {
+        width: 79.39652%;
+    }
+
+    #siteDescription {
+        width: 54.375%;
+    }
+
+    #text {
+        height: auto;
+    }
+
+    #sheetLinesTop {
+        width: 820.484375px;
+    }
+
+    #text5 {
+        height: auto;
+        width: 98.065737%;
+    }
+
+    #sidebar {
+        margin-top: 0px;
+        margin-left: 10.125px;
+        clear: none;
+        width: 39.946606%;
+        height: 633px;
+    }
+
+    #main {
+        width: 58.648805%;
+        height: 707px;
+    }
+
+    #wrap-main {
+        margin-top: 0px;
+        margin-left: 71.15625px;
+        clear: both;
+        width: 85.072617%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    #wrap-main {
+        margin-top: 0px;
+        margin-left: 56.296875px;
+        clear: both;
+        width: 85.573324%;
+    }
+
+    #byline {
+        height: 271.703125px;
+        width: 100%;
+    }
+
+    #text6 {
+        margin-top: 21.90625px;
+        margin-left: 3.723947%;
+        clear: both;
+        height: auto;
+        width: 92.840411%;
+    }
+
+    #spelar_bas_small {
+        margin-right: auto;
+        margin-top: -1px;
+        margin-left: 28.692414%;
+        clear: none;
+    }
+
+    #sidebar {
+        margin-top: 1px;
+        margin-left: 7.953125px;
+        clear: none;
+        width: 40.009062%;
+        height: 642px;
+    }
+
+    #wrap-triptych {
+        margin-top: 0px;
+        margin-left: 7.200114%;
+        clear: both;
+    }
+
+    #sheetLinesTop {
+        margin-top: 5px;
+        margin-left: 7.183838%;
+        clear: both;
+        width: 659.921875px;
+    }
+
+    #menu {
+        margin-top: 0px;
+        margin-left: 7.196045%;
+        clear: both;
+    }
+
+    #flash {
+        margin-top: 0px;
+        margin-left: 7.332357%;
+        clear: both;
+    }
+
+    #main {
+        height: 1140px;
+    }
+
+    #header {
+        height: 117px;
+        width: 668px;
+    }
+
+    #siteLogo {
+        margin-top: 12.495117%;
+        margin-left: 1.344401%;
+        clear: none;
+        display: none;
+    }
+
+    #siteDescription {
+        margin-top: 17px;
+        margin-left: 2.109375%;
+        clear: none;
+        width: 66.562968%;
+    }
+
+    #timeOfDay {
+        margin-right: 1.808103%;
+        margin-top: 17px;
+        clear: none;
+    }
+
+    #siteTitle {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 540px) {
+    #wrap-main {
+        margin-top: 0px;
+        margin-left: 39.296875px;
+        clear: both;
+    }
+
+    #main {
+        width: 99.996604%;
+    }
+
+    #sidebar {
+        width: 98.268016%;
+    }
+}
+
