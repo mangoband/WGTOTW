@@ -25,6 +25,14 @@ function get_gravatar( $email = null, $size=null, $imageset = null ) {
 }
 
 /**
+ *  serParentClass
+ *
+ */
+function isParent( $parentid = null, $childID = null ){
+    return ( $parentid && $childID && $childID == $parentid ) ? "comment_parent" : '';
+    
+}
+/**
      *  dumpa
      */
     function dumpa( $msg = null ){

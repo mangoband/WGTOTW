@@ -31,7 +31,7 @@ return [
         // This is a menu item
         'me'  => [
             'text'  => 'Om',
-            'url'   => $this->di->get('url')->create('me'),
+            'url'   => $this->di->get('url')->create('om'),
             'title' => ''
         ],
         
@@ -47,12 +47,7 @@ return [
         ],
         
         
-        'theme' => [
-            'text'  => 'Regioner',
-            'url'   => $this->di->get('url')->create('regioner'),
-            'title' => '',
-            'mark-if-parent-of' => 'controller',
-        ],
+        
         
         
         
@@ -103,10 +98,25 @@ return [
 
                     // This is a menu item of the submenu
                     'item 6'  => [
-                        'text'  => 'Skapa tabell',
-                        'url'   => $this->di->get('url')->create('skapa-tabell'),
-                        'title' => 'Skapa tabell',
+                        'text'  => 'Regioner',
+                        'url'   => $this->di->get('url')->create('regioner'),
+                        'title' => 'Regioner',
                      //   'class' => 'italic'
+                    ],
+                    
+                    // This is a menu item of the submenu
+                    'item 7'  => [
+                        'text'  => 'Återställ användare',
+                        'url'   => $this->di->get('url')->create('reset-user'),
+                        'title' => 'Återställer databas för användare'
+                    ],
+
+                    // This is a menu item of the submenu
+                    'item 8'  => [
+                        'text'  => 'Återställ kommentarer',
+                        'url'   => $this->di->get('url')->create('reset-kommentarer'),
+                        'title' => 'Återställer kommentarer',
+                       // 'class' => 'italic'
                     ],
 
                     
@@ -116,41 +126,7 @@ return [
           
         ],
     
-        'users'   => [
-          'text' => 'Reset',
-          'url'  => $this->di->get('url')->create('ny'),
-          'title'   => '',
-          
-          'submenu' => [
-
-                'items' => [
-                    // This is a menu item of the submenu
-                 /*   'item 1'  => [
-                        'text'  => 'Profil',
-                        'url'   => $this->di->get('url')->create('profil'),
-                        'title' => 'Profil'
-                    ],
-*/
-                    // This is a menu item of the submenu
-                    'item 2'  => [
-                        'text'  => 'Återställ användare',
-                        'url'   => $this->di->get('url')->create('reset-user'),
-                        'title' => 'Återställer databas för användare'
-                    ],
-
-                    // This is a menu item of the submenu
-                    'item 3'  => [
-                        'text'  => 'Återställ kommentarer',
-                        'url'   => $this->di->get('url')->create('reset-kommentarer'),
-                        'title' => 'Återställer kommentarer',
-                       // 'class' => 'italic'
-                    ],
-                    
-                   
-                ],
-            ], 
-          
-        ],
+        
         
         
         

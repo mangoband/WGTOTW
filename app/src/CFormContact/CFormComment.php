@@ -207,7 +207,7 @@ class CFormComment extends h\CForm  {
      
         if ( $tags && $header && $comment && $userId ){ 
             $this->comments->prepareToAddNewComment( ['cid'=>$commentId, 'pid'=>$parentId, 'uid'=>$userId, 'comment'=>$comment, 'header'=>$header, 'tags'=>$tags] );
-            $url = $this->app->url->create('kommentera');
+            $url = $this->app->url->create('kommentar/visa/'.$parentId);
             $this->app->response->redirect($url);
             return true;    
         }

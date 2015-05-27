@@ -1,0 +1,1 @@
+<img id='mangobas' src='[RELURL]img/me/spelar_bas_small.png' alt='Marcus spelar på mangobas, foto: M Hvitfeldt' title='Marcus spelar på mangobas, foto: M Hvitfeldt' class='mangoBas' />

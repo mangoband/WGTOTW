@@ -74,7 +74,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
             ->from("comment as c")
             ->join("comment2Category as c2c", "c2c.commentid = c.id")
             ->join("user", "user_id = c2c.userid")
-            ->groupby("c2c.parent");
+            ->groupby("c2c.parentid");
             
         $res = $this->app->db->executeFetchAll(  );
         
@@ -124,15 +124,18 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
         
         if ( $parentID ){
         
-            return $this->getCommentAndCategoriesAndUserID($this->app->db, $parentID, null, 'child');
+          //  return $this->getCommentAndCategoriesAndUserID($this->app->db, $parentID, null, 'child');
         
             // get children
             $this->app->db->select("*")
                 ->from("comment as c")
-                ->join("comment2Category as c2c", "c2c.parent = c.id")
-                ->join("user", "user_id = c2c.userid")
+                ->join("comment2Category as c2c", "c2c.commentid = c.id")
+                ->join("comment as p", "p.id = c2c.parentid")
+                ->join("user", "userid = c2c.userid")
                 
-                ->where("parent = ?")
+                ->where("parentid = ?")
+                ->groupby("parentid")
+                ->orderby("commentid asc")
                 
             ;
             
@@ -141,7 +144,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
             if( $this->verbose == true && $res ){
                 dump( $this->app->db->getSQL() );
                 dump("hämtade ut: ".count($res)." rader");
-            
+                dump( $res);
             }
             
             return $res;  
@@ -167,7 +170,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
     
         if ( $db && $type ){
             
-            return ( $type == "child" ) ? $this->getCommentAnswersFromParentID($db, $parentid) : $this->getCommentsGroupedByParentID( $this->app->db );
+            return ( $type == "child" ) ? $this->getCommentAnswersFromParentID($db, $parentid) : $this->getCommentsGroupedByParentID( $this->app->db, $parentid );
         } else if ( $db && is_null( $type ) ){
             
             return $this->getCommentAndCategoriesAndUserID( $this->app->db, $parentid );

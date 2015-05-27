@@ -130,27 +130,7 @@ class CViewController extends CViewsFlash {
                 }
             }
             
-            
-            //visa-en/id=3
-         /*   $tmpUrl = explode( 'visa-en/', $site);
-            $site = "visa-en";
-         
-            if( startsWith( $tmpUrl[1], 'user' ) === true  ){
-                $tmp = explode( '/', $tmpUrl[1] );
-                foreach( $tmp as $key => $params ){
-                    
-                    switch( $params ){
-                        case 'user':
-                            
-                                $this->userID = $this->getQueryStringID( $tmp, $key );
-                               
-                            
-                            
-                            break;
-                    }    
-                }
-                
-            }*/
+           
             
            
             
@@ -310,6 +290,7 @@ class CViewController extends CViewsFlash {
             case 'visakommentar':
                 $CViewsComments = new CViewsComments( $app, $user ); 
                 $CViewsComments->showComment( $this->commentID );
+                //$CViewsComments->commentActionWithDb( $app, $currentUrl );
                 break;
             case 'svarakommentar':
                 $CViewsComments = new CViewsComments( $app, $user );
@@ -392,6 +373,9 @@ class CViewController extends CViewsFlash {
                 break;
               case 'setup':
                 $this->setupAction($app);
+                break;
+            case 'om':
+                $this->omAction( $app );
                 break;
         }
     }
@@ -900,6 +884,24 @@ class CViewController extends CViewsFlash {
         $app->views->add('me/sidebar', ['img' => $bas, 'byline' => $byline], 'sidebar');
     }
     
+    
+    /**
+     *  omAction
+     *  @param $app
+     */
+    private function omAction( $app = null ){
+        
+        $app->theme->setTitle("Om");
+        
+        // read content of file
+        $om = $app->fileContent->get('om.md');
+        
+        // filter data 
+        $om = $app->textFilter->doFilter($om, 'shortcode, markdown');
+        
+        // output data
+        $app->views->add('default/article', ['content' => $om], 'main');
+    }
     /**
      *  meAction
      *  @param $app
@@ -932,7 +934,7 @@ class CViewController extends CViewsFlash {
         $app->views->add('me/simple', ['text_before' => 'När timmen är sen och det snart är dax att sova använder jag', 'icon' => 'fa-headphones', 'text_after' => 'ofta framför datorn.'], 'sidebar');
                 
         
-  //  $app->views->add('me/simple', [ 'byline' => $byline], 'sidebar');
+  
         $app->views->add('me/sidebar', ['img' => $bas, 'byline' => $byline], 'triptych_1');
        
     }

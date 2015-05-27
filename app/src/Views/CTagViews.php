@@ -37,7 +37,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         $this->cHandler  = new CommentHandler( $this->app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
                                         'errorName' => getError(3)) );
         
-        
+        dump($param);
       
         
         switch( $param['option'] ){

@@ -199,11 +199,11 @@ class CViewsComments  {
         
         foreach( $comments as $comment ){
           
-            $tmpData = $ch->getChildToComment( $comment->parent );
-          
+            $tmpData = $ch->getChildToComment( $comment->parentid );
+          dump( $tmpData);
         
             // get formated childdata
-            $childComments[$comment->id][] = $this->formatChildComments( $tmpData['data'], $comment->id );
+            $childComments[$comment->commentid][] = $this->formatChildComments( $tmpData, $comment->commentid );
             
       
         }
@@ -323,7 +323,7 @@ class CViewsComments  {
                     $html .= "\n\t<span class='commentListResponse'>{$child->created}: {$link}\n\t</span><br />";
                 }
                 */
-                $parID = $child->parent;
+                $parID = $child->parentid;
                 
                 
                 
@@ -643,6 +643,9 @@ class CViewsComments  {
         $row        = 0;
         $answerNr   = 0;
         $parentid   = null;
+        $userid     = $this->user->getUserIDIndex();
+        
+        // get the object CommentHandler
         $ch = new CommentHandler( $this->app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
                                     'errorName' => getError(3)) );
         // get tags
@@ -650,77 +653,51 @@ class CViewsComments  {
         $tags = $CTagViews->fillTagsfromDb( $this->app->db );
         $commentTags = $CTagViews->outputCheckboxes( $tags[0] );
         
-        $comments   = $ch->getGroupedComments($this->app->db, $commentID, 'parent');
-        $answers    = $ch->getGroupedComments($this->app->db, $commentID, 'child');
-      
+        
+        // get parent comment
+        $tmp         = $ch->getGroupedComments($this->app->db, $commentID, 'parent');
+        $answers        = $ch->getGroupedComments($this->app->db, $commentID, 'child');
+        
+        $parent = $tmp[0];
+      //  $childComments   = $ch->getChildToComment( $parent->parentid );
         
         
-      //  foreach( $comments as $comment ){
-            
-          
-           /*
-            if ( $commentID == $comment->parentid ){
-                dump(__line__);
-                $content .= $this->createCommentStructure([
-                'header'    => $comment->header,
-                'content'   => $comment->comment,
-                'user'      => $comment->name,
-                'date'      => $comment->created,
-                'parentid'  => $comment->parentid,
-                'tags'      => $commentTags,
-                'answers'   => $this->returnAnswers($comment->parentid, $ch),
-            ]);
-                
-            }*/
-            // test if all answers are out on page
-            if ( isset( $answers) && $answerNr < count( $answers ) ){
-                
-               
-                foreach( $answers as $comment ){
-                    
-                    //if( $parentid != $comment->id ){
-                        $content .= $this->createCommentStructure([
-                            'header'    => $comment->header,
-                            'content'   => $comment->comment,
-                            'user'      => $comment->name,
-                            'date'      => $comment->created,
-                            'parentid'   => $comment->parentid,
-                            'tags'      => $commentTags,
-                            'answers'   => $this->returnAnswers($comment->id, $ch)
-                        ]);
-                        $answerNr ++;
-                    //}
-                }
-            }
-            $parentid = $comment->parentid;
-            
-            
-            
+        
+        // get formated childdata
+       // $childComments[$parent[0]->commentid][] =  $this->formatChildComments( $parent, $parent[0]->commentid );
+        
+        $this->user->isOnline();
+        $online = $this->user->isUserOnline();
+        
+        // errors
+            $errorContent   = ( isset( $this->error['errorContent'] ) )  ? $this->error['errorContent']  : null;
+            $errorMail      = ( isset( $this->error['errorMail'] ) )     ? $this->error['errorMail']     : null;
+            $errorHomepage  = ( isset( $this->error['errorHomepage'] ) ) ? $this->error['errorHomepage'] : null;
+            $errorName      = ( isset( $this->error['errorName'] ) )     ? $this->error['errorName']     : null;
            
-       // }
-       /* $commentList = $cc->getCommentList($commentID , $this->app->db, null, true );
-       
-        $totalRows = count( $commentList);
-        foreach( $commentList as $comment ) {
-            $content .= $this->createCommentStructure([
-                'header'    =>$comment->header,
-                'content'   =>$comment->child,
-                'user'      =>$comment->name,
-                'date'      =>$comment->created,
-                'id'        =>$comment->childid,
-                'row'       =>$row,
-                'tags'      =>$commentTags,
-                'totalrows' =>$this->returnAnswers( $commentList['rowCount'], $comment->childid )
-                ]);
-            $row ++;
-            $title =  $comment->header;
-        }*/
-        $header = "<h2>{$title}</h2>";
+          
+           
+            $header = "<h2>{$title}</h2>";
         $this->app->theme->setTitle($title);
         
-        $content .= "</ul>";
+       
         
-        $this->app->views->add('me/article', ['header'=>$header, 'content' => $content], 'main');
+        $ch->outputUpdateList([
+                'all'       => $answers,
+                'online'    => $online,
+                'new'       => '',
+                'userid'    => $userid[0],
+                'errorContent'  => $errorContent,
+                'errorMail'     => $errorMail,
+                'errorHomepage' => $errorHomepage,
+                'errorName'     => $errorName,
+                'children'      => null,
+                'header'        => $header,
+                'group'         => null,
+                
+                ]); 
+      
+        
     }
     
     

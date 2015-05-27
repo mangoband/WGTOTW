@@ -480,6 +480,9 @@ textarea {
   margin-bottom: 15px;
   clear: both;
 }
+.comment_parent{
+  background-color: blue;
+}
 .commentHead {
   float: left;
   display: inline-block;
@@ -592,6 +595,7 @@ p.commentViews {
 .users {
   margin-bottom: 44px;
 }
+
 #navbar {
   margin-bottom: 14px;
   border: 1px solid green;
