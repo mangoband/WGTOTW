@@ -3,7 +3,7 @@
  * Config-file for Anax, theme related settings, return it all as array.
  *
  */
-$css = (is_file('css/mangoproject/style.php')) ? 'css/mango-project/style.php' : 'css/wgtotw.css';
+$css = (is_file('css/mango-project/style.php')) ? 'css/mango-project/style.php' : 'css/wgtotw.css';
 return [
 
     /**
