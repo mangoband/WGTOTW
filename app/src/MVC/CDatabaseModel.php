@@ -10,7 +10,7 @@ namespace Anax\MVC;
 class CDatabaseModel implements \Anax\DI\IInjectionAware
 {
     use \Anax\DI\TInjectable;
-    public $verbose = true;
+    public $verbose = false;
     
     function __construct(){
         //date_default_timezone_set('Europe/Stockholm');
