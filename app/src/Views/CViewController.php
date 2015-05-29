@@ -692,7 +692,7 @@ class CViewController extends CViewsFlash {
      *  $param $app
      */
     private function kommenteraActions( $app, $currentUrl ){
-      //  echo dump ( $app ) ;
+      
         $app->theme->setVariable('gridColor', '');
         $app->theme->addStylesheet('css/comment.css');
         $app->theme->setTitle("Kommentera");

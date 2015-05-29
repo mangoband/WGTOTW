@@ -319,7 +319,7 @@ class CViewsComments  {
         // get commentList
         $res = $ch->getCommentList( $commentID, 75, 'child' );
         $content = $this->formatChildComments($res);
-       dump( $content);
+       
         $header = ( isset( $res['data'][0]->header) ) ? "re: ".$res['data'][0]->header : '';
        
         
@@ -384,9 +384,7 @@ class CViewsComments  {
      */
     public function kommenteraAction( $app, $currentUrl ){
         
-        dump( "rad: ".__LINE__ ." ". __FUNCTION__ );
-    //    echo $currentUrl;
-        //echo dump ( $app ) ;
+        
         $app->theme->setVariable('gridColor', '');
         $app->theme->addStylesheet('css/comment.css');
         $app->theme->setTitle("Kommentera");
