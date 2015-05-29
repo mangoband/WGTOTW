@@ -361,20 +361,16 @@ class CViewController extends CViewsFlash {
             case 'skapa-tabell':
                 $this->createTableAction( $app );
                 break;
+            
+            // remove this code after install ------>
             case 'reset-kommentarer':
-                
-                $this->resetCommentTable( $app );
-                break;
             case 'reset-user':
-                $this->resetUserTable( $app );
+            case 'firstTime':
+                $this->restoreDb( $app );
                 break;
-            case 'delete':
-                break;
-            case 'test1':
-                
-                    $this->test1Action( $app );
-                
-                break;
+            
+            // --------<
+            
               case 'setup':
                 $this->setupAction($app);
                 break;
@@ -410,23 +406,36 @@ class CViewController extends CViewsFlash {
         }
     }
     
-    /**
-     *  resetUserTable
-     */  
-    private function resetUserTable( $app ){
-        $dbModel = new \Anax\MVC\CDatabaseModel(  );
-        $dbModel->restoreTable( $app );
-    }
-    /**
-     *  resetComments
-     */
-    private function resetCommentTable( $app ){
+    
+    
+    private function restoreDb( $app ){
         
-        $dbModel = new \Anax\MVC\CDatabaseModel(  );
-        $dbModel->createCommentTable( $app );
+        $url = $app->url->create('reset-user');
+        $url2 = $app->url->create('reset-kommentarer');
+        $url3 = $app->url->create();
         
         
-       
+        $CViewsComments = new \Mango\Views\CViewsComments( $app );
+        $user = null;
+        $comment = null;
+        
+        if ( $this->param['page'] == 'reset-user'){
+            $CViewsComments->prepareDatabase( $app, 'user');
+            $user = '.......... Skapar databas';
+            
+        } else if ( $this->param['page'] == 'reset-kommentarer'){
+            $CViewsComments->prepareDatabase( $app, 'comment');
+            $comment = ".......... Skapar databas <a href='{$url3}'>--> Startsida <-- </a><br />";
+        }
+$html = <<<EOD
+ <h1>Skapa databas</h1>
+        <p><a href='{$url}'>Skapa/Återställ tabell för användare</a></p>
+        <p>{$user}</p>
+        <p><a href='{$url2}'>Skapa/Återställ tabell för kommentarer</a></p>
+        <p>{$comment}</p>
+EOD;
+        
+   $app->views->add('default/article', ['content' => $html], 'main');
     }
     
     /**
@@ -687,36 +696,7 @@ class CViewController extends CViewsFlash {
         $app->views->add('default/article', ['content' => $content], 'main');
         $app->views->add('me/sidebar', ['img' => $bas, 'byline' => $byline], 'triptych_1');
     }
-    /**
-     *  kommenteraAction
-     *  $param $app
-     */
-    private function kommenteraActions( $app, $currentUrl ){
-      
-        $app->theme->setVariable('gridColor', '');
-        $app->theme->addStylesheet('css/comment.css');
-        $app->theme->setTitle("Kommentera");
-        $app->views->add('comment/form', [
-              'mail'      => null,
-              'web'       => null,
-              'name'      => null,
-              'content'   => null,
-              'output'    => null,
-              'id'        => null,
-              'group'       => 'mysql',
-              'errorContent'  => getError(0),
-              'errorMail'     => getError(1),
-              'errorHomepage' => getError(2),
-              'errorName'     => getError(3),
-              'tmp'             => '',
-          ]);
-          $app->dispatcher->forward([
-              'controller' => 'comment',
-              'action'     => 'view',
-              'params'     => ['mysql', getError(0), getError(1), getError(2), getError(3), $currentUrl],
-          ]);
-        
-    }
+    
     
     
     
@@ -801,93 +781,8 @@ class CViewController extends CViewsFlash {
         $this->app->views->add('me/sidebar', ['img' => $bas, 'byline' => $byline], 'sidebar');
         
     }
-    /**
-     *  fontAWAction
-     *  @param $app
-     */
-    private function fontAWAction( $app ){
-        $app->theme->setTitle("Font-awesome");
-        $app->theme->setVariable('gridColor', '');
-        
-        $app->views->add('me/timeOfDay', ['icon' => $this->viewTimeWithFa(date('G')),'timeOfDay' => date('G : i')], 'header');
-        $app->views->add('default/page', ['title' => 'Font-awesome','content' => 'När det var dax att få in Font awesome blev det hjärngympa till att börja med.'], 'main');
-        $app->views->add('me/simple', ['text_before' => '1x','icon' => 'fa-recycle fa-1x'], 'main');
-        $app->views->add('me/simple', ['text_before' => '2x','icon' => 'fa-recycle fa-2x'], 'main');
-        $app->views->add('me/simple', ['text_before' => '3x','icon' => 'fa-recycle fa-3x'], 'main');
-        $app->views->add('me/simple', ['text_before' => '4x','icon' => 'fa-recycle fa-4x'], 'main');
-        $app->views->add('me/simple', ['text_before' => '5x','icon' => 'fa-recycle fa-5x'], 'main');
-        $app->views->add('me/simple', ['text_before' => '5x','icon' => 'fa-thumbs-up fa-5x'], 'main');
-        
-        //$app->views->add('me/simple', ['text_before' => '5x','icon_after' => 'fa-recycle fa-5x'], 'main');
-        
-        $app->views->add('me/simple', ['text_before' => 'Jag bor i', 'icon' => 'fa-building-o'], 'sidebar');
-        $app->views->add('me/simple', ['text_before' => 'När jag ska gå in behöver jag ', 'icon' => 'fa-key'], 'sidebar');
-        $app->views->add('me/simple', ['text_before' => 'Blir jag hungrig så fixar jag mat och plockar fram ', 'icon' => 'fa-cutlery', 'text_after' => 'och äter.'], 'sidebar');
-        $app->views->add('me/simple', ['text_before' => 'När timmen är sen och det snart är dax att sova använder jag', 'icon' => 'fa-headphones', 'text_after' => 'ofta framför datorn.'], 'sidebar');
-        
-    }
-    /**
-     *  fontAWGridAction
-     *  @param $app
-     */
-    private function fontAWGridAction( $app ){
-        $app->theme->setTitle("Font-awesome");
-        $app->theme->setVariable('gridColor', '');
-        $app->theme->setVariable('wrapperClass', 'bg');
-        
-        $app->views->add('me/timeOfDay', ['icon' => $this->viewTimeWithFa(date('G')),'timeOfDay' => date('G : i')], 'header');
-        $app->views->add('default/page', ['title' => 'Font-awesome','content' => 'När det var dax att få in Font awesome blev det hjärngympa till att börja med.'], 'main');
-        $app->views->add('me/simple', ['text_before' => '1x','icon' => 'fa-recycle fa-1x'], 'main');
-        $app->views->add('me/simple', ['text_before' => '2x','icon' => 'fa-recycle fa-2x'], 'main');
-        $app->views->add('me/simple', ['text_before' => '3x','icon' => 'fa-recycle fa-3x'], 'main');
-        $app->views->add('me/simple', ['text_before' => '4x','icon' => 'fa-recycle fa-4x'], 'main');
-        $app->views->add('me/simple', ['text_before' => '5x','icon' => 'fa-recycle fa-5x'], 'main');
-        $app->views->add('me/simple', ['text_before' => '5x','icon' => 'fa-thumbs-up fa-5x'], 'main');
-        
-        //$app->views->add('me/simple', ['text_before' => '5x','icon_after' => 'fa-recycle fa-5x'], 'main');
-        
-        $app->views->add('me/simple', ['text_before' => 'Jag bor i', 'icon' => 'fa-building-o'], 'sidebar');
-        $app->views->add('me/simple', ['text_before' => 'När jag ska gå in behöver jag ', 'icon' => 'fa-key'], 'sidebar');
-        $app->views->add('me/simple', ['text_before' => 'Blir jag hungrig så fixar jag mat och plockar fram ', 'icon' => 'fa-cutlery', 'text_after' => 'och äter.'], 'sidebar');
-        $app->views->add('me/simple', ['text_before' => 'När timmen är sen och det snart är dax att sova använder jag', 'icon' => 'fa-headphones', 'text_after' => 'ofta framför datorn.'], 'sidebar');
-        
-    }
-    /**
-     *  meGridAction
-     *  @param $app
-     */  
-    private function meGridAction( $app ){
-        $app->theme->setVariable('bodyColor', 'bodyColorGray');
-        $app->theme->setVariable('wrapperClass', 'bg');
-        $app->theme->setVariable('gridColor', '');
-        
-        $app->theme->setTitle("Me");
     
-        //$app->theme->addStylesheet('css/comment.css');
     
-        
-        $me = $app->fileContent->get('me.md');
-        $me = $app->textFilter->doFilter($me, 'shortcode, markdown');
-        
-        $bas = $app->fileContent->get('bas.md');
-        $bas = $app->textFilter->doFilter($bas, 'shortcode, markdown');
-        
-        $byline = $app->fileContent->get('byline.md');
-        $byline = $app->textFilter->doFilter($byline, 'shortcode, markdown');
-        
-      
-        $app->views->add('default/article', ['content' => $me], 'main');
-        
-    //    $app->views->add('me/timeOfDay', ['icon' => $this->viewTimeWithFa(date('G')),'timeOfDay' => date('G : i')], 'header');
-        $app->views->add('me/simple', ['text_before' => 'Jag bor i', 'icon' => 'fa-building-o'], 'sidebar');
-        $app->views->add('me/simple', ['text_before' => 'När jag ska gå in behöver jag ', 'icon' => 'fa-key'], 'sidebar');
-        $app->views->add('me/simple', ['text_before' => 'Blir jag hungrig så fixar jag mat och plockar fram ', 'icon' => 'fa-cutlery', 'text_after' => 'och äter.'], 'sidebar');
-        $app->views->add('me/simple', ['text_before' => 'När timmen är sen och det snart är dax att sova använder jag', 'icon' => 'fa-headphones', 'text_after' => 'ofta framför datorn.'], 'sidebar');
-            
-        
-       // $app->views->add('me/simple', [ 'byline' => $byline], 'sidebar');
-        $app->views->add('me/sidebar', ['img' => $bas, 'byline' => $byline], 'sidebar');
-    }
     
     
     /**
@@ -1013,98 +908,7 @@ class CViewController extends CViewsFlash {
      
     }
     
-    /**
-     *  test1Action
-     *  @param $app
-     */
-    private function test1Action( $app ){
-            
-            
-            $app->session(); // Will load the session service which also starts the session
     
-            $form = $app->form->create([], [
-                    'name' => [
-                            'type'        => 'text',
-                            'label'       => 'Name of contact person:',
-                            'required'    => true,
-                            'validation'  => ['not_empty'],
-                    ],
-                    'email' => [
-                            'type'        => 'text',
-                            'required'    => true,
-                            'validation'  => ['not_empty', 'email_adress'],
-                    ],
-                    'phone' => [
-                            'type'        => 'text',
-                            'required'    => true,
-                            'validation'  => ['not_empty', 'numeric'],
-                    ],
-                    'submit' => [
-                            'type'      => 'submit',
-                            'callback'  => function ($form) {
-                                    $form->AddOutput("<p><i>DoSubmit(): Form was submitted. Do stuff (save to database) and return true (success) 
-                                    or false (failed processing form)</i></p>");
-                                    $form->AddOutput("<p><b>Name: " . $form->Value('name') . "</b></p>");
-                                    $form->AddOutput("<p><b>Email: " . $form->Value('email') . "</b></p>");
-                                    $form->AddOutput("<p><b>Phone: " . $form->Value('phone') . "</b></p>");
-                                    $form->saveInSession = true;
-                                    return true;
-                            }
-                    ],
-                    'submit-fail' => [
-                            'type'      => 'submit',
-                            'callback'  => function ($form) {
-                                    $form->AddOutput("<p><i>DoSubmitFail(): Form was submitted but I failed to process/save/validate it</i></p>");
-                                    return false;
-                            }
-                    ],
-            ]);
-    
-    
-            // Check the status of the form
-            $form->check(
-                    function ($form) use ($app) {
-                    
-                            // What to do if the form was submitted?
-                            $form->AddOUtput("<p><i>Form was submitted and the callback method returned true.</i></p>");
-                            $app->redirectTo();
-    
-                    },
-                    function ($form) use ($app) {
-            
-                            // What to do when form could not be processed?
-                            $form->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
-                            $app->redirectTo();
-            
-                    }
-            );
-    
-
-    
-            $callbackSuccess = function ($form) use ($app) {
-                    // What to do if the form was submitted?
-                    $form->AddOUtput("<p><i>Form was submitted and the callback method returned true.</i></p>");
-                    $app->redirectTo();
-            };
-    
-            $callbackFail = function ($form) use ($app) {
-                            // What to do when form could not be processed?
-                            $form->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
-                            $app->redirectTo();
-            };
-    
-    
-            // Check the status of the form
-            $form->check($callbackSuccess, $callbackFail);
-    
-    
-            $app->theme->setTitle("Testing CForm with Anax");
-            $app->views->add('default/page', [
-                    'title' => "Try out a form using CForm",
-                    'content' => $form->getHTML()
-            ]);
-  //          $app->views->add('me/timeOfDay', ['icon' => $this->viewTimeWithFa(date('G')),'timeOfDay' => date('G : i')], 'header');
-    }
     
     /**
      *  cformAction

@@ -68,7 +68,16 @@ function viewTimeWithFa( $hour ){
  */  
 function setMenu( ){
     
-    return ( isset( $_SESSION['user']['id'] ) ) ? "navbar_project_admin.php" : 'navbar_project.php';
+    $id = ( isset( $_SESSION['user']['id'] )  ) ? $_SESSION['user']['id']: null;
+    
+    if( $id == 1 || $id == 2 ){
+        $menu = "navbar_project_admin.php";
+    } else if( $id && $id > 2){
+        $menu = "navbar_project_user.php";
+    } else{
+        $menu = "navbar_project.php";
+    }
+    return $menu;
     
 }
 

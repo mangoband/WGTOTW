@@ -288,51 +288,6 @@ class CViewsComments  {
         }
     }
     
-    /**
-     *  respondComment
-     */
-    public function respondComment( $app = null, $commentID = null ){
-        
-        
-        $title = "Kommentera";
-        $app->theme->setTitle($title);
-        $app->theme->setVariable('gridColor', '');
-        
-        $header = "<h2>{$title}</h2>";
-        
-        $ch = null;
-        $ch = new CommentHandler( $app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
-                                    'errorName' => getError(3)) );
-        
-      
-        
-        //
-        // fill $tags with all tags from db
-        //
-        $tags = $ch->fillTagsfromDb($app->db);
-        
-        //
-        // fill $tags with all tags from db
-        //
-        $selectedTags = $ch->fillTagsfromDb($app->db,  $commentID);
-        
-        // get commentList
-        $res = $ch->getCommentList( $commentID, 75, 'child' );
-        $content = $this->formatChildComments($res);
-       
-        $header = ( isset( $res['data'][0]->header) ) ? "re: ".$res['data'][0]->header : '';
-       
-        
-        // make form
-        $this->addNewComment( $app, ['commentid'=>null, 'parentid'=>$commentID, 'tags'=>$tags, 'selectedTags'=>$selectedTags, 'header'=>$header] );
-       
-        // check if user is online
-        $user = new \Anax\Users\User( $app );
-        $user->isOnline();
-       
-        $this->app->views->add('default/article', ['header'=>$header, 'content' => $content], 'main-wide');
-        
-    }
     
     
     /**
@@ -482,7 +437,7 @@ class CViewsComments  {
      *  addNewComment
      *  @param array $app
      */  
-    public function addNewComment( $app, $param  = null, $commentid = null, $tags = null, $parentID = null ){
+    public function addNewComment( $app, $param  = null , $commentid = null, $tags = null, $parentID = null ){
         
     
         
@@ -551,6 +506,54 @@ class CViewsComments  {
         
     }
     
+    
+    /**
+     *  respondComment
+     */
+    public function respondComment( $app = null, $commentID = null ){
+        
+        
+        $title = "Kommentera";
+        $app->theme->setTitle($title);
+        $app->theme->setVariable('gridColor', '');
+        
+        $header = "<h2>{$title}</h2>";
+        
+        $ch = null;
+        $ch = new CommentHandler( $app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
+                                    'errorName' => getError(3)) );
+        
+      
+        
+        //
+        // fill $tags with all tags from db
+        //
+        $tags = $ch->fillTagsfromDb($app->db);
+        
+        //
+        // fill $tags with all tags from db
+        //
+        $selectedTags = $ch->fillTagsfromDb($app->db,  $commentID);
+        
+        // get commentList
+        $res = $ch->getCommentList( $commentID, 75, 'child' );
+        $content = $this->formatChildComments($res);
+       
+        $header = ( isset( $res['data'][0]->header) ) ? "re: ".$res['data'][0]->header : '';
+       
+        
+        // make form
+        $this->addNewComment( $app, ['commentid'=>null, 'parentid'=>$commentID, 'tags'=>$tags, 'selectedTags'=>$selectedTags, 'header'=>$header] );
+       
+        // check if user is online
+        $user = new \Anax\Users\User( $app );
+        $user->isOnline();
+       
+        $this->app->views->add('default/article', ['header'=>$header, 'content' => $content], 'main-wide');
+        
+    }
+    
+    
     /**
      *  resetComments
      */
@@ -565,6 +568,9 @@ class CViewsComments  {
         header("Location: " . $url);
     }
     
+    /**
+     *  prepareDatabase
+     */  
     public function prepareDatabase($app = null, $type = 'user' ){
         
         $dbModel = new \Anax\MVC\CDatabaseModel(  );
@@ -588,7 +594,7 @@ class CViewsComments  {
      */
     public function showComment(  $commentID = null ){
         
-        dump( __LINE__);
+        
         $title = "Kommentarer";
         
         $content = "<ul class='commentList'>";

@@ -1092,6 +1092,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 ]);
                 
            }
+           $url = $app->url->create("kommentar/visa/{$lastInserted}"); 
+           $app->response->redirect($url);
         }
          
     

@@ -175,13 +175,13 @@ class CFormComment extends h\CForm  {
      *  DoUpdateComment()
      */
     protected function DoUpdateComment(){
-      //  dump( $_POST['commentId'] );
+      
         
         
         
         $this->comments->updateThisComment( $this->Value('commentId'), [ 'comment'=>$this->Value('comment'), 'header'=>$this->Value('header')] );
         
-       // $this->AddOUtput("<p><i>Uppdaterad...</i></p>");
+       
         $id = $this->Value('commentId');
         $url = $this->app->url->create('kommentera#'.$id);
         $this->app->response->redirect($url);
@@ -219,7 +219,7 @@ class CFormComment extends h\CForm  {
         dump("id ".$userId);
         die();
             return false;
-       //die();
+       
         
     }
     

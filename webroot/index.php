@@ -47,9 +47,9 @@ session_name('kmom4');
   
 });
 
-$app->router->add('firstTime', function() use ( $app ) {
+$app->router->add('firstTimes', function() use ( $app ) {
   
-  $app->theme->setVariable('gridColor', '');
+$app->theme->setVariable('gridColor', '');
 $url = $app->url->create('reset-user');
 $url2 = $app->url->create('reset-kommentarer');
 $url3 = $app->url->create();
