@@ -381,6 +381,7 @@ class CViewController extends CViewsFlash {
             case 'om':
                 $this->omAction( $app );
                 break;
+            
         }
     }
   

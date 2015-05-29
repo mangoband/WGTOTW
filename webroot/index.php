@@ -19,17 +19,7 @@ function markdown($text) {
 }
 // Create services and inject into the app. 
 $di  = new \Anax\DI\CDIFactoryMango();
-$di->set('UsersController', function() use ($di) {
-            $controller = new \Anax\Users\UsersController();
-            $controller->setDI($di);
-            return $controller;
-        });
-$db = $di->setShared('db', function() {
-    $db = new \Mos\Database\CDatabaseBasic();
-    $db->setOptions(require ANAX_APP_PATH . 'config/database_sqlite.php');
-    $db->connect(true);
-    return $db;
-});
+
 $app = new \Anax\MVC\CApplicationBasic($di);
 
 $app->theme->setTitle("WGTOTW");
@@ -51,7 +41,6 @@ $app->router->add('*', function() use ( $app ) {
 session_name('kmom4');
 //session_start();
   
-  //$app->theme->setVariable('gravatar', $gravar);
   $CViewController = new Mango\Views\CViewController( $app );
   $CViewController->viewContent();
 
@@ -60,6 +49,7 @@ session_name('kmom4');
 
 $app->router->add('firstTime', function() use ( $app ) {
   
+  $app->theme->setVariable('gridColor', '');
 $url = $app->url->create('reset-user');
 $url2 = $app->url->create('reset-kommentarer');
 $url3 = $app->url->create();
@@ -94,7 +84,15 @@ if ( $page == 'reset-user'){
     $CViewsComments->prepareDatabase( $app, 'comment');
     $comment = ".......... Skapar databas <a href='{$url3}'>--> Startsida <-- </a><br />";
 }
-  
+$html = <<<EOD
+ <h1>Skapa databas</h1>
+        <p><a href='{$url}'>Skapa/Återställ tabell för användare</a></p>
+        <p>{$user}</p>
+        <p><a href='{$url2}'>Skapa/Återställ tabell för kommentarer</a></p>
+        <p>{$comment}</p>
+EOD;
+        
+   $app->views->add('default/article', ['content' => $html], 'main');
 });
 $app->router->add('source', function() use ($app) {
     $app->theme->setTitle("Källkod");
