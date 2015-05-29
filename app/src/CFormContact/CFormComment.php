@@ -81,6 +81,7 @@ class CFormComment extends h\CForm  {
         
         $this->SetValidation('comment', array('not_empty'));
         
+       
         
     }
     
@@ -88,7 +89,8 @@ class CFormComment extends h\CForm  {
     /**
      *  updateComment
      */
-    public function updateComment( $comment, $tags = null, $selectedTags = null ){
+    public function updateComment( $comment, $tags = null, $selectedTags = null, $answer = null, $userid = null ){
+        
         
         
         if ( $comment ){
@@ -96,28 +98,32 @@ class CFormComment extends h\CForm  {
             ->AddElement(new h\CFormElementTextarea('comment', array('label' => 'Kommentar:', 'required' => true, 'value'=> $comment->comment)))
             ->AddElement(new h\CFormElementHidden('userId', array('value' =>  $comment->user_id )))
             ->AddElement(new h\CFormElementHidden('commentId', array('value' =>  $comment->id )));
-            if ( $tags ){
+        
+            // get tags
+        // $tags          = ( isset( $param['tags'] ) ) ? $param['tags'] : $tags;
+      //   $selectedTags  = ( isset( $param['selectedTags'] ) ) ? $param['selectedTags'] : null;
+        $selected = null;
+        
+      
+        if ( $selectedTags ){
+            foreach( $selectedTags as $sel ){
+                $selected[] = ucfirst($sel->category);
+              
+            }
+        }
+         if ( $tags ){
             
             // loop tags and makeCheckboxes
-            if ( $selectedTags ){
-                foreach( $selectedTags as $sel ){
-                    $selected[] = ucfirst($sel->category);
+            foreach( $tags as  $genre ){
+               
+                $category[] = ucfirst($genre->category);
+               
                 
-                }
             }
-             if ( $tags ){
-                
-                // loop tags and makeCheckboxes
-                foreach( $tags as  $genre ){
-                   
-                    $category[] = ucfirst($genre->category);
-                   
-                    
-                }
-                $this->AddElement(new h\CFormElementCheckboxMultiple('items', array('values'=>$category, 'checked'=>$selected)));
-            }
-         
+            $this->AddElement(new h\CFormElementCheckboxMultiple('items', array('values'=>$category, 'checked'=>$selected)));
         }
+         
+    
             $this->AddElement(new h\CFormElementSubmit('Uppdatera', array('callback'=>array($this, 'DoUpdateComment'))))
             ->AddElement(new h\CFormElementSubmit('Radera', array('callback'=>array($this, 'DoDeleteComment'))));
         
@@ -149,12 +155,54 @@ class CFormComment extends h\CForm  {
         $this->AddElement(new h\CFormElementSubmit('Logga ut', array('callback'=>array($this, 'DoLogout'))));
     }
     
+    /**
+     *  updateTags
+     */
+    public function updateTagForm( $tagid = null, $name = null ){
+        
+        $this->AddElement(new h\CFormElementHidden('tagid', array('value' => $tagid )))
+            ->AddElement(new h\CFormElementText('tagg', array('value' =>  $name, 'required' => true )))
+            ->AddElement(new h\CFormElementSubmit('Uppdatera', array('callback'=>array($this, 'DoUpdateTag'))))
+            ->AddElement(new h\CFormElementSubmit('Radera', array('callback'=>array($this, 'DoRemoveTag'))))
+            ->AddElement(new h\CFormElementSubmit('Ny', array('callback'=>array($this, 'DoNewTag'))));
+            
+            
+        
+    }
     
     /*************************************************************************************************
      *
      *  Callback for forms
      *
      */
+    
+    /**
+     *  DoNewTag
+     */
+    protected function DoNewTag(){
+        $url = $this->app->url->create('taggar/add');
+        $this->app->response->redirect($url);
+    }
+    
+    /**
+     *  DoUpdateTag
+     */
+    protected function DoUpdateTag(){
+        
+        $this->CTagViews->updateTag($this->app->db, $this->Value('tagid'), $this->Value('tagg'));
+         $url = $this->app->url->create('taggar/view');
+        $this->app->response->redirect($url);
+    }
+    
+    /**
+     *  DoRemoveTag
+     */
+    protected function DoRemoveTag(){
+        
+        $this->CTagViews->removeTag( $this->app->db,  $this->Value('tagid'));
+         $url = $this->app->url->create('taggar/view');
+        $this->app->response->redirect($url);
+    }
     
     /**
      *  DoLogin()
@@ -202,7 +250,7 @@ class CFormComment extends h\CForm  {
         
         $tags       = ( isset( $_POST['items'] ) )   ? $_POST['items']           : ['default'];
         
-       
+      
         //$parentid && $comment && $header && $id && $tags
      
         if ( $tags && $header && $comment && $userId ){ 
@@ -211,13 +259,7 @@ class CFormComment extends h\CForm  {
             $this->app->response->redirect($url);
             return true;    
         }
-       /* dump ("det verkar som inte någon checkbox är i kryssad...");
-        dump( $_POST );// die();
-        dump( "comment ".$comment);
-        dump("header ".$header);
-        dump("genre ".$this->Value('items') );
-        dump("id ".$userId);
-        die();*/
+       
             return false;
        
         

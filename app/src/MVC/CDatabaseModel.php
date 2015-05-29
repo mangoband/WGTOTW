@@ -570,7 +570,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             $rowCount   = null;
             
             $db->setVerbose(false );
-            $db->select("c2c.commentid, cc.category, c2c.userid, u.name, p.comment as parent, p.id, c2c.commentid, c2c.parentid, p.created as created,
+            $db->select("c2c.commentid, cc.category,p.ip, c2c.userid, u.name, p.comment as parent, p.id, c2c.commentid, c2c.parentid, p.created as created,
                         child.comment as comment, child.id as childid, child.created as childdate, p.header as header")
             ->from("comment2Category as c2c")
             ->join("comment as p", "p.id = c2c.parentid")
@@ -972,6 +972,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         // correct bug 20150401
         $db->select('*')
         ->from('comment AS c')
+        
         ->where("c.id = ?");
          $data = $db->executeFetchAll( [$id] );
        

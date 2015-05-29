@@ -1,4 +1,4 @@
-a:4:{s:4:"root";s:10:"style.less";s:8:"compiled";s:43974:"html {
+a:4:{s:4:"root";s:10:"style.less";s:8:"compiled";s:48266:"html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -788,6 +788,10 @@ body {
 }
 article {
   padding: 8px;
+  clear: left;
+}
+article p {
+  display: block;
 }
 h1,
 h2,
@@ -1042,6 +1046,268 @@ hr {
   color: #ccc;
   border-color: #ccc;
   margin: 22px auto;
+}
+@media only screen and (max-width: 767px) and (orientation: landscape) {
+  #header,
+  header {
+    margin: 60px auto;
+    width: 100%;
+  }
+  .siteLogo {
+    margin-left: 0%;
+    clear: none;
+    display: none;
+  }
+  #sitedescription {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .sitetitle {
+    font-size: 2em;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .siteslogan {
+    font-size: 1em;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  #timeOfDay {
+    position: relative;
+    top: -2px;
+    left: 4%;
+    margin: 0 auto;
+    margin-top: 0px;
+    clear: left;
+    width: 100%;
+    text-align: center;
+  }
+  #content {
+    width: 100%;
+  }
+  .noteLinesTop,
+  .noteLinesBottom {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .noteLinesBottom {
+    margin-top: 44px;
+  }
+  #imgMe p {
+    display: inline;
+    float: left;
+    width: 44.444444444444%;
+    margin: 0 0%;
+    float: right;
+    padding: 8px;
+  }
+  #mangobas {
+    margin: 0 auto;
+    float: left;
+  }
+  #sidebar p {
+    width: 100%;
+  }
+  #main,
+  #sidebar,
+  #triptych-1,
+  #triptych-2,
+  #triptych-3,
+  #footer-col-1,
+  #footer-col-2,
+  #footer-col-3,
+  #footer-col-4 {
+    display: inline;
+    float: left;
+    width: 100%;
+    margin: 0 0%;
+    margin-bottom: 22px;
+    padding: 8px;
+  }
+  #footer {
+    text-align: center;
+  }
+}
+@media only screen and (max-width: 767px) and (orientation: portrait) {
+  h1 {
+    font-size: 1.5em;
+  }
+  h2 {
+    font-size: 1.2em;
+  }
+  .siteLogo {
+    margin-left: 0%;
+    clear: none;
+    display: none;
+  }
+  #sitedescription {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .sitetitle {
+    font-size: 2em;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .siteslogan {
+    font-size: 1.5em;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  #timeOfDay {
+    position: relative;
+    top: -2px;
+    left: 4%;
+    margin: 0 auto;
+    margin-top: 0px;
+    clear: left;
+    width: 100%;
+    text-align: center;
+  }
+  #content {
+    width: 100%;
+  }
+  .noteLinesTop,
+  .noteLinesBottom {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .noteLinesBottom {
+    margin-top: 44px;
+  }
+  #sidebar p {
+    width: 100%;
+  }
+  #main-wide,
+  #main,
+  #sidebar,
+  #triptych-1,
+  #triptych-2,
+  #triptych-3,
+  #footer-col-1,
+  #footer-col-2,
+  #footer-col-3,
+  #footer-col-4 {
+    display: inline;
+    float: left;
+    width: 100%;
+    margin: 0 0%;
+    margin-bottom: 22px;
+    padding: 8px;
+  }
+  #footer {
+    text-align: center;
+  }
+}
+@media (min-width: 768px) and (orientation: portrait) {
+  #timeOfDay {
+    position: relative;
+    top: 30px;
+    left: 4%;
+    margin: 0 auto;
+    margin-top: 0px;
+    display: inline;
+    float: left;
+    width: 16.666666666667%;
+    margin: 0 0%;
+    text-align: right;
+    padding: 8px;
+  }
+  #content {
+    width: 100%;
+  }
+  #imgMe p {
+    display: inline;
+    float: left;
+    width: 44.444444444444%;
+    margin: 0 0%;
+    float: right;
+    padding: 8px;
+  }
+  #mangobas {
+    margin: 0 auto;
+    float: left;
+  }
+  #sidebar p {
+    width: 100%;
+  }
+  #triptych-1 {
+    display: inline;
+    float: left;
+    width: 100%;
+    margin: 0 0%;
+    margin-bottom: 22px;
+    padding: 8px;
+  }
+  #triptych-2,
+  #triptych-3,
+  #footer-col-1,
+  #footer-col-2,
+  #footer-col-3,
+  #footer-col-4 {
+    display: inline;
+    float: left;
+    width: 33.333333333333%;
+    margin: 0 0%;
+    margin-bottom: 22px;
+    padding: 8px;
+  }
+  #footer {
+    text-align: center;
+  }
+}
+@media (min-width: 992px) {
+  #content {
+    padding-top: 0px;
+  }
+  #mangoBas {
+    height: auto;
+    width: auto;
+    max-width: 36.855257%;
+  }
+  #timeOfDay {
+    margin-right: 14.666341%;
+    margin-top: 17px;
+    clear: none;
+    width: 13.557943%;
+  }
+  #siteTitle {
+    width: 79.39652%;
+  }
+  #sitedescription {
+    width: 100%;
+  }
+  #footer-col-1,
+  #footer-col-2,
+  #footer-col-3,
+  #footer-col-4 {
+    display: inline;
+    float: left;
+    width: 25%;
+    margin: 0 0%;
+    margin-bottom: 22px;
+  }
+}
+@media (min-width: 1020px) {
+  #content {
+    width: 100%;
+  }
+  #footer-col-1,
+  #footer-col-2,
+  #footer-col-3,
+  #footer-col-4 {
+    display: inline;
+    float: left;
+    width: 25%;
+    margin: 0 0%;
+    margin-bottom: 22px;
+  }
 }
 .bodyColorGreen {
   background-color: green;
@@ -2857,4 +3123,4 @@ body,
 .fa-medium:before {
   content: "\f23a";
 }
-";s:5:"files";a:29:{s:83:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\style.less";i:1432884441;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\normalize.less";i:1424694551;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\newheader.less";i:1432905303;s:82:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\grid.less";i:1424690517;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\variables.less";i:1425208718;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\structure.less";i:1432884824;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\inputs.less";i:1431527873;s:82:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\tags.less";i:1432109761;s:85:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\comment.less";i:1432147709;s:85:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\navbar2.less";i:1432903916;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\figure.less";i:1424691487;s:88:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\typography.less";i:1432108052;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\mixins.less";i:1424693097;s:88:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\css3mixins.less";i:1424693097;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\bodyColor.less";i:1431506680;s:86:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\regioner.less";i:1424989012;s:114:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\font-awesome.less";i:1424598765;s:111:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\variables.less";i:1425208699;s:108:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\mixins.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\path.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\core.less";i:1424598765;s:108:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\larger.less";i:1424598765;s:113:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\fixed-width.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\list.less";i:1424598765;s:117:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\bordered-pulled.less";i:1424598765;s:110:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\animated.less";i:1424598765;s:117:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\rotated-flipped.less";i:1424598765;s:109:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\stacked.less";i:1424598765;s:107:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\icons.less";i:1424598765;}s:7:"updated";i:1432905306;}
+";s:5:"files";a:30:{s:83:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\style.less";i:1432927944;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\normalize.less";i:1424694551;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\newheader.less";i:1432905303;s:82:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\grid.less";i:1424690517;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\variables.less";i:1425208718;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\structure.less";i:1432884824;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\inputs.less";i:1431527873;s:82:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\tags.less";i:1432109761;s:85:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\comment.less";i:1432147709;s:85:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\navbar2.less";i:1432903916;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\figure.less";i:1424691487;s:88:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\typography.less";i:1432926492;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\mixins.less";i:1424693097;s:88:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\css3mixins.less";i:1424693097;s:89:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\responsive2.less";i:1432931381;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\bodyColor.less";i:1431506680;s:86:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\regioner.less";i:1424989012;s:114:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\font-awesome.less";i:1424598765;s:111:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\variables.less";i:1425208699;s:108:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\mixins.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\path.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\core.less";i:1424598765;s:108:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\larger.less";i:1424598765;s:113:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\fixed-width.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\list.less";i:1424598765;s:117:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\bordered-pulled.less";i:1424598765;s:110:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\animated.less";i:1424598765;s:117:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\rotated-flipped.less";i:1424598765;s:109:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\stacked.less";i:1424598765;s:107:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\icons.less";i:1424598765;}s:7:"updated";i:1432931386;}

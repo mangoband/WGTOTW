@@ -383,10 +383,10 @@ class CViewsComments  {
      *  updateComment
      *  @param $app
      */  
-    public function updateComment( $app, $commentID ){
+    public function updateComment( $app, $commentID, $answer = null ){
         
        
-      
+      // public function updateComment( $comment, $tags = null, $selectedTags = null, $answer = null ){  
         
         $app->theme->setVariable('gridColor', '');
         $app->theme->addStylesheet('css/comment.css');
@@ -400,9 +400,23 @@ class CViewsComments  {
         $ch = new CommentHandler( $app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
                                     'errorName' => getError(3)) );
         $comment = $ch->getCommentToUpdate( $commentID );
+        
+        //
+        // fill $tags with all tags from db
+        //
+        $tags =  $ch->fillTagsfromDb($this->app->db);
+        
+        //
+        // fill $tags with all tags from db
+        //
+        $selectedTags =  $ch->fillTagsfromDb($app->db,  $commentID);
+        
+        
+        
+        
         $form = new  \Anax\CFormContact\CFormComment( $app, $user, $ch );
         
-        $form->updateComment( $comment );
+        $form->updateComment( $comment, $tags, $selectedTags, $answer, $_SESSION['user']['id']);
         $this->user->isOnline();
         $online = $user->isUserOnline();
         
@@ -427,6 +441,7 @@ class CViewsComments  {
         $content = $form->getHTML();
      
         $app->views->add('me/article', ['header'=>$header, 'content' => $content], 'main');
+      //  $this->app->views->add('me/article', ['header'=>$responseHeader, 'content' => $responsComment], 'main');
         }
     
         
@@ -524,7 +539,7 @@ class CViewsComments  {
                                     'errorName' => getError(3)) );
         
       
-        
+      
         //
         // fill $tags with all tags from db
         //
@@ -545,6 +560,7 @@ class CViewsComments  {
         // make form
         $this->addNewComment( $app, ['commentid'=>null, 'parentid'=>$commentID, 'tags'=>$tags, 'selectedTags'=>$selectedTags, 'header'=>$header] );
        
+        //$this->updateComment( $app, $commentID, 'answer');
         // check if user is online
         $user = new \Anax\Users\User( $app );
         $user->isOnline();
@@ -616,7 +632,7 @@ class CViewsComments  {
         $tmp         = $ch->getGroupedComments($this->app->db, $commentID, 'parent');
         $answers        = $ch->getGroupedComments($this->app->db, $commentID, 'child');
         
-        $parent = $tmp[0];
+       // $parent = $tmp[0];
       //  $childComments   = $ch->getChildToComment( $parent->parentid );
         
         

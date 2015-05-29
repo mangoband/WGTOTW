@@ -788,6 +788,10 @@ body {
 }
 article {
   padding: 8px;
+  clear: left;
+}
+article p {
+  display: block;
 }
 h1,
 h2,
@@ -1042,6 +1046,268 @@ hr {
   color: #ccc;
   border-color: #ccc;
   margin: 22px auto;
+}
+@media only screen and (max-width: 767px) and (orientation: landscape) {
+  #header,
+  header {
+    margin: 60px auto;
+    width: 100%;
+  }
+  .siteLogo {
+    margin-left: 0%;
+    clear: none;
+    display: none;
+  }
+  #sitedescription {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .sitetitle {
+    font-size: 2em;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .siteslogan {
+    font-size: 1em;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  #timeOfDay {
+    position: relative;
+    top: -2px;
+    left: 4%;
+    margin: 0 auto;
+    margin-top: 0px;
+    clear: left;
+    width: 100%;
+    text-align: center;
+  }
+  #content {
+    width: 100%;
+  }
+  .noteLinesTop,
+  .noteLinesBottom {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .noteLinesBottom {
+    margin-top: 44px;
+  }
+  #imgMe p {
+    display: inline;
+    float: left;
+    width: 44.444444444444%;
+    margin: 0 0%;
+    float: right;
+    padding: 8px;
+  }
+  #mangobas {
+    margin: 0 auto;
+    float: left;
+  }
+  #sidebar p {
+    width: 100%;
+  }
+  #main,
+  #sidebar,
+  #triptych-1,
+  #triptych-2,
+  #triptych-3,
+  #footer-col-1,
+  #footer-col-2,
+  #footer-col-3,
+  #footer-col-4 {
+    display: inline;
+    float: left;
+    width: 100%;
+    margin: 0 0%;
+    margin-bottom: 22px;
+    padding: 8px;
+  }
+  #footer {
+    text-align: center;
+  }
+}
+@media only screen and (max-width: 767px) and (orientation: portrait) {
+  h1 {
+    font-size: 1.5em;
+  }
+  h2 {
+    font-size: 1.2em;
+  }
+  .siteLogo {
+    margin-left: 0%;
+    clear: none;
+    display: none;
+  }
+  #sitedescription {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .sitetitle {
+    font-size: 2em;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .siteslogan {
+    font-size: 1.5em;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  #timeOfDay {
+    position: relative;
+    top: -2px;
+    left: 4%;
+    margin: 0 auto;
+    margin-top: 0px;
+    clear: left;
+    width: 100%;
+    text-align: center;
+  }
+  #content {
+    width: 100%;
+  }
+  .noteLinesTop,
+  .noteLinesBottom {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .noteLinesBottom {
+    margin-top: 44px;
+  }
+  #sidebar p {
+    width: 100%;
+  }
+  #main-wide,
+  #main,
+  #sidebar,
+  #triptych-1,
+  #triptych-2,
+  #triptych-3,
+  #footer-col-1,
+  #footer-col-2,
+  #footer-col-3,
+  #footer-col-4 {
+    display: inline;
+    float: left;
+    width: 100%;
+    margin: 0 0%;
+    margin-bottom: 22px;
+    padding: 8px;
+  }
+  #footer {
+    text-align: center;
+  }
+}
+@media (min-width: 768px) and (orientation: portrait) {
+  #timeOfDay {
+    position: relative;
+    top: 30px;
+    left: 4%;
+    margin: 0 auto;
+    margin-top: 0px;
+    display: inline;
+    float: left;
+    width: 16.666666666667%;
+    margin: 0 0%;
+    text-align: right;
+    padding: 8px;
+  }
+  #content {
+    width: 100%;
+  }
+  #imgMe p {
+    display: inline;
+    float: left;
+    width: 44.444444444444%;
+    margin: 0 0%;
+    float: right;
+    padding: 8px;
+  }
+  #mangobas {
+    margin: 0 auto;
+    float: left;
+  }
+  #sidebar p {
+    width: 100%;
+  }
+  #triptych-1 {
+    display: inline;
+    float: left;
+    width: 100%;
+    margin: 0 0%;
+    margin-bottom: 22px;
+    padding: 8px;
+  }
+  #triptych-2,
+  #triptych-3,
+  #footer-col-1,
+  #footer-col-2,
+  #footer-col-3,
+  #footer-col-4 {
+    display: inline;
+    float: left;
+    width: 33.333333333333%;
+    margin: 0 0%;
+    margin-bottom: 22px;
+    padding: 8px;
+  }
+  #footer {
+    text-align: center;
+  }
+}
+@media (min-width: 992px) {
+  #content {
+    padding-top: 0px;
+  }
+  #mangoBas {
+    height: auto;
+    width: auto;
+    max-width: 36.855257%;
+  }
+  #timeOfDay {
+    margin-right: 14.666341%;
+    margin-top: 17px;
+    clear: none;
+    width: 13.557943%;
+  }
+  #siteTitle {
+    width: 79.39652%;
+  }
+  #sitedescription {
+    width: 100%;
+  }
+  #footer-col-1,
+  #footer-col-2,
+  #footer-col-3,
+  #footer-col-4 {
+    display: inline;
+    float: left;
+    width: 25%;
+    margin: 0 0%;
+    margin-bottom: 22px;
+  }
+}
+@media (min-width: 1020px) {
+  #content {
+    width: 100%;
+  }
+  #footer-col-1,
+  #footer-col-2,
+  #footer-col-3,
+  #footer-col-4 {
+    display: inline;
+    float: left;
+    width: 25%;
+    margin: 0 0%;
+    margin-bottom: 22px;
+  }
 }
 .bodyColorGreen {
   background-color: green;
