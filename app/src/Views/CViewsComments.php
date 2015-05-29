@@ -540,7 +540,7 @@ class CViewsComments  {
         $content = $this->formatChildComments($res);
        
         $header = ( isset( $res['data'][0]->header) ) ? "re: ".$res['data'][0]->header : '';
-       
+       dump (__LINE__. $header.__METHOD__);
         
         // make form
         $this->addNewComment( $app, ['commentid'=>null, 'parentid'=>$commentID, 'tags'=>$tags, 'selectedTags'=>$selectedTags, 'header'=>$header] );

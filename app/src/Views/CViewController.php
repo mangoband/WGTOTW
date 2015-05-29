@@ -362,7 +362,7 @@ class CViewController extends CViewsFlash {
                 $this->createTableAction( $app );
                 break;
             
-            // remove this code after install ------>
+            // remove this code after install ------> or comment out with /*   */
             case 'reset-kommentarer':
             case 'reset-user':
             case 'firstTime':

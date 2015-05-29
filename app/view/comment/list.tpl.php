@@ -12,7 +12,7 @@
 <h4 class='comment_id' <?= $new?>><?php
 if ( isset( $header )) { echo $comment->header; }
 
-?></h4>
+?><?=$comment->id?></h4>
 
 <div class="commentInfo <?php echo isParent( $comment->parentid, $comment->id ) ?>">    
 <span class='commentContent <?php echo isParent( $comment->parentid, $comment->id ) ?>'><?=markdown($comment->comment)?></span>
@@ -21,7 +21,7 @@ if ( isset( $children[$comment->id][0] ) ) {
  
  echo $children[$comment->id][0];
  
-} else { echo '&nbsp;'; }
+} else { echo '&nbsp;'; } 
    ?></p>
 
 </div>
@@ -33,10 +33,10 @@ if ( isset( $children[$comment->id][0] ) ) {
     <p><?= $comment->created;?></p>
     
 <?php if ( isset( $online ) && $online == 'online'  ){ ?>
-<input type='submit' name='doCommentSave' id='<?= $comment->id ?>' value='svara' title='svara' onclick='form.action="<?=$this->url->create('kommentar/svara/'.$comment->id)?>"'  title='<?=$comment->id?>'/>
+<input type='submit' name='doCommentSave' id='<?= $comment->commentid ?>' value='svara' /*title='svara' */ onclick='form.action="<?=$this->url->create('kommentar/svara/'.$comment->commentid)?>"'  title='<?=$comment->commentid?>'/>
 <?php if ( isset( $userid ) && ($userid == 1 || $userid == 2 || $userid == $comment->userid) ){ ?>
-    <input type='submit' name='doCommentDelete' id='<?= $comment->id ?>' value='Ta bort' title='Ta bort' onclick='form.action="<?=$this->url->create('kommentar/radera/'.$comment->id)?>"'  title='<?=$comment->id?>'/>
-    <input type='submit' name='doCommentUpdate' id='<?= $comment->id ?>' value='Uppdatera' title='Uppdatera' onclick='form.action="<?=$this->url->create('kommentar/uppdatera/'.$comment->id)?>"' title='<?=$comment->id?>' />
+    <input type='submit' name='doCommentDelete' id='<?= $comment->commentid ?>' value='Ta bort' title='Ta bort' onclick='form.action="<?=$this->url->create('kommentar/radera/'.$comment->commentid)?>"'  title='<?=$comment->commentid?>'/>
+    <input type='submit' name='doCommentUpdate' id='<?= $comment->commentid ?>' value='Uppdatera' title='Uppdatera' onclick='form.action="<?=$this->url->create('kommentar/uppdatera/'.$comment->commentid)?>"' title='<?=$comment->commentid?>' />
 <?php }?>
     
     <?php }?>

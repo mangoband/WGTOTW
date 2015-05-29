@@ -26,7 +26,7 @@ class CFormComment extends h\CForm  {
     /**
      *  addComment
      */
-    public function addComment( $comments = array(), $userId = '', $group = '', $error = array() ){
+ /*   public function addComment( $comments = array(), $userId = '', $group = '', $error = array() ){
         
         $this->AddElement(new h\CFormElementTextarea('comment', array('label' => 'Kommentar:', 'required' => true)))
          ->AddElement(new h\CFormElementHidden('userId', array('value' =>  $userId )))
@@ -34,7 +34,7 @@ class CFormComment extends h\CForm  {
          ->AddElement(new h\CFormElementSubmit('submit', array('callback'=>array($this, 'DoNewComment'))))
          ->AddElement(new h\CFormElementSubmit('Reset', array('callback'=>array($this, 'DoSubmitFail'))));
         
-    }
+    }*/
     /**
      *  newComment
      */  
@@ -211,13 +211,13 @@ class CFormComment extends h\CForm  {
             $this->app->response->redirect($url);
             return true;    
         }
-        dump ("det verkar som inte någon checkbox är i kryssad...");
+       /* dump ("det verkar som inte någon checkbox är i kryssad...");
         dump( $_POST );// die();
         dump( "comment ".$comment);
         dump("header ".$header);
         dump("genre ".$this->Value('items') );
         dump("id ".$userId);
-        die();
+        die();*/
             return false;
        
         

@@ -374,6 +374,8 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
         
         if( $this->verbose == true ){
             dump( "rad: ".__LINE__." ".__METHOD__);
+            $callers=debug_backtrace();
+            dump( "function called by ". $callers[1]['function']);
         }
         
         $new = ( isset( $param['new'] ) ) ? $param['new'] : '';
