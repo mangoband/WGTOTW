@@ -1,5 +1,15 @@
-<a href='<?=$this->url->create()?>' class='siteLogo'><img class='sitelogo' src='<?=$this->url->asset("img/transp_mangoLogo.png")?>' title='Mango, mitt mantra : Logo' alt='Mango, mitt mantra : Logo'/></a>
+<?=getImg($this->url->create(), $this->url->asset("img/people.png"), 'siteLogo')?>
+<?php $btn = ( isset( $btn ) ) ? "<div class='loggoutbtn'>{$btn}</div>" : null; ?>
 <span id='sitedescription'>
-<span class='sitetitle'><?=isset($siteTitle) ? $siteTitle : "Anax PHP framework"?></span>
-<span class='siteslogan'><?=isset($siteTagline) ? $siteTagline : "Reusable modules for web developments"?></span>
+<ul>
+    <li class='siteslogan'><?=getImg($this->url->create(), $this->url->asset("img/We_Gonna_Take_Over_The_World.png"), 'header_img')?></li>
+    <li class='header_text'><?=getName()?></li>
+    <li class='header_text'><?= date('G : i')?>
+<?php if( isset($icon) ) { echo " <i class='fa ".$icon."'></i>"; } ?></li>
+    <li class='sitegravatar'><img src='<?=getGravatarLink( getEmailFromHeader() )?>' alt='gravatar' title='gravatar' /></li>
+    <li class='sitetitle'><?= getLoginBtn( $this->url->create(), $this->url->asset("img/") , 'header_img')?></li>
+    
+    
+</ul>
+
 </span>

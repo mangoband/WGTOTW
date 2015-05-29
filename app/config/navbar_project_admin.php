@@ -11,50 +11,17 @@ return [
  
     // Here comes the menu strcture
     'items' => [
-        'home' => [
-            'text'  => 'Home',
-            'url'   => $this->di->get('url')->create('home'),
+        'ask' => [
+            'text'  => 'Ställ fråga',
+            'url'   => $this->di->get('url')->create('ask'),
             'title' => '',
-            'mark-if-parent-of' => 'controller',
+            
         ],
-        // This is a menu item
-        'anv'  => [
-            'text'  => 'Användare',
-            'url'   => $this->di->get('url')->create('anv/visa'),
-            'title' => ''
-        ],
-        'tags'  => [
-            'text'  => 'Taggar',
-            'url'   => $this->di->get('url')->create('taggar/visa'),
-            'title' => ''
-        ],
-        // This is a menu item
-        'me'  => [
-            'text'  => 'Om',
-            'url'   => $this->di->get('url')->create('om'),
-            'title' => ''
-        ],
-        
- 
-        
-
-        // This is a menu item
-        'source' => [
-            'text'  =>'Källkod',
-            'url'   => $this->di->get('url')->create('source'),
-            'title' => '',
-            'mark-if-parent-of' => 'controller'
-        ],
-        
-        
-        
-        
-        
-        
         'comment'  => [
             'text'  => 'Admin',
             'url'   => $this->di->get('url')->create('loggain'),
             'title' => '',
+            'class' => 'adminMenu',
             
             'submenu' => [
 
@@ -118,6 +85,12 @@ return [
                         'title' => 'Återställer kommentarer',
                        // 'class' => 'italic'
                     ],
+                    'source' => [
+                        'text'  =>'Källkod',
+                        'url'   => $this->di->get('url')->create('source'),
+                        'title' => '',
+                        'mark-if-parent-of' => 'controller'
+                    ],
 
                     
                 ],
@@ -125,6 +98,43 @@ return [
             ], 
           
         ],
+        
+        'home' => [
+            'text'  => 'Home',
+            'url'   => $this->di->get('url')->create('home'),
+            'title' => '',
+            'mark-if-parent-of' => 'controller',
+        ],
+        // This is a menu item
+        'anv'  => [
+            'text'  => 'Användare',
+            'url'   => $this->di->get('url')->create('anv/visa'),
+            'title' => ''
+        ],
+        'tags'  => [
+            'text'  => 'Taggar',
+            'url'   => $this->di->get('url')->create('taggar/visa'),
+            'title' => ''
+        ],
+        // This is a menu item
+        'me'  => [
+            'text'  => 'Om',
+            'url'   => $this->di->get('url')->create('om'),
+            'title' => ''
+        ],
+        
+ 
+        
+
+        // This is a menu item
+        
+        
+        
+        
+        
+        
+        
+        
     
         
         

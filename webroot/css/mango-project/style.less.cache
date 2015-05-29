@@ -1,4 +1,4 @@
-a:4:{s:4:"root";s:10:"style.less";s:8:"compiled";s:47126:"html {
+a:4:{s:4:"root";s:10:"style.less";s:8:"compiled";s:43974:"html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -178,6 +178,72 @@ td,
 th {
   padding: 0;
 }
+header {
+  margin-top: 10px;
+  position: relative;
+  top: 10px;
+  width: 100%;
+}
+#header_searchbar form input[type="text"] {
+  width: 178px;
+}
+.header_text {
+  position: relative;
+  top: 12px;
+}
+.header_img {
+  position: relative;
+  top: 14px;
+}
+.siteLogo {
+  position: absolute;
+  top: -60px;
+  left: 30px;
+  margin: 0px;
+  padding: 0px;
+}
+.siteLogo img {
+  position: relative;
+  top: 6px;
+  left: 0px;
+  margin: 0px;
+  padding: 0px;
+}
+#sitedescription {
+  margin: 0px;
+  display: block;
+  width: 100%;
+  height: 50px;
+  background-color: #828b4b;
+}
+#sitedescription ul {
+  width: 100%;
+  margin: 0px;
+}
+#sitedescription ul li,
+#sitedescription ul {
+  float: left;
+  z-index: 2;
+  height: 50px;
+}
+#sitedescription ul li {
+  padding-left: 20px;
+  vertical-align: middle;
+}
+.siteslogan {
+  display: inline;
+  float: left;
+  width: 33.333333333333%;
+  margin: 0 0%;
+  min-width: 70%;
+}
+.sitegravatar {
+  position: relative;
+  top: 5px;
+}
+.userlist_gravatar {
+  margin-right: 5px;
+}
 body {
   width: 100%;
   *zoom: 1;
@@ -205,9 +271,9 @@ body {
   margin: 0px;
 }
 #wrapper {
-  margin: 0 auto;
+  margin: 60px auto;
   width: 100%;
-  max-width: 960px;
+  max-width: 1160px;
   min-height: 20em;
   border-radius: 15px;
 }
@@ -396,58 +462,6 @@ p.buttons {
   padding-top: 22px;
   padding-bottom: 22px;
 }
-#header a {
-  float: left;
-}
-#header {
-  float: left;
-  position: relative;
-  top: 0px;
-  margin: 0px;
-  display: inline-block;
-  z-index: 2;
-}
-.sitetitle {
-  float: left;
-  position: relative;
-  top: 6px;
-  left: 0px;
-  font-size: 48px;
-  z-index: 2;
-}
-#sitedescription {
-  display: inline;
-  float: left;
-  width: 55.555555555556%;
-  margin: 0 0%;
-  position: relative;
-  left: 4%;
-}
-.siteslogan {
-  position: relative;
-  top: 6px;
-  left: 0px;
-  clear: left;
-  float: left;
-  font-style: italic;
-  color: #666;
-  z-index: 2;
-}
-#timeOfDay {
-  position: relative;
-  top: 10px;
-  left: 17%;
-  float: right;
-  text-align: right;
-  display: inline-block;
-  display: inline;
-  float: left;
-  width: 11.111111111111%;
-  margin: 0 0%;
-}
-.loggoutbtn {
-  display: inline-block;
-}
 input[type='submit'],
 input[type='text'],
 textarea {
@@ -594,34 +608,63 @@ p.commentViews {
 }
 #navbar {
   margin-bottom: 14px;
-  border: 1px solid green;
-}
-li {
-  margin: 0px;
-  padding: 0px;
-}
-.navbar ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.navbar li {
-  display: inline-block;
-  border-top: 8px solid transparent;
-  color: #333;
-  position: relative;
+  display: block;
+  float: right;
+  width: 100%;
+  z-index: 2;
 }
 .navbar a {
-  display: block;
   width: 100%;
   padding: 1em;
   text-decoration: none;
   color: inherit;
   white-space: nowrap;
 }
-.navbar li:hover {
+.navbar a:hover {
+  background-color: #ffcc66;
+  border-color: #95280c;
+  color: #95280c;
+}
+li {
+  margin: 0px;
+  padding: 0px;
+}
+nav {
+  float: right;
+  margin-top: 22px;
+}
+nav ul {
+  list-style: none;
+}
+nav ul li {
+  float: left;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 22px;
+  display: inline-block;
+  position: relative;
+}
+nav ul li a {
+  padding: 10px;
+  background-color: #828b4b;
+  border-radius: 5px;
+}
+.navbar ul li:hover ul {
+  left: 0;
   color: #95280c;
   border-color: #95280c;
+}
+nav ul ul {
+  background-color: #ffcc66;
+  padding: 8px;
+  position: absolute;
+  left: -9999px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+nav ul li li.selected {
+  color: #22f;
+  border-color: #22f;
 }
 .navbar li.selected-parent,
 .navbar li.is-parent,
@@ -629,21 +672,9 @@ li {
   color: #95280c;
   border-color: #95280c;
 }
-.navbar ul ul {
-  background-color: #ffcc66;
-  padding: 8px;
-  position: absolute;
-  left: -9999px;
-  z-index: 2;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-}
-.navbar li li {
-  border-top: none;
-  border-left: 4px solid transparent;
-}
-.navbar li:hover ul {
-  left: 0;
+.navbar li:hover {
+  color: #95280c;
+  border-color: #95280c;
 }
 .navbar li li:hover {
   color: #95280c;
@@ -652,7 +683,46 @@ li {
 .navbar li li.selected {
   color: #22f;
   border-color: #22f;
+  background-color: #ffcc66;
 }
+.navbar li li {
+  border-top: none;
+  border-left: 4px solid transparent;
+}
+.adminMenu ul {
+  position: absolute;
+  top: 38px;
+  margin: 0px;
+  padding-top: 8px;
+  clear: both;
+  z-index: 3;
+  display: inline-block;
+}
+.adminMenu ul li {
+  margin: 0px;
+  clear: both;
+}
+.adminMenu ul li a {
+  position: relative;
+  top: 13px;
+  margin-top: 13px;
+  background-color: #ffcc66;
+  color: #000;
+}
+.navbar li.selected-parent,
+.navbar li.is-parent,
+.navbar li.selected {
+  color: #95280c;
+  border-color: #95280c;
+}
+a {
+  color: #33b;
+}
+a .selected {
+  color: #95280c;
+}
+*/
+
 .navbar li .italic {
   font-style: italic;
 }
@@ -972,266 +1042,6 @@ hr {
   color: #ccc;
   border-color: #ccc;
   margin: 22px auto;
-}
-@media only screen and (max-width: 767px) and (orientation: landscape) {
-  #header,
-  header {
-    margin: 0 auto;
-  }
-  .siteLogo {
-    margin-left: 0%;
-    clear: none;
-    display: none;
-  }
-  #sitedescription {
-    display: block;
-    width: 100%;
-    margin: 0 auto;
-  }
-  .sitetitle {
-    font-size: 2em;
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-  }
-  .siteslogan {
-    font-size: 1em;
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-  }
-  #timeOfDay {
-    position: relative;
-    top: -2px;
-    left: 4%;
-    margin: 0 auto;
-    margin-top: 0px;
-    clear: left;
-    width: 100%;
-    text-align: center;
-  }
-  #content {
-    width: 100%;
-  }
-  .noteLinesTop,
-  .noteLinesBottom {
-    width: 100%;
-    margin: 0 auto;
-  }
-  .noteLinesBottom {
-    margin-top: 44px;
-  }
-  #imgMe p {
-    display: inline;
-    float: left;
-    width: 44.444444444444%;
-    margin: 0 0%;
-    float: right;
-    padding: 8px;
-  }
-  #mangobas {
-    margin: 0 auto;
-    float: left;
-  }
-  #sidebar p {
-    width: 100%;
-  }
-  #main,
-  #sidebar,
-  #triptych-1,
-  #triptych-2,
-  #triptych-3,
-  #footer-col-1,
-  #footer-col-2,
-  #footer-col-3,
-  #footer-col-4 {
-    display: inline;
-    float: left;
-    width: 100%;
-    margin: 0 0%;
-    margin-bottom: 22px;
-    padding: 8px;
-  }
-  #footer {
-    text-align: center;
-  }
-}
-@media only screen and (max-width: 767px) and (orientation: portrait) {
-  h1 {
-    font-size: 1.5em;
-  }
-  h2 {
-    font-size: 1.2em;
-  }
-  .siteLogo {
-    margin-left: 0%;
-    clear: none;
-    display: none;
-  }
-  #sitedescription {
-    display: block;
-    width: 100%;
-    margin: 0 auto;
-  }
-  .sitetitle {
-    font-size: 2em;
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-  }
-  .siteslogan {
-    font-size: 1.5em;
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-  }
-  #timeOfDay {
-    position: relative;
-    top: -2px;
-    left: 4%;
-    margin: 0 auto;
-    margin-top: 0px;
-    clear: left;
-    width: 100%;
-    text-align: center;
-  }
-  #content {
-    width: 100%;
-  }
-  .noteLinesTop,
-  .noteLinesBottom {
-    width: 100%;
-    margin: 0 auto;
-  }
-  .noteLinesBottom {
-    margin-top: 44px;
-  }
-  #sidebar p {
-    width: 100%;
-  }
-  #main,
-  #sidebar,
-  #triptych-1,
-  #triptych-2,
-  #triptych-3,
-  #footer-col-1,
-  #footer-col-2,
-  #footer-col-3,
-  #footer-col-4 {
-    display: inline;
-    float: left;
-    width: 100%;
-    margin: 0 0%;
-    margin-bottom: 22px;
-    padding: 8px;
-  }
-  #footer {
-    text-align: center;
-  }
-}
-@media (min-width: 768px) and (orientation: portrait) {
-  #timeOfDay {
-    position: relative;
-    top: 30px;
-    left: 4%;
-    margin: 0 auto;
-    margin-top: 0px;
-    display: inline;
-    float: left;
-    width: 16.666666666667%;
-    margin: 0 0%;
-    text-align: right;
-    padding: 8px;
-  }
-  #content {
-    width: 100%;
-  }
-  #imgMe p {
-    display: inline;
-    float: left;
-    width: 44.444444444444%;
-    margin: 0 0%;
-    float: right;
-    padding: 8px;
-  }
-  #mangobas {
-    margin: 0 auto;
-    float: left;
-  }
-  #sidebar p {
-    width: 100%;
-  }
-  #triptych-1 {
-    display: inline;
-    float: left;
-    width: 100%;
-    margin: 0 0%;
-    margin-bottom: 22px;
-    padding: 8px;
-  }
-  #triptych-2,
-  #triptych-3,
-  #footer-col-1,
-  #footer-col-2,
-  #footer-col-3,
-  #footer-col-4 {
-    display: inline;
-    float: left;
-    width: 33.333333333333%;
-    margin: 0 0%;
-    margin-bottom: 22px;
-    padding: 8px;
-  }
-  #footer {
-    text-align: center;
-  }
-}
-@media (min-width: 992px) {
-  #content {
-    padding-top: 0px;
-  }
-  #mangoBas {
-    height: auto;
-    width: auto;
-    max-width: 36.855257%;
-  }
-  #timeOfDay {
-    margin-right: 14.666341%;
-    margin-top: 17px;
-    clear: none;
-    width: 13.557943%;
-  }
-  #siteTitle {
-    width: 79.39652%;
-  }
-  #sitedescription {
-    width: 54.375%;
-  }
-  #footer-col-1,
-  #footer-col-2,
-  #footer-col-3,
-  #footer-col-4 {
-    display: inline;
-    float: left;
-    width: 25%;
-    margin: 0 0%;
-    margin-bottom: 22px;
-  }
-}
-@media (min-width: 1020px) {
-  #content {
-    width: 100%;
-  }
-  #footer-col-1,
-  #footer-col-2,
-  #footer-col-3,
-  #footer-col-4 {
-    display: inline;
-    float: left;
-    width: 25%;
-    margin: 0 0%;
-    margin-bottom: 22px;
-  }
 }
 .bodyColorGreen {
   background-color: green;
@@ -3047,4 +2857,4 @@ body,
 .fa-medium:before {
   content: "\f23a";
 }
-";s:5:"files";a:30:{s:83:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\style.less";i:1431766394;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\normalize.less";i:1424694551;s:82:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\grid.less";i:1424690517;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\variables.less";i:1425208718;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\structure.less";i:1432109695;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\header.less";i:1431527923;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\inputs.less";i:1431527873;s:82:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\tags.less";i:1432109761;s:85:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\comment.less";i:1432147709;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\navbar.less";i:1431526092;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\figure.less";i:1424691487;s:88:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\typography.less";i:1432108052;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\mixins.less";i:1424693097;s:88:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\css3mixins.less";i:1424693097;s:89:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\responsive2.less";i:1431525644;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\bodyColor.less";i:1431506680;s:86:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\regioner.less";i:1424989012;s:114:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\font-awesome.less";i:1424598765;s:111:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\variables.less";i:1425208699;s:108:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\mixins.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\path.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\core.less";i:1424598765;s:108:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\larger.less";i:1424598765;s:113:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\fixed-width.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\list.less";i:1424598765;s:117:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\bordered-pulled.less";i:1424598765;s:110:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\animated.less";i:1424598765;s:117:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\rotated-flipped.less";i:1424598765;s:109:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\stacked.less";i:1424598765;s:107:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\icons.less";i:1424598765;}s:7:"updated";i:1432733501;}
+";s:5:"files";a:29:{s:83:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\style.less";i:1432884441;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\normalize.less";i:1424694551;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\newheader.less";i:1432905303;s:82:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\grid.less";i:1424690517;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\variables.less";i:1425208718;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\structure.less";i:1432884824;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\inputs.less";i:1431527873;s:82:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\tags.less";i:1432109761;s:85:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\comment.less";i:1432147709;s:85:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\navbar2.less";i:1432903916;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\figure.less";i:1424691487;s:88:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\typography.less";i:1432108052;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\mixins.less";i:1424693097;s:88:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\css3mixins.less";i:1424693097;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\bodyColor.less";i:1431506680;s:86:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\regioner.less";i:1424989012;s:114:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\font-awesome.less";i:1424598765;s:111:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\variables.less";i:1425208699;s:108:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\mixins.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\path.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\core.less";i:1424598765;s:108:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\larger.less";i:1424598765;s:113:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\fixed-width.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\list.less";i:1424598765;s:117:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\bordered-pulled.less";i:1424598765;s:110:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\animated.less";i:1424598765;s:117:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\rotated-flipped.less";i:1424598765;s:109:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\stacked.less";i:1424598765;s:107:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\icons.less";i:1424598765;}s:7:"updated";i:1432905306;}

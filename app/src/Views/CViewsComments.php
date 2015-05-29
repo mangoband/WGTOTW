@@ -6,20 +6,23 @@ class CViewsComments  {
     
     private $app = null;
     private $user = null;
+    private $param  = null;
     
-    public function __construct( $app, $user = null ){
+    public function __construct( $app, $user = null, $param = null ){
+        
         
       $this->app    = ( $app )  ? $app  : null;
       $this->user   = ( $user ) ? $user : null;
+      $this->param  = $param;
     //  parent::__construct();
     }
     
     /**
      *  viewPopularTags
      */  
-    private function viewPopularTags(){
+    private function viewPopularTags( $tagid = null ){
         $CTagViews = new \Mango\Views\CTagViews( $this->app );
-        $CTagViews->listTags();
+        $CTagViews->listTags($tagid);
     }
     
     /**
@@ -46,14 +49,13 @@ class CViewsComments  {
     /**
      *  viewListWithComments
      */
-    public function viewListWithComments( $param = null, $data = null, $isTag = false ){
+    public function viewListWithComments( $param = null, $data = null, $isTag = false, $tagid = null ){
         
        
        
        
         // view tags from db ( CDatabaseModel)
-        $this->viewPopularTags();
-        
+        $this->viewPopularTags( $tagid);
         
         // make object of commentControll
         $cc = null;
@@ -79,8 +81,8 @@ class CViewsComments  {
         // fill td in table
         foreach( $comments as $comment ){
           
-          //  dump( $comment);
-            $answers = ( isset($comment->answers ) ) ? $comment->answers : $this->returnAnswers($comment->commentid, $cc); 
+          
+            $answers = ( isset($comment->answers ) ) ? $comment->answers : $this->returnAnswers($comment->parentid, $cc); 
             
             if( $parentID != $comment->parentid ){
             
@@ -167,7 +169,7 @@ class CViewsComments  {
      */
     public function commentActionWithDb( $app, $currentUrl ){
        
-     // dump( "rad: ".__LINE__ ." ". __FUNCTION__ );
+      
         try{
        
         $app->theme->setVariable('gridColor', '');
@@ -200,7 +202,7 @@ class CViewsComments  {
         foreach( $comments as $comment ){
           
             $tmpData = $ch->getChildToComment( $comment->parentid );
-          dump( $tmpData);
+        
         
             // get formated childdata
             $childComments[$comment->commentid][] = $this->formatChildComments( $tmpData, $comment->commentid );
@@ -223,55 +225,7 @@ class CViewsComments  {
             ]);
         
         
-        /*
-         
-         'comments'      => $param['all'],
-            'header'        => $param['commentHeader'],
-            'online'        => $param['online'],
-            'group'         => $param['group'],
-            'new'           => $new ,
-            'userid'        => $param['userid'],
-            'errorContent'  => $param['errorContent'],
-            'errorMail'     => $param['errorMail'],
-            'errorHomepage' => $param['errorHomepage'],
-            'errorName'     => $param['errorName'],
-            'commentlist'   => $param['commentRespons']
-            
-            
-        $cc = null;
-        $cc = new CommentControll( $app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
-                                    'errorName' => getError(3)) );
         
-        
-      
-        $form = new  \Anax\CFormContact\CFormComment( $app, $this->user, $cc );
-        $this->user->isOnline();
-        $online = $this->user->isUserOnline();
-        
-        
-       
-        if ( $online === true ){
-         //   $content = $cc->viewCommentAction();
-            
-            
-        }
-        else {
-            
-        }
-        
-                $content = $cc->viewCommentAction();
-                $list = '';
-                
-                if ( is_array( $content) ){
-                    foreach( $content as $row ){
-                        $list .=  $cc->getCommentList( $row->id, $app->db, 'right' );
-                      //  dump( $row);
-                    }
-                    
-            
-                    $app->views->add('me/article', ['content' => $list], 'sidebar');
-                }
-        */
         } catch( Exception $e ){
             $content = $e->getMessage();
         }
@@ -636,7 +590,7 @@ class CViewsComments  {
      */
     public function showComment(  $commentID = null ){
         
-        
+        dump( __LINE__);
         $title = "Kommentarer";
         
         $content = "<ul class='commentList'>";
@@ -711,7 +665,8 @@ class CViewsComments  {
             
             $link = ( $userid) ? "anv/visa" : "anv/visa";
             
-            $users = $this->user->getUsers($link, 'main-wide');
+            // list users
+            $this->user->getUsers($link, 'main-wide');
           
             // get selected user
             $selectedUser = $this->user->getUserName($userid, 'name' );
@@ -723,43 +678,47 @@ class CViewsComments  {
             $cc = new CommentHandler( $this->app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
                                         'errorName' => getError(3)) );
             
+            $commentid = ( isset($this->param['id'] )) ? $this->param['id'] : null;
             
-            // tell CommentControll to fetch all userComments
-            $comments = $cc->fetchUserComments( $app->db, $userid );
-            $cid = null;
-            
-            $content = "<h2>Inlägg i debatten{$name}</h2>"; 
-            
-            if ( count(  $comments ) > 0 ){
-                $content .= "\n<table class='commentList'>";
+            // only output list with comments if a user is picked
+            if ( $commentid ){
                 
-                // loop and output data
-                foreach( $comments as $comment ){
-                    if( $comment->id == $comment->parent && $cid != $comment->id ){
-                        $url = $app->url->create("kommentar/visa/".$comment->id);
-                    $content .= "\n\t<tr class='commentListRow'>".$this->createCommentRow([
-                                                     'date'     => $comment->created,
-                                                     'header'   => $comment->header,
-                                                     
-                                                     'answerNr' => $this->returnAnswers($comment->id, $cc),
-                                                     'url'      => $url
-                                                     ])."</tr>";
-                    $cid = $comment->id;
-                    }
+                // tell CommentControll to fetch all userComments
+                $comments = $cc->fetchUserComments( $app->db, $userid );
+                $cid = null;
+                
+                $content = "<h2>Inlägg i debatten{$name}</h2>"; 
+                
+                if ( count(  $comments ) > 0 ){
+                    $content .= "\n<table class='commentList'>";
                     
+                    // loop and output data
+                    foreach( $comments as $comment ){
+                        if( $comment->id == $comment->parentid && $cid != $comment->id ){
+                            $url = $app->url->create("kommentar/visa/".$comment->id);
+                        $content .= "\n\t<tr class='commentListRow'>".$this->createCommentRow([
+                                                         'date'     => $comment->created,
+                                                         'header'   => $comment->header,
+                                                         
+                                                         'answerNr' => $this->returnAnswers($comment->id, $cc),
+                                                         'url'      => $url
+                                                         ])."</tr>";
+                        $cid = $comment->id;
+                        }
+                        
+                    }
+                    $content .= "</table>";
+                } else {
+                    $content .= "<p>Inga inlägg gjorda av vald användare...</p>";
                 }
-                $content .= "</table>";
-            } else {
-                $content .= "<p>Inga inlägg gjorda av vald användare...</p>";
+                
+                $url = $this->app->url->create($link);
+                $backUrl = "<a href='{$url}'>[Tillbaka]</a>";
+                $content .= $backUrl;
+                $header = "Användare";
+                // view comments
+                $app->views->add('default/article', ['header'=>$header, 'content' => $content], 'main-wide');
             }
-            
-            $url = $this->app->url->create($link);
-            $backUrl = "<a href='{$url}'>[Tillbaka]</a>";
-            $content .= $backUrl;
-            $header = "Användare";
-            // view comments
-            $app->views->add('default/article', ['header'=>$header, 'content' => $content], 'main-wide');
-            
          
         }
     }

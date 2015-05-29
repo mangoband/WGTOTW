@@ -20,9 +20,7 @@ class Navigation implements \Anax\DI\IInjectionAware
         if ( is_string( $list ) ){
             return $list;
         }
-        //return $this->html->makeMenu( $list, $this->get_pageName() );
-        //echo dump( $this->app->views );
-        //$this->app->views->add('navbar', 'breadcrumb');
+        
     }
     
     public function adminNavigation(){
@@ -83,7 +81,7 @@ class Navigation implements \Anax\DI\IInjectionAware
             
             $data = $this->app->database->executeFetchAll([]);
             
-       //     echo dump( $this->debug );
+       
             return $data ;
         } else {
             return "<p>You need a databaseConnection to work with the menu...</p>";
@@ -128,7 +126,7 @@ class Navigation implements \Anax\DI\IInjectionAware
                 
                 
         ]);
-      //  echo print_r( $this->app->database->getSQL() );
+      
     }
     
     protected function get_pageName(){
@@ -160,7 +158,7 @@ class Navigation implements \Anax\DI\IInjectionAware
                }
                
                
-             //  echo "<br />".$type." : ".$value;
+             
                return $value;
            }
            return null;

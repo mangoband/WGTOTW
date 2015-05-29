@@ -11,13 +11,21 @@ return [
  
     // Here comes the menu strcture
     'items' => [
-
-        // This is a menu item
-        'home'  => [
-            'text'  => 'Hem',
-            'url'   => $this->di->get('url')->create('home'),
-            'title' => ''
+        
+        'ask' => [
+            'text'  => 'Ställ fråga',
+            'url'   => $this->di->get('url')->create('ask'),
+            'title' => '',
+            'mark-if-parent-of' => 'controller',
         ],
+        
+        'home' => [
+            'text'  => 'Home',
+            'url'   => $this->di->get('url')->create('home'),
+            'title' => '',
+            'mark-if-parent-of' => 'controller',
+        ],
+        // This is a menu item
         'anv'  => [
             'text'  => 'Användare',
             'url'   => $this->di->get('url')->create('anv/visa'),
@@ -28,15 +36,25 @@ return [
             'url'   => $this->di->get('url')->create('taggar/visa'),
             'title' => ''
         ],
+        // This is a menu item
+        'me'  => [
+            'text'  => 'Om',
+            'url'   => $this->di->get('url')->create('om'),
+            'title' => ''
+        ],
+        
  
         
+
         // This is a menu item
-        'about' => [
-            'text'  =>'Om',
-            'url'   => $this->di->get('url')->create('om'),
-            'title' => 'Om',
-            
-        ],
+        
+        
+        
+        
+        
+        
+        
+        
     
         
         

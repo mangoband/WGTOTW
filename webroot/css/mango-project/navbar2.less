@@ -1,0 +1,138 @@
+/**
+ * Based on http://dbwebb.se/coachen/en-navbar-med-drop-down-meny-i-ren-html-och-css
+ * Changed to only style li-items instead of a.
+ */
+#navbar {
+  margin-bottom: 14px;
+  
+  display:block;
+  float:right;
+  width:100%;
+  z-index:2;
+}
+.navbar a {
+  
+  width: 100%;
+  padding: 1em;
+  text-decoration: none;
+  color: inherit;
+  white-space: nowrap; 
+}
+.navbar a:hover{
+background-color: #ffcc66;
+border-color: #95280c;
+color: #95280c; 
+}
+
+ li{
+margin:0px;
+padding:0px;
+}
+
+nav{
+	float:right;
+	margin-top:22px;
+}
+nav ul {
+	list-style:none;
+}
+nav ul li {
+	float:left;
+	padding-left:20px;
+    padding-bottom:20px;
+    margin-bottom:22px;
+	display:inline-block;
+    position: relative;
+}
+nav ul li a{
+	padding:10px;
+	background-color:#828b4b;
+	border-radius:5px;
+}
+.navbar ul li:hover ul {
+  left: 0;
+  color: #95280c; 
+  border-color: #95280c;
+}
+
+nav ul ul{
+background-color: #ffcc66; 
+padding:8px;
+position:absolute;
+left:-9999px;
+border-bottom-left-radius:15px;
+  border-bottom-right-radius:15px;
+}
+nav ul li li.selected {
+  color: #22f; 
+  border-color: #22f;
+}
+.navbar li.selected-parent, 
+.navbar li.is-parent, 
+.navbar li.selected {
+  color: #95280c; 
+  border-color: #95280c;
+}
+.navbar li:hover {
+  color: #95280c; 
+  border-color: #95280c;
+  
+}
+.navbar li li:hover {
+  color: #95280c; 
+  border-color: #95280c;
+  
+}
+
+.navbar li li.selected {
+  color: #22f; 
+  border-color: #22f;
+  background-color: #ffcc66; 
+}
+.navbar li li {
+  border-top: none;  
+  border-left: 4px solid transparent;  
+}
+
+/******* adminMenu */
+
+.adminMenu ul{
+position:absolute;
+top:38px;
+margin:0px;
+padding-top:8px;
+clear:both;
+z-index:3;
+display:inline-block;
+}
+.adminMenu ul li{
+margin:0px;
+clear:both;
+
+}
+.adminMenu ul li a{
+position:relative;
+top:13px;
+margin-top:13px;
+background-color: #ffcc66;
+color: #000; 
+}
+.navbar {}
+
+.navbar li.selected-parent, 
+.navbar li.is-parent, 
+.navbar li.selected {
+  color: #95280c; 
+  border-color: #95280c;
+}
+a{
+color: @anchorColor;
+}
+a .selected{
+color: #95280c; 
+}
+*/
+/* Just to sho off how class works */
+.navbar li .italic {
+  font-style: italic;
+}

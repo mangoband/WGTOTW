@@ -19,6 +19,8 @@ class CViewController extends CViewsFlash {
     private $commentID      = null;
     private $acronym        = null;
     
+    private $param          = null;
+    
     function __construct($app = null){
         
         $this->app  = $app;
@@ -63,8 +65,7 @@ class CViewController extends CViewsFlash {
         
         $param = null;
 
-     //    $dbModel = new \Anax\MVC\CDatabaseModel(  );
-     //   $dbModel->countTable( $app );
+     
         
         /**
          *  Get CurrentUrlType to test if index.php is going to be in url.
@@ -79,7 +80,7 @@ class CViewController extends CViewsFlash {
         // set timedata and gravatar in header
         $user = new \Anax\Users\User( $this->app );
         $this->email = $user->getUserMailAdr();
-        $this->app->views->add('me/timeOfDay', ['icon' => viewTimeWithFa(date('G')),'timeOfDay' => date('G : i'), 'email'=> $this->email, 'btn' => $user->getLogoutBtn()], 'header');
+      //  $this->app->views->add('me/timeOfDay', ['icon' => viewTimeWithFa(date('G')),'timeOfDay' => date('G : i'), 'email'=> $this->email, 'btn' => $user->getLogoutBtn()], 'header');
         
         // set default colors
         $this->app->theme->setVariable('bodyColor', '');
@@ -98,6 +99,8 @@ class CViewController extends CViewsFlash {
         $param['id']        = ( isset( $tmp[2] ) ) ? $tmp[2] : null;
         $param['option']    = ( isset( $tmp[1] ) ) ? $tmp[1] : null;
         $param['page']      = ( isset( $tmp[0] ) ) ? $tmp[0] : null;
+        
+        $this->param        = $param;
         
         switch($param['page']){
             case 'taggar':
@@ -230,7 +233,7 @@ class CViewController extends CViewsFlash {
                 $CTagViews->outputTags(  );
                 break;
             case 'kommentar':
-                $CViewsComments = new CViewsComments( $app, $user );
+                $CViewsComments = new CViewsComments( $app, $user, $param );
                 $CViewsComments->kommenteraAction( $app, $currentUrl );
                 echo "update";
                 break;
@@ -240,7 +243,7 @@ class CViewController extends CViewsFlash {
             case 'index.php':
             case 'home':
                 
-                $CViewsComments = new CViewsComments( $app, $user );
+                $CViewsComments = new CViewsComments( $app, $user, $param );
                
                 $CViewsComments->viewListWithComments( $param );
                  
@@ -271,33 +274,34 @@ class CViewController extends CViewsFlash {
                 break;
             
             case 'kommentera':
-                $CViewsComments = new CViewsComments( $app, $user );
+                $CViewsComments = new CViewsComments( $app, $user, $param );
                 
                   $CViewsComments->commentActionWithDb( $app, $currentUrl );
                    
                 break;
             case 'uppdaterakommentar':
-                $CViewsComments = new CViewsComments( $app, $user );
+                $CViewsComments = new CViewsComments( $app, $user, $param );
                 $CViewsComments->updateComment( $app, $this->commentID );
                 break;
             case 'raderakommentar':
                 $this->deleteComment( $app );
                 break;
+            case 'ask':
             case 'nykommentar':
-                $CViewsComments = new CViewsComments( $app, $user );
+                $CViewsComments = new CViewsComments( $app, $user, $param );
                 $CViewsComments->addNewComment( $app );
                 break;
             case 'visakommentar':
-                $CViewsComments = new CViewsComments( $app, $user ); 
+                $CViewsComments = new CViewsComments( $app, $user, $param ); 
                 $CViewsComments->showComment( $this->commentID );
                 //$CViewsComments->commentActionWithDb( $app, $currentUrl );
                 break;
             case 'svarakommentar':
-                $CViewsComments = new CViewsComments( $app, $user );
+                $CViewsComments = new CViewsComments( $app, $user, $param );
                 $CViewsComments->respondComment( $app, $this->commentID );
                 break;
             case 'anvkommentar':
-                $CViewsComments = new CViewsComments( $app, $user );
+                $CViewsComments = new CViewsComments( $app, $user, $param );
                 $CViewsComments->userComments( $app, $this->userID );
                 break;
             case 'add':
@@ -346,12 +350,12 @@ class CViewController extends CViewsFlash {
                 break;
             case 'visa-anv':
                  
-                $CViewsComments = new CViewsComments( $app, $user );
+                $CViewsComments = new CViewsComments( $app, $user,$param );
                 $CViewsComments->userComments( $app, $this->userID );
                 break;
             case 'visa-kommentarer':
                 
-                $CViewsComments = new CViewsComments( $app, $user );
+                $CViewsComments = new CViewsComments( $app, $user, $param );
                 $CViewsComments->userComments( $app, $this->userID, 'showcomments' );
                 break;
             case 'skapa-tabell':

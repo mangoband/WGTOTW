@@ -17,10 +17,10 @@
 <div id='wrapper'  <?php if (isset( $wrapperClass )) echo "class='".$wrapperClass."'"; ?>>
 
 <header>
-<span id='header'>
+<div id='header'>
 <?php if(isset($header)) echo $header?>
 <?php $this->views->render('header')?>
-</span>
+</div>
 
 <?php if( isset( $breadcrumb ) ){ echo $breacrumb; } ?>
 <?php $this->views->render('breadcrumb')?>

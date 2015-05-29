@@ -225,6 +225,9 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
      * @return object result
      */
     public function getTagComments( $tagid = null ){
+        if( $this->verbose == true ){
+        dump( "rad: ".__LINE__." ".__METHOD__);    
+        }
         
         // we dont need to get the comments unless a tag is picked
         if ( $tagid ){

@@ -10,7 +10,7 @@ class User extends \Anax\MVC\CDatabaseModel
 {
 private $app;
 private $online;
-   function __construct( $app ){
+   function __construct( $app = null){
       $this->app = $app;
      
    }
@@ -65,7 +65,7 @@ private $online;
     */
    public function getUsers( $link = null, $position = 'sidebar' ){
       
-     // dump("rad: ".__LINE__." ".__METHOD__." link: ".$link);
+     
       //
       // collect users from database
       //
@@ -79,7 +79,7 @@ private $online;
       // get userid if logged in
       //
       $userid = $this->getUserIDIndex();
-      
+      $gravatar = new \Anax\Users\Gravatar();
       
       if ( $this->app->url->getUrlType() != 'clean' ){
       } else {
@@ -98,7 +98,8 @@ private $online;
           $trash = '';
           if ( $values->deleted == true ){ $trash = " <i class='fa fa-trash'></i> "; }
           $path = $this->app->url->create("{$link}/".$values->id);
-        $html .= "\n<li ><a href='{$path}' title='Uppdatera ". $values->name."'>". $values->name ." </a>{$trash}</li>\n";
+           $gravatarImg = "<img src='".$gravatar->get_gravatar($values->email, 15, 'identicon')."' alt='gravatar' title='gravatar' class='userlist_gravatar' />";
+        $html .= "\n<li >{$gravatarImg}<a href='{$path}' title='Uppdatera ". $values->name."'>". $values->name ." </a>{$trash}</li>\n";
       }
       
       //
@@ -109,7 +110,7 @@ private $online;
       //
       // list trashedUsers
       //
-      if ( isset( $trashedUsers[0] ) && $userid ){
+      if ( isset( $trashedUsers[0] ) && $userid && ($userid == 1 || $userid == 2) ){
           $html = '';
           foreach( $trashedUsers as $trashed){
             if( $trashed->id == $userid ){
@@ -178,7 +179,7 @@ private $online;
          
          if ( isset( $res[0] )) {
             // user logged in
-            $this->app->session->set('user',[ 'acronym'=>$acronym, 'id'=>$res[0]->id ]);
+            $this->app->session->set('user',[ 'acronym'=>$acronym, 'id'=>$res[0]->id, 'email'=>$res[0]->email ]);
             
             $this->online = true;
             return true;

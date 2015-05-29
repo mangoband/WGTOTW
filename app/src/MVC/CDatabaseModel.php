@@ -32,6 +32,67 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         return $db->executeFetchAll(  );
     }
     
+    /*********************************************************************
+     *
+     *      Tags are managed here
+     *      
+     *********************************************************************/
+    
+    /**
+     *  updateTag
+     *  @param int id
+     *  @param string Tag
+     */
+    public function updateTag($db, $id = null, $tag = null ){
+        
+        // we have an ID and a Tag to update
+        if ( $id && $tag ){
+            
+            $db->update(
+                'commentCategory',
+                ['category'],
+                "id = ?"
+            );
+          
+            $res = $db->execute( [
+                $tag, $id
+            ]);
+            
+        // we only have a Tag and want to insert it    
+        } else if ( $tag && ! $id){
+            
+            // insert values into category
+            $db->insert(
+                   'commentCategory',
+                   ['category']
+            );
+            
+            $db->execute([
+                    $tag
+                    
+            ]);
+        }
+    }
+    
+    
+    
+    /**
+     *  removeTag
+     */
+    public function removeTag( $db, $tagid = null ){
+        
+        
+        if( $tagid ){
+                $db->delete(
+                'commentCategory',
+                "id = ?"
+                );
+          
+            $res = $db->execute([$tagid]);    
+        }
+        
+        
+    }
     /**
      *  getTags
      *  @param array $db
@@ -102,9 +163,11 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                         dump( __LINE__. " ". __METHOD__." get all categories.");
                     }
                   
-                    $db->select("category")
+                    $db->select("category, id")
                     ->from("commentCategory");
-                    return $db->executeFetchAll(  );
+                    $res = $db->executeFetchAll(  );
+                    
+                    return $res;
                     
                 }
                 
@@ -590,7 +653,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             $db->select("count(*) as rows, parentid")
             ->from("comment2Category as c2c")
             ->where("parentid = ?")
-            ->groupby("c2c.commentid")
+            ->groupby("c2c.parentid")
             ;
             
             $data = $db->executeFetchAll( [$commentID] );
@@ -871,7 +934,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             }
             
             // return all comments
-            $db->select("c.*, u.name, u.email, c2c.parentid")
+            $db->select("c.*, u.name, u.email, c2c.parentid, c2c.userid")
             ->from('comment AS c')
             ->join('user AS u', 'c2c.userid = u.id')
             ->join("comment2Category as c2c", "c2c.commentid = c.id")
@@ -950,7 +1013,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             'comment',
             "id = ?"
         );
-      //  die( $db->getSQL() );
+      
         $res = $db->execute([$id]);
         return $res;
     }
@@ -1031,14 +1094,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
            }
         }
          
-       
-       
-       
-       
-    //    dump($this->viewComment2Category( $db));
-      // die();
-       
-       
+    
     }
   
 }
