@@ -1,4 +1,4 @@
-a:4:{s:4:"root";s:10:"style.less";s:8:"compiled";s:48266:"html {
+a:4:{s:4:"root";s:10:"style.less";s:8:"compiled";s:48108:"html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -486,8 +486,11 @@ textarea {
 .viewTags ul li {
   padding: 5px;
 }
+.users li {
+  padding: 5px;
+  float: left;
+}
 .comment {
-  min-height: 50px;
   display: block;
   border-top: 1px solid gray;
   padding-bottom: 15px;
@@ -509,16 +512,12 @@ textarea {
   display: inline-block;
   float: left;
 }
-.commentInfo {
-  background-color: blue;
-}
 .commentUser {
   float: right;
   background-color: #eee;
   display: inline-block;
   display: inline;
-  float: left;
-  width: 50%;
+  width: 200px;
   margin: 0 0%;
 }
 .commentUser p {
@@ -538,54 +537,56 @@ textarea {
 }
 .commentListResponse {
   margin-left: 20px;
-  float: left;
 }
 .comment-form form p span {
   color: red;
 }
-.commentListResponse a {
-  border: 1px solid red;
-}
 .commentRespond {
   display: inline;
   float: left;
-  width: 75%;
+  width: 50%;
   margin: 0 0%;
   clear: left;
   display: block;
   vertical-align: bottom;
+}
+.commentList tr td {
+  padding: 0px;
 }
 .commentList {
   clear: both;
   width: 100%;
   float: left;
 }
-.commentList tr td {
-  padding: 5px;
-  border: none;
-}
-.commentList tr:nth-child(5n ) {
-  border-bottom: 22px solid #d2d2ba;
-}
 .commentHeader,
 .commentAnswerNr,
 .commentDate,
 .commentViews {
-  padding: 5px;
+  margin: 5px;
 }
-.commentViews,
-.commentAnswerNr {
-  width: 30px;
+.commentViews {
+  width: 15px;
   padding: 5px;
   text-align: center;
 }
-p.commentAnswerNr,
-p.commentViews {
-  width: 30px;
-  padding-bottom: 0px;
+.commentAnswerNr {
+  width: 50px;
+  padding: 5px;
+  text-align: center;
 }
 .commentHeader {
-  width: 600px;
+  display: inline;
+  float: left;
+  width: 75%;
+  margin: 0 0%;
+}
+.commentList tr:nth-child(5n ) {
+  border-bottom: 22px solid #d2d2ba;
+}
+p.commentAnswerNr,
+p.commentViews {
+  width: 15px;
+  margin-bottom: 5px;
 }
 .commentDate {
   display: inline;
@@ -593,18 +594,7 @@ p.commentViews {
   width: 20%;
   margin: 0 0%;
   text-align: right;
-}
-.commentUserList {
-  float: right;
-  padding-bottom: 22px;
-}
-.commentAnswerList {
-  width: 50px;
-  float: left;
-  padding-bottom: 22px;
-}
-.users {
-  margin-bottom: 44px;
+  border: 1px solid gray;
 }
 #navbar {
   margin-bottom: 14px;
@@ -3123,4 +3113,4 @@ body,
 .fa-medium:before {
   content: "\f23a";
 }
-";s:5:"files";a:30:{s:83:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\style.less";i:1432927944;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\normalize.less";i:1424694551;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\newheader.less";i:1432905303;s:82:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\grid.less";i:1424690517;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\variables.less";i:1425208718;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\structure.less";i:1432884824;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\inputs.less";i:1431527873;s:82:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\tags.less";i:1432109761;s:85:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\comment.less";i:1432147709;s:85:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\navbar2.less";i:1432903916;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\figure.less";i:1424691487;s:88:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\typography.less";i:1432926492;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\mixins.less";i:1424693097;s:88:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\css3mixins.less";i:1424693097;s:89:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\responsive2.less";i:1432931381;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\bodyColor.less";i:1431506680;s:86:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\regioner.less";i:1424989012;s:114:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\font-awesome.less";i:1424598765;s:111:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\variables.less";i:1425208699;s:108:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\mixins.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\path.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\core.less";i:1424598765;s:108:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\larger.less";i:1424598765;s:113:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\fixed-width.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\list.less";i:1424598765;s:117:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\bordered-pulled.less";i:1424598765;s:110:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\animated.less";i:1424598765;s:117:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\rotated-flipped.less";i:1424598765;s:109:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\stacked.less";i:1424598765;s:107:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\icons.less";i:1424598765;}s:7:"updated";i:1432931386;}
+";s:5:"files";a:30:{s:83:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\style.less";i:1432927944;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\normalize.less";i:1424694551;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\newheader.less";i:1432905303;s:82:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\grid.less";i:1424690517;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\variables.less";i:1425208718;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\structure.less";i:1432884824;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\inputs.less";i:1431527873;s:82:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\tags.less";i:1432995215;s:85:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\comment.less";i:1432995099;s:85:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\navbar2.less";i:1432903916;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\figure.less";i:1424691487;s:88:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\typography.less";i:1432926492;s:84:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\mixins.less";i:1424693097;s:88:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\css3mixins.less";i:1424693097;s:89:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\responsive2.less";i:1432931381;s:87:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\bodyColor.less";i:1431506680;s:86:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\regioner.less";i:1424989012;s:114:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\font-awesome.less";i:1424598765;s:111:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\variables.less";i:1425208699;s:108:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\mixins.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\path.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\core.less";i:1424598765;s:108:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\larger.less";i:1424598765;s:113:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\fixed-width.less";i:1424598765;s:106:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\list.less";i:1424598765;s:117:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\bordered-pulled.less";i:1424598765;s:110:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\animated.less";i:1424598765;s:117:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\rotated-flipped.less";i:1424598765;s:109:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\stacked.less";i:1424598765;s:107:"G:\htdocs\bth\phpmvc\Kmom7-10\slutspurt\WGTOTW\webroot\css\mango-project\font-awesome-4.3.0\less\icons.less";i:1424598765;}s:7:"updated";i:1432995218;}

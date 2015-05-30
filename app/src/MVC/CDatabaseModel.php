@@ -10,7 +10,7 @@ namespace Anax\MVC;
 class CDatabaseModel implements \Anax\DI\IInjectionAware
 {
     use \Anax\DI\TInjectable;
-    public $verbose = false;
+    public $verbose = true;
     public $dbVerbose = false;
     
     function __construct(){
@@ -507,6 +507,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             dump( "rad: ".__LINE__." ".__METHOD__);
             
         }
+       
+        
         if ( $db ){
             $db->setVerbose($this->dbVerbose);
             // gets a list of with parent comments
@@ -669,7 +671,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             $data = $db->executeFetchAll( [$commentID] );
           
             if( $this->verbose == true ){
-                dump( "rad: ".__LINE__." ".__METHOD__ ." ". $commentid);
+                dump( "rad: ".__LINE__." ".__METHOD__ ." ". $commentID);
                 dump( $data);
             }
             
@@ -789,6 +791,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 1,3,2,2
                 
         ]);
+        
     }
     
     /**
@@ -937,6 +940,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 '127.1.1.1'
         ]);
         $id1 = $app->db->lastInsertId();
+         
+        
         
         return $id1;
     }
@@ -988,16 +993,27 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
      *  getThisComment
      *  @param $id, $db
      */  
-    public function getThisComment( $id, $db ){
+    public function getThisComment( $id, $db, $parentid = null ){
         // correct bug 20150401
         $db->select('*')
         ->from('comment AS c')
+        ->join("comment2Category as c2c", "c2c.commentid = c.id");
         
-        ->where("c.id = ?");
+        if( $parentid ){
+            $db->where("c2c.parentid = ?");
+        } else{
+            $db->where("c.id = ?");    
+        }
+        
+        
+        $db->orderby("c2c.parentid");
          $data = $db->executeFetchAll( [$id] );
+       
        
         return  $data;
     }
+    
+    
     
     /**
      *  updateThisComment
@@ -1030,12 +1046,67 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
      *  @return $result
      */
     public function deleteThisCommentFromDb( $id , $db ){
-        $db->delete(
-            'comment',
-            "id = ?"
-        );
-      
-        $res = $db->execute([$id]);
+        
+        $check = $this->getThisComment( $id, $db, 'parent' );
+        
+        dump( $check);
+        die();
+        if( isset($check[0]) && $check[0]->commentid == $check[0]->parentid ){
+            
+            // remove comment and answers...
+            if( $this->verbose == true ){
+                dump( "rad: ".__LINE__." ".__METHOD__ ." remove parent and answers ". $id);
+               
+            }
+            die();
+            $msg = "<h3>Följande inlägg är raderade:</h3>\n";
+            foreach( $check as $comment ){
+                
+                // remove link to categories
+                $db->delete(
+                'comment2Category',
+                'commentid = ?'
+                );
+                
+                $res = $db->execute([$comment->commentid]);
+                 
+                  // remove answers...
+                $db->delete(
+                    'comment',
+                    "id = ?"
+                );
+                
+                $res = $db->execute([$comment->id]);
+                
+                $msg .= "<p>{$comment->header}</p>\n";
+            }
+            
+        } else{
+             $check = $this->getThisComment( $id, $db, null );
+             dump( $check);
+             if( $this->verbose == true ){
+                dump( "rad: ".__LINE__." ".__METHOD__ ." remove answer ". $id);
+                
+            }
+            
+            // remove answers...
+            $db->delete(
+                'comment',
+                "id = ?"
+            );
+          
+           // $res = $db->execute([$id]);
+            
+            $db->delete(
+                'comment2Category',
+                'commentid = ?'
+            );
+          //  $res = $db->execute([$id]);
+            $msg .= "<p>{$check->header}</p>\n";
+        }
+       
+        
+        
         return $res;
     }
     

@@ -1,141 +1,112 @@
-/* comment.css */
-
-/*@columns: 12;*/
-.comment{
-   min-height:50px;
-    /*background-color:red;*/
-    display:block;
-    border-top:1px solid gray;
-    /*border-bottom:1px solid gray;*/
-    padding-bottom:15px;
-    margin-bottom:15px;
-    clear:both;
+.comment {
+  display: block;
+  border-top: 1px solid gray;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  clear: both;
 }
-.commentHead{
-    float:left;
-    display:inline-block;
+.commentHead {
+  float: left;
+  display: inline-block;
 }
-.groupname{
-    float:right;
-    display:inline-block;
-    padding-top:8px;
+.groupname {
+  float: right;
+  display: inline-block;
+  padding-top: 8px;
 }
-.comment_id{
-    clear:both;
-    /*background-color:#eee;*/
-    padding:5px;
-    display:inline-block;
-    float:left;
+.comment_id {
+  clear: both;
+  padding: 5px;
+  display: inline-block;
+  float: left;
 }
-
-.commentInfo{
-    background-color:blue;
-   /* width:80%;
-    float:left;*/
+.commentUser {
+  float: right;
+  background-color: #eee;
+  display: inline-block;
+  display: inline;
+  
+  width: 200px;
+  margin: 0 0%;
 }
-.commentUser{
-    float:right;
-    background-color:#eee;
-    /*width:24%;*/
-    display:inline-block;
-     .column(@columns / 2 );
+.commentUser p {
+  margin: 2px;
 }
-.commentUser p{
-    margin:2px;
+.commentUser input {
+  float: right;
+  margin-top: 10px;
 }
-.commentUser input{
-    float:right;
-    margin-top:10px;
+.commentContent {
+  clear: left;
+  margin: 2px;
+  display: inline-block;
+  float: left;
+  width: 74%;
+  min-height: 150px;
 }
-.commentContent{
-    clear:left;
-    margin:2px;
-    display:inline-block;
-    float:left;
-    
-    width:74%;
-    min-height:150px;
-    
+.commentListResponse {
+  margin-left: 20px;
 }
-.commentListResponse{
-   margin-left:20px;
-   float:left;
+.comment-form form p span {
+  color: red;
 }
-
-.comment-form form p span{
-    color:red;
+.commentRespond {
+  display: inline;
+  float: left;
+  width: 50%;
+  margin: 0 0%;
+  clear: left;
+  display: block;
+  vertical-align: bottom;
 }
-.commentListResponse a {
-   
-   border:1px solid red;
+.commentList tr td{
+   padding:0px;
 }
-.commentRespond{
- .column( (@columns / 4 ) * 3 );
-   clear:left;
-   float:left;
-
-   display:block;
-   vertical-align:bottom;
+.commentList {
+  clear: both;
+  width: 100%;
+  float: left;
+  
 }
 
-/* commentlist */
 
-.commentList{
-   clear:both;
-   width:@total-width;
-   float:left;
-   
+.commentHeader,
+.commentAnswerNr,
+.commentDate,
+.commentViews {
+  margin: 5px;
 }
-.commentList tr td {
-   padding:5px;
-   border:none;
+.commentViews {
+  
+  width: 15px;
+  padding: 5px;
+  text-align: center;
+}
+.commentAnswerNr {
+  width: 50px;
+  
+  padding: 5px;
+  text-align: center;
+}
+.commentHeader {
+  display: inline;
+  float: left;
+  width: 75%;
+  margin: 0 0%;
 }
 .commentList tr:nth-child(5n ) {
    border-bottom:22px solid @myBgColor;
    /*border-bottom:22px solid blue;*/
 }
-
-.commentHeader,
-.commentAnswerNr,
-.commentDate,
-.commentViews{
-   
-   padding:5px;
-}
-
-.commentViews, .commentAnswerNr{
-
-   
-   /*background-color:@bgColorBody;*/
-   width:30px;
-  
-   padding:5px;
-   text-align:center;
-}
-
 p.commentAnswerNr, p.commentViews{
-   width:30px;
-   padding-bottom:0px;
+   width:15px;
+   margin-bottom:5px;
 }
-.commentHeader{
-width:600px;
-}
-
-.commentDate{
-   .column(@columns / 5 );
-text-align:right;
-
-}
-.commentUserList{
- float:right;
- padding-bottom:22px;
-}
-.commentAnswerList{
- width:50px;
- float:left;
- padding-bottom:22px;
-}
-.users{
-  margin-bottom:44px;
-  
+.commentDate {
+  display: inline;
+  float: left;
+  width: 20%;
+  margin: 0 0%;
+  text-align: right;
+  border: 1px solid gray;
 }

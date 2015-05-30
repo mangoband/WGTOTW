@@ -234,47 +234,9 @@ class CViewController extends CViewsFlash {
                     ]);
                 
                 break;
-          /*  case 'kommentar':
-                $CViewsComments = new CViewsComments( $app, $user, $param );
-                $CViewsComments->kommenteraAction( $app, $currentUrl );
-                
-                break;
-            
-            case 'kommentera':
-                $CViewsComments = new CViewsComments( $app, $user, $param );
-                
-                  $CViewsComments->commentActionWithDb( $app, $currentUrl );
-                   
-                break;
-            case 'uppdaterakommentar':
-                $CViewsComments = new CViewsComments( $app, $user, $param );
-                $CViewsComments->updateComment( $app, $this->commentID );
-                break;
-            case 'raderakommentar':
-                $this->deleteComment( $app );
-                break;
-            case 'ask':
-            case 'nykommentar':
-                $CViewsComments = new CViewsComments( $app, $user, $param );
-                $CViewsComments->addNewComment( $app );
-                break;
-            case 'visakommentar':
-                $CViewsComments = new CViewsComments( $app, $user, $param ); 
-                $CViewsComments->showComment( $this->commentID );
-                //$CViewsComments->commentActionWithDb( $app, $currentUrl );
-                break;
-            case 'svarakommentar':
-                $CViewsComments = new CViewsComments( $app, $user, $param );
-                $CViewsComments->respondComment( $app, $this->commentID );
-                break;
-            case 'anvkommentar':
-                $CViewsComments = new CViewsComments( $app, $user, $param );
-                $CViewsComments->userComments( $app, $this->userID );
-                break;
-            
-            */
+          
             case 'add':
-                $app->theme->addStylesheet('css/comment.css');
+              
                 $app->theme->setVariable('gridColor', '');
                 break;
         
@@ -295,9 +257,7 @@ class CViewController extends CViewsFlash {
             case 'font-awesome':
                 $this->fontAWAction( $app );
                 break;
-            case 'font-awesome?grid':
-                $this->fontAWGridAction( $app );
-                break;
+            
             case 'cform':
                     $this->cformAction( $app );
                 break;
@@ -322,11 +282,7 @@ class CViewController extends CViewsFlash {
                 $CViewsComments = new CViewsComments( $app, $user,$param );
                 $CViewsComments->userComments( $app, $this->userID );
                 break;
-            case 'visa-kommentarer':
-                
-                $CViewsComments = new CViewsComments( $app, $user, $param );
-                $CViewsComments->userComments( $app, $this->userID, 'showcomments' );
-                break;
+            
             case 'skapa-tabell':
                 $this->createTableAction( $app );
                 break;
@@ -714,7 +670,7 @@ EOD;
             
         $this->app->theme->setTitle("Me");
         
-        //$this->app->theme->addStylesheet('css/comment.css');
+        
     
         
         $me = $this->app->fileContent->get('me.md');

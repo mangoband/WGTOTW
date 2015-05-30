@@ -129,7 +129,7 @@ class CViewsComments  {
         
         $totalAnswers = count( $comments ) - 1;
         
-        
+       
         // fill td in table
         foreach( $comments as $comment ){
           
@@ -225,12 +225,11 @@ class CViewsComments  {
       
         try{
        
-        $app->theme->setVariable('gridColor', '');
-        $app->theme->addStylesheet('css/comment.css');
         $title = "Kommentera";
         $app->theme->setTitle($title);
        
-       
+        $app->MangoFlash->get('notice');
+        
         //$user = new \Anax\Users\User( $app );
         $this->user->isOnline();
         $online = $this->user->isUserOnline();
@@ -394,8 +393,6 @@ class CViewsComments  {
     public function kommenteraAction( $app, $currentUrl ){
         
         
-        $app->theme->setVariable('gridColor', '');
-        $app->theme->addStylesheet('css/comment.css');
         $app->theme->setTitle("Kommentera");
         $app->views->add('comment/form', [
               'mail'      => null,
@@ -442,8 +439,6 @@ class CViewsComments  {
        
       // public function updateComment( $comment, $tags = null, $selectedTags = null, $answer = null ){  
         
-        $app->theme->setVariable('gridColor', '');
-        $app->theme->addStylesheet('css/comment.css');
         $title = "Uppdatera kommentar";
         $app->theme->setTitle($title);
         $header = "<h2>{$title}</h2>";
@@ -509,9 +504,6 @@ class CViewsComments  {
     public function addNewComment( $app, $param  = null , $commentid = null, $tags = null, $parentID = null ){
         
     
-        
-        $app->theme->setVariable('gridColor', '');
-        $app->theme->addStylesheet('css/comment.css');
         $title = ( is_null( $parentID ) )? "Lägg till ny kommentar" : 'Svara';
         $app->theme->setTitle($title);
         $header = "<h2>{$title}</h2>";
@@ -687,9 +679,9 @@ class CViewsComments  {
         $answers        = $ch->getGroupedComments($this->app->db, $commentID, 'child');
         
        // $parent = $tmp[0];
-      //  $childComments   = $ch->getChildToComment( $parent->parentid );
+        $childComments   = $ch->getChildToComment( $commentID );
         
-        
+        dump( $childComments);
         
         // get formated childdata
        // $childComments[$parent[0]->commentid][] =  $this->formatChildComments( $parent, $parent[0]->commentid );

@@ -486,8 +486,11 @@ textarea {
 .viewTags ul li {
   padding: 5px;
 }
+.users li {
+  padding: 5px;
+  float: left;
+}
 .comment {
-  min-height: 50px;
   display: block;
   border-top: 1px solid gray;
   padding-bottom: 15px;
@@ -509,16 +512,12 @@ textarea {
   display: inline-block;
   float: left;
 }
-.commentInfo {
-  background-color: blue;
-}
 .commentUser {
   float: right;
   background-color: #eee;
   display: inline-block;
   display: inline;
-  float: left;
-  width: 50%;
+  width: 200px;
   margin: 0 0%;
 }
 .commentUser p {
@@ -538,54 +537,56 @@ textarea {
 }
 .commentListResponse {
   margin-left: 20px;
-  float: left;
 }
 .comment-form form p span {
   color: red;
 }
-.commentListResponse a {
-  border: 1px solid red;
-}
 .commentRespond {
   display: inline;
   float: left;
-  width: 75%;
+  width: 50%;
   margin: 0 0%;
   clear: left;
   display: block;
   vertical-align: bottom;
+}
+.commentList tr td {
+  padding: 0px;
 }
 .commentList {
   clear: both;
   width: 100%;
   float: left;
 }
-.commentList tr td {
-  padding: 5px;
-  border: none;
-}
-.commentList tr:nth-child(5n ) {
-  border-bottom: 22px solid #d2d2ba;
-}
 .commentHeader,
 .commentAnswerNr,
 .commentDate,
 .commentViews {
-  padding: 5px;
+  margin: 5px;
 }
-.commentViews,
-.commentAnswerNr {
-  width: 30px;
+.commentViews {
+  width: 15px;
   padding: 5px;
   text-align: center;
 }
-p.commentAnswerNr,
-p.commentViews {
-  width: 30px;
-  padding-bottom: 0px;
+.commentAnswerNr {
+  width: 50px;
+  padding: 5px;
+  text-align: center;
 }
 .commentHeader {
-  width: 600px;
+  display: inline;
+  float: left;
+  width: 75%;
+  margin: 0 0%;
+}
+.commentList tr:nth-child(5n ) {
+  border-bottom: 22px solid #d2d2ba;
+}
+p.commentAnswerNr,
+p.commentViews {
+  width: 15px;
+  margin-bottom: 5px;
 }
 .commentDate {
   display: inline;
@@ -593,18 +594,7 @@ p.commentViews {
   width: 20%;
   margin: 0 0%;
   text-align: right;
-}
-.commentUserList {
-  float: right;
-  padding-bottom: 22px;
-}
-.commentAnswerList {
-  width: 50px;
-  float: left;
-  padding-bottom: 22px;
-}
-.users {
-  margin-bottom: 44px;
+  border: 1px solid gray;
 }
 #navbar {
   margin-bottom: 14px;

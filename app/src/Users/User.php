@@ -102,6 +102,7 @@ private $online;
         $html .= "\n<li >{$gravatarImg}<a href='{$path}' title='Uppdatera ". $values->name."'>". $values->name ." </a>{$trash}</li>\n";
       }
       
+      
       //
       // view user/list
       //

@@ -33,10 +33,11 @@ if ( isset( $children[$comment->id][0] ) ) {
     <p><?= $comment->created;?></p>
     
 <?php if ( isset( $online ) && $online == 'online'  ){ ?>
-<input type='submit' name='doCommentSave' id='<?= $comment->commentid ?>' value='svara' /*title='svara' */ onclick='form.action="<?=$this->url->create('kommentar/svara/'.$comment->commentid)?>"'  title='<?=$comment->commentid?>'/>
+<input type='submit' name='doCommentSave' id='<?= $comment->commentid ?>' value='svara' title='svara'  onclick='form.action="<?=$this->url->create('kommentar/svara/'.$comment->commentid)?>"' />
 <?php if ( isset( $userid ) && ($userid == 1 || $userid == 2 || $userid == $comment->userid) ){ ?>
-    <input type='submit' name='doCommentDelete' id='<?= $comment->commentid ?>' value='Ta bort' title='Ta bort' onclick='form.action="<?=$this->url->create('kommentar/radera/'.$comment->commentid)?>"'  title='<?=$comment->commentid?>'/>
-    <input type='submit' name='doCommentUpdate' id='<?= $comment->commentid ?>' value='Uppdatera' title='Uppdatera' onclick='form.action="<?=$this->url->create('kommentar/uppdatera/'.$comment->commentid)?>"' title='<?=$comment->commentid?>' />
+    <input type='submit' name='doCommentUpdate' id='<?= $comment->commentid ?>' value='Uppdatera' title='Uppdatera' onclick='form.action="<?=$this->url->create('kommentar/uppdatera/'.$comment->commentid)?>"'  />
+    <input type='submit' name='doCommentDelete' id='<?= $comment->commentid ?>' value='Ta bort' title='Ta bort' onclick='form.action="<?=$this->url->create('kommentar/radera/'.$comment->commentid)?>"'  />
+    
 <?php }?>
     
     <?php }?>

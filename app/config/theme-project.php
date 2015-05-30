@@ -64,7 +64,7 @@ return [
         'lang' => 'sv',
 
         // Append this value to each <title>
-        'title_append' => ' | Anax a web template',
+        'title_append' => ' | We Gonna Take Over The World',
 
         // Stylesheets
         'stylesheets' => [$css],
