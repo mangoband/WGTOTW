@@ -14,7 +14,7 @@ return [
         
         'ask' => [
             'text'  => 'Ställ fråga',
-            'url'   => $this->di->get('url')->create('ask'),
+            'url'   => $this->di->get('url')->create('kommentar/fraga'),
             'title' => '',
             'mark-if-parent-of' => 'controller',
         ],

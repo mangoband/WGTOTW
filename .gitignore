@@ -13,6 +13,7 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
+webroot/css/mango-project/style.less.cache
 
 # Package handling
 #composer.json

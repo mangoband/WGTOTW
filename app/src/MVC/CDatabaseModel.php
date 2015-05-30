@@ -11,6 +11,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
 {
     use \Anax\DI\TInjectable;
     public $verbose = false;
+    public $dbVerbose = false;
     
     function __construct(){
         //date_default_timezone_set('Europe/Stockholm');
@@ -83,6 +84,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
         
         if( $tagid ){
+            $db->setVerbose($this->dbVerbose);
                 $db->delete(
                 'commentCategory',
                 "id = ?"
@@ -102,7 +104,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
            if ( $db ){
                 
-            $db->setVerbose(false);
+            $db->setVerbose($this->dbVerbose);
                 if ( $category && $popular ){
                     if( $this->verbose == true ){
                         dump( __LINE__. " ". __METHOD__." popular");
@@ -111,7 +113,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     if( $this->verbose == true ){
                         dump( __LINE__. " ". __METHOD__." get all categories.");
                     }
-                    $db->setVerbose(false);
+                    
                     //
                     // count using of tags
                     //
@@ -239,9 +241,15 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
       $html = '';
       $now = date('Y-m-d H:i:s');
       $delete = 0;
+      
+      
+      
+      
       if (  isset($row['deleted'])  ){
         $delete = $row['deleted'];
       }
+
+      
         $db->update(
             'user',
             ['name', 'email', 'acronym', 'deleted', 'updated'],
@@ -250,6 +258,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         $db->execute([
             $row['name'], $row['email'], $row['acronym'], $delete, $now, $row['id']
         ]);
+      
         
        
     }
@@ -496,11 +505,12 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
     protected function getCommentsGroupedByParentID( $db = null, $parentid = null ){
         if( $this->verbose == true ){
             dump( "rad: ".__LINE__." ".__METHOD__);
+            
         }
         if ( $db ){
-            
+            $db->setVerbose($this->dbVerbose);
             // gets a list of with parent comments
-            $db->select("*,commentid, c.comment, c.header, c.created, catid, userid, name, parentid, count(c2c.parentid) -1 as answers")
+            $db->select("*,commentid, c.comment, c.header, c.created, catid, userid, name, parentid, count(c2c.parentid) -1  as answers")
             ->from("comment as c")
             ->join("comment2Category as c2c", "c2c.parentid = c.id")
             
@@ -658,6 +668,11 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             
             $data = $db->executeFetchAll( [$commentID] );
           
+            if( $this->verbose == true ){
+                dump( "rad: ".__LINE__." ".__METHOD__ ." ". $commentid);
+                dump( $data);
+            }
+            
             return $data;
         
         } else if ( $db ){
@@ -668,7 +683,12 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             ->groupby("parent, c2c.commentid");
             
             $data = $db->executeFetchAll(  );
-        
+            
+            if( $this->verbose == true ){
+                dump( "rad: ".__LINE__." ".__METHOD__ ." ". $commentid);
+                dump( $data);
+            }
+            
            return $data;
         
         } 
@@ -934,7 +954,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             }
             
             // return all comments
-            $db->select("c.*, u.name, u.email, c2c.parentid, c2c.userid")
+            $db->select("c.*, u.name, u.email, c2c.parentid, c2c.commentid, c2c.userid")
             ->from('comment AS c')
             ->join('user AS u', 'c2c.userid = u.id')
             ->join("comment2Category as c2c", "c2c.commentid = c.id")

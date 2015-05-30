@@ -166,6 +166,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
         if( $this->verbose == true ){
             dump( "rad: ".__LINE__." ".__METHOD__." type: ".$type);
             dump($this->viewComment2Category( $db ));
+            
         }
     
         if ( $db && $type ){
@@ -236,11 +237,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
         }
         
     }
-     /**
-     *  getTotalAnswer
-     *  @param int commentid
-     *  @param int answers
-     */
+    
      
      /*************************************************************
       *
@@ -265,6 +262,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
     
     /**
      *  getTotalAnswers
+     *  @param int commentid
      *  @return int $commentRespons
      */  
     public function getTotalAnswers( $commentid = null ){

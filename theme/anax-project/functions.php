@@ -94,6 +94,18 @@ function getEmailFromHeader( ){
 }
 
 /**
+ *  getProfileLink
+ */
+function getProfileLink( $app ){
+    
+    $tmp  =  \Anax\Users\User::getUserID();
+    $id = $tmp[0];
+    $acronym = $tmp[1];
+    $link = ( is_null( $id ) ) ? $app->url->create() : $app->url->create("profil/show/id/{$id}/{$acronym}");
+    
+    return $link;
+}
+/**
  *  getName
  */
 function getName(){

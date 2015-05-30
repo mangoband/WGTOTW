@@ -12,7 +12,7 @@
 <h4 class='comment_id' <?= $new?>><?php
 if ( isset( $header )) { echo $comment->header; }
 
-?><?=$comment->id?></h4>
+?></h4>
 
 <div class="commentInfo <?php echo isParent( $comment->parentid, $comment->id ) ?>">    
 <span class='commentContent <?php echo isParent( $comment->parentid, $comment->id ) ?>'><?=markdown($comment->comment)?></span>

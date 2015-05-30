@@ -88,7 +88,7 @@ class CViewController extends CViewsFlash {
         $this->app->theme->setVariable('gridColor', '');
         
         $this->app->navbar->configure(ANAX_APP_PATH . 'config/' . setMenu() );
-        //setMenu();
+        
         
         if ( !isset( $pageUrl[1])){
             $site = 'home';
@@ -99,14 +99,12 @@ class CViewController extends CViewsFlash {
         $param['id']        = ( isset( $tmp[2] ) ) ? $tmp[2] : null;
         $param['option']    = ( isset( $tmp[1] ) ) ? $tmp[1] : null;
         $param['page']      = ( isset( $tmp[0] ) ) ? $tmp[0] : null;
+        $param['url']       = ( isset( $currentUrl ) ) ? $currentUrl : null;
+        $param['user']      = $user;
         
         $this->param        = $param;
         
-        switch($param['page']){
-            case 'taggar':
-                
-                break;
-        }
+        
         
         
          // check if page show one
@@ -137,51 +135,7 @@ class CViewController extends CViewsFlash {
             
            
             
-        } else if ( startsWith ( $site,  'taggar') ){
-            
-            // $site = "comment";
-            $tmp = explode( '/', $site );
-            $site = "taggar-view";
-            $param['id']        = ( isset( $tmp[2] ) ) ? $tmp[2] : null;
-            $param['option']    = ( isset( $tmp[1] ) ) ? $tmp[1] : null;
-            $param['page']      = ( isset( $tmp[0] ) ) ? $tmp[0] : null;
-                               
-            
-            
-        } else if ( startsWith ( $site,  'kommentar') ){
-            
-           // $site = "comment";
-            $tmp = explode( '/', $site );
-            $site = "kommentar";
-            foreach( $tmp as $key => $params ){
-                switch( $params ){
-                    case 'uppdatera':
-                        $this->commentID = $this->getQueryStringID( $tmp, $key );
-                        
-                        $site = 'uppdaterakommentar';
-                        break;
-                    case 'radera':
-                        $this->commentID = $this->getQueryStringID( $tmp, $key );
-                        
-                        $site = 'raderakommentar';   
-                        break;
-                    case 'visa':
-                        $site = 'visakommentar'; 
-                        $this->commentID = $this->getQueryStringID( $tmp, $key );
-                        break;
-                    case 'svara':
-                        $site = 'svarakommentar'; 
-                        $this->commentID = $this->getQueryStringID( $tmp, $key );
-                        break;
-                    case 'anv':
-                        $site = 'anvkommentar'; 
-                        $this->userID = $this->getQueryStringID( $tmp, $key );
-                        break;
-                }
-            }
-        
-            // handle profile
-        } else if ( startsWith( $site, 'profil' ) ){
+        }  else if ( startsWith( $site, 'profil' ) ){
             
             $tmp = explode( '/', $site );
             
@@ -211,6 +165,22 @@ class CViewController extends CViewsFlash {
         $this->app->views->add('me/breadcrumb', [], 'breadcrumb');
         $app = $this->app;
     
+        switch($param['page']){
+            case 'taggar':
+                $CTagViews = new \Mango\Views\CTagViews( $app, $param );
+                $CTagViews->outputTags(  );
+                
+                break;
+            
+            case 'kommentar':
+            case 'kommentera':
+                $CViewsComments = new CViewsComments( $app, $user, $param, $currentUrl );
+                $CViewsComments->doAction( );
+                
+                break;
+            
+        }
+        
         switch( $site ){
             
             case 'me':
@@ -228,15 +198,7 @@ class CViewController extends CViewsFlash {
                 $this->login( $user );
                 
                 break;
-            case 'taggar-view':
-                $CTagViews = new \Mango\Views\CTagViews( $app, $param );
-                $CTagViews->outputTags(  );
-                break;
-            case 'kommentar':
-                $CViewsComments = new CViewsComments( $app, $user, $param );
-                $CViewsComments->kommenteraAction( $app, $currentUrl );
-                echo "update";
-                break;
+          
             case 'me?grid':
                 $this->meGridAction( $app );
                 break;
@@ -272,6 +234,11 @@ class CViewController extends CViewsFlash {
                     ]);
                 
                 break;
+          /*  case 'kommentar':
+                $CViewsComments = new CViewsComments( $app, $user, $param );
+                $CViewsComments->kommenteraAction( $app, $currentUrl );
+                
+                break;
             
             case 'kommentera':
                 $CViewsComments = new CViewsComments( $app, $user, $param );
@@ -304,6 +271,8 @@ class CViewController extends CViewsFlash {
                 $CViewsComments = new CViewsComments( $app, $user, $param );
                 $CViewsComments->userComments( $app, $this->userID );
                 break;
+            
+            */
             case 'add':
                 $app->theme->addStylesheet('css/comment.css');
                 $app->theme->setVariable('gridColor', '');
@@ -702,17 +671,7 @@ EOD;
     
     
     
-    /**
-     *  deleteComment
-     */
-    private function deleteComment( $app ){
-        $ch = new CommentHandler( $app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
-                                    'errorName' => getError(3)) );
-        if ( $this->commentID ){
-            
-            $ch->deleteThisComment(  $this->commentID     );
-        }
-    }
+    
     
     
     /**

@@ -79,7 +79,7 @@ class CFormContact extends \Mos\HTMLForm\CForm  {
         }
         $save = isset($user->id) ? 'save' : 'create';
         $this->AddElement(new h\CFormElementHidden('id', array('value'=>$user->id)))
-         ->AddElement(new h\CFormElementText('acronym', array('label'=>'Användarnamn','value'=>removeQuotes($user->acronym), 'required' => true)))
+         ->AddElement(new h\CFormElementText('acronym', array('label'=>'Användarnamn','value'=>removeQuotes($user->acronym), 'readonly' => true)))
          ->AddElement(new h\CFormElementText('name', array('label'=>'Namn','value'=>removeQuotes($user->name), 'required' => true)))
          ->AddElement(new h\CFormElementText('email', array('label'=>'Epost','value'=>removeQuotes($user->email), 'required' => true)));
          if ( $userid != 1 && $logged[0] == 1 || ( $userid != 2 && $logged[0] == 2 ) ){

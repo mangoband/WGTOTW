@@ -26,6 +26,58 @@ class CViewsComments  {
     }
     
     /**
+     *  doAction
+     *  depending on the currentUrl makes this different actions
+     */  
+    public function doAction(){
+        
+        // we need to have param to check where to go
+        if ( isset( $this->param ) ){
+            
+            if ( $this->param['page'] == 'kommentera' ){
+                $this->commentActionWithDb( $this->app, $this->param['url'] );
+            } else{
+                
+                switch( $this->param['option'] ){
+                    case 'uppdatera':
+                        
+                        $this->updateComment( $this->app, $this->param['id'] );
+                        
+                        break;
+                    case 'visa':
+                        
+                        $this->showComment( $this->param['id'] );
+                        break;
+                    
+                    case 'svara':
+                        
+                        $this->respondComment( $this->app, $this->param['id'] );
+                        break;
+                    
+                    case 'radera':
+                        
+                        $this->deleteComment( $this->app, $this->param['id'] );
+                        break;
+                    
+                    case 'anv':
+                        
+                        $this->userComments( $this->app, $this->param['id'] );
+                        break;
+                    
+                    case 'fraga':
+                    case 'ny':
+                        
+                        $this->addNewComment( $this->app );
+                        break;
+                }
+            
+            }
+        
+        }
+        
+        
+    }
+    /**
      *  returAnswers
      *  @param obj items
      *  @param int id
@@ -52,7 +104,7 @@ class CViewsComments  {
     public function viewListWithComments( $param = null, $data = null, $isTag = false, $tagid = null ){
         
        
-       
+       dump( __METHOD__);
        
         // view tags from db ( CDatabaseModel)
         $this->viewPopularTags( $tagid);
@@ -86,7 +138,8 @@ class CViewsComments  {
             
             if( $parentID != $comment->parentid ){
             
-                $url = $this->app->url->create("kommentar/visa/".$comment->parentid);    
+                $url = $this->app->url->create("kommentar/visa/".$comment->parentid);
+                
                 $content .= "\n\t<tr class='commentListRow'>".$this->createCommentRow([
                                                  'date'     => $comment->created,
                                                  'header'   => $comment->header,
@@ -205,10 +258,11 @@ class CViewsComments  {
         
         
             // get formated childdata
-            $childComments[$comment->commentid][] = $this->formatChildComments( $tmpData, $comment->commentid );
+            $childComments[$comment->commentid][] = $this->formatChildComments( $tmpData, $comment->parentid );
             
       
         }
+        
         $ch->outputUpdateList([
             'all'       => $allUserComments,
             'online'    => $online,
@@ -266,7 +320,7 @@ class CViewsComments  {
                 $link = "\n\t\t<a href='{$url}'>{$header}</a>";
                 
                 // fill html
-                if( $child->commentid == $parentID ){
+                if( $child->commentid != $parentID ){
                     $html .= "\n\t<span>\n\t\t{$child->created}: {$header}\n\t</span><br />";
                     $html .= "\n\t<span class='commentListResponse'>{$child->created}: {$link}\n\t</span><br />";
                 }
@@ -371,12 +425,12 @@ class CViewsComments  {
     /**
      *  deleteComment
      */
-    public function deleteComment( $app ){
-        $cc = new CommentHandler( $app, array('errorContent'=>$this->getError(0), 'errorMail'=>$this->getError(1), 'errorHomepage'=>$this->getError(2),
-                                    'errorName' => $this->getError(3)) );
-        if ( $this->commentID ){
+    private function deleteComment( $app, $commentID = null ){
+        $cc = new CommentHandler( $app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
+                                    'errorName' => getError(3)) );
+        if ( $commentID ){
             
-            $cc->deleteThisComment(  $this->commentID     );
+            $cc->deleteThisComment(  $commentID     );
         }
     }
     /**
@@ -742,5 +796,7 @@ class CViewsComments  {
          
         }
     }
+    
+    
     
 }

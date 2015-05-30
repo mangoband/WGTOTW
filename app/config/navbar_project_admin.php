@@ -13,7 +13,7 @@ return [
     'items' => [
         'ask' => [
             'text'  => 'Ställ fråga',
-            'url'   => $this->di->get('url')->create('ask'),
+            'url'   => $this->di->get('url')->create('kommentar/fraga'),
             'title' => '',
             
         ],
@@ -37,7 +37,7 @@ return [
                     // This is a menu item of the submenu
                     'item 2'  => [
                         'text'  => 'Lägg till Kommentar',
-                        'url'   => $this->di->get('url')->create('nykommentar'),
+                        'url'   => $this->di->get('url')->create('kommentar/ny'),
                         'title' => 'Lägg till ny Kommentar'
                     ],
                      // This is a menu item of the submenu
