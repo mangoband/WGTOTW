@@ -10,7 +10,7 @@ namespace Anax\MVC;
 class CDatabaseModel implements \Anax\DI\IInjectionAware
 {
     use \Anax\DI\TInjectable;
-    public $verbose = true;
+    public $verbose = false;
     public $dbVerbose = false;
     
     function __construct(){
@@ -19,19 +19,6 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
     }
     
     
-    
-    /**
-     *  getSoftDeletedUsers
-     *  @param $db
-     *  @return $result
-     */
-    public function getSoftDeletedUsers( $db ){
-        $db->select( "*")
-            ->from( "user")
-            ->where("deleted = 1");
-    
-        return $db->executeFetchAll(  );
-    }
     
     /*********************************************************************
      *
@@ -176,8 +163,29 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
            }
     }
     
+    /*************************
+     *
+     *      Users
+     *
+     **************************/
+    
+    
+    
     /**
      *  getSoftDeletedUsers
+     *  @param $db
+     *  @return $result
+     */
+    public function getSoftDeletedUsers( $db ){
+        $db->select( "*")
+            ->from( "user")
+            ->where("deleted = 1");
+    
+        return $db->executeFetchAll(  );
+    }
+    
+    /**
+     *  getNotDeletedUsers
      *  @param $db
      *  @return $result
      */
@@ -504,7 +512,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
      */
     protected function getCommentsGroupedByParentID( $db = null, $parentid = null ){
         if( $this->verbose == true ){
-            dump( "rad: ".__LINE__." ".__METHOD__);
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
             
         }
        
@@ -523,7 +532,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             $db->where("parentid = ?");
            }
            
-            $db->groupby("c2c.parentid, c.id")
+            $db->groupby("c2c.parentid")
             ->orderby('created desc, parentid desc, commentid desc, header' );
             
             // if parentid is set
@@ -534,6 +543,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
 
             $data = ( is_null( $parentid ) ) ? $db->executeFetchAll(  ) : $db->executeFetchAll( [$parentid] );
            
+          
             
             return $data;
         }
@@ -547,7 +557,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
     protected function getCommentAnswersFromParentID( $db = null, $parentid = null ){
         
         if( $this->verbose == true ){
-            dump( "rad: ".__LINE__." ".__METHOD__);
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
         }
         // gets a list with answers to comment
         if( $db && $parentid){
@@ -558,7 +569,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             ->join("user ", "user.id = c2c.userid")
             ->where("c2c.parentid = ?")
            // ->andwhere("c2c.parentid != c.id")
-            ->groupby("c.id")
+            ->groupby("c2c.id")
             ->orderby(' parentid asc, commentid asc,created desc' );
             
             $data = $db->executeFetchAll( [$parentid] );
@@ -574,16 +585,17 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
     protected function getCommentAndCategoriesAndUserID( $db = null, $commentid = null, $limit = null, $child = null ){
     
         if( $this->verbose == true ){
-            dump( "rad: ".__LINE__." ".__METHOD__ ." ". $commentid. " ". $limit . " " . $child);
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__." ".__METHOD__ ." ". $commentid. " ". $limit . " " . $child." ". $callers[1]['function']);
         }
         if ( ! is_null( $db ) ){
         
             $param      = null;
             $rowCount   = null;
             
-            $db->setVerbose(false );
+            $db->setVerbose($this->dbVerbose );
             $db->select("c2c.commentid, cc.category,p.ip, c2c.userid, u.name, p.comment as parent, p.id, c2c.commentid, c2c.parentid, p.created as created,
-                        child.comment as comment, child.id as childid, child.created as childdate, p.header as header")
+                        child.comment as comment, child.id as childid, child.created as childdate, p.header as header, child.header as cheader")
             ->from("comment2Category as c2c")
             ->join("comment as p", "p.id = c2c.parentid")
             ->join("comment as child", "child.id = c2c.commentid")
@@ -594,7 +606,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             if ( $commentid && ! $child){
          
                 $db->where("commentid = ?");
-                $db->andwhere("c2c.parentid = p.id");
+             
                 $param = [$commentid];
                
             } else if ( $child  && $child == 'child'){
@@ -672,7 +684,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
           
             if( $this->verbose == true ){
                 dump( "rad: ".__LINE__." ".__METHOD__ ." ". $commentID);
-                dump( $data);
+                
             }
             
             return $data;
@@ -688,7 +700,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             
             if( $this->verbose == true ){
                 dump( "rad: ".__LINE__." ".__METHOD__ ." ". $commentid);
-                dump( $data);
+                
             }
             
            return $data;
@@ -777,7 +789,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         );
         
         $app->db->execute([
-                1,2,2,1
+                2,2,2,1
                 
         ]);
         
@@ -788,7 +800,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         );
         
         $app->db->execute([
-                1,3,2,2
+                2,3,2,2
                 
         ]);
         
@@ -908,7 +920,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 '127.1.1.1'
                 
         ]);
-        $now = gmdate('Y-m-d H:i:s');
+        $now = gmdate('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("j")+1, date("Y")));
         
         $app->db->insert(
                'comment',
@@ -924,7 +936,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 '127.1.1.1'
         ]);
         
-        $now = gmdate('Y-m-d H:i:s');
+        $now = gmdate('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("j")+2, date("Y")));
         
         $app->db->insert(
                'comment',

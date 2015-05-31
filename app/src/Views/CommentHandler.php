@@ -40,7 +40,8 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
     public function fetchUserComments( $db = null, $userID = null ){
         
         if( $this->verbose == true ){
-            dump( "rad: ".__LINE__." ".__METHOD__);
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
         }
         if ( $db && ! $userID ){
             
@@ -66,7 +67,8 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
     public function getAllCommentData(){
         
         if( $this->verbose == true ){
-            dump( "rad: ".__LINE__." ".__METHOD__);
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
         }
         
         // get comments
@@ -94,6 +96,10 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
      */
     public function getCommentList( $parentID = null, $maxChars = 75, $type = 'parent' ){
         
+        if( $this->verbose == true ){
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
+        }
         if( $type ){
             
             switch( $type ){
@@ -119,7 +125,8 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
     public function getChildToComment( $parentID = null ){
         
         if( $this->verbose == true ){
-            dump( "rad: ".__LINE__." ".__METHOD__);
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
         }
         
         if ( $parentID ){
@@ -144,7 +151,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
             if( $this->verbose == true && $res ){
                 dump( $this->app->db->getSQL() );
                 dump("hämtade ut: ".count($res)." rader");
-                dump( $res);
+                
             }
             
             return $res;  
@@ -166,7 +173,8 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
         if( $this->verbose == true ){
             dump( "rad: ".__LINE__." ".__METHOD__." type: ".$type);
             dump($this->viewComment2Category( $db ));
-            
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
         }
     
         if ( $db && $type ){
@@ -188,7 +196,8 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
     public function getCommentToRespond( $commentid = null ){
         
         if( $this->verbose == true ){
-            dump( "rad: ".__LINE__." ".__METHOD__);
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
         }
         
         if (  $commentid ){
@@ -227,7 +236,8 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
      */
     public function getTagComments( $tagid = null ){
         if( $this->verbose == true ){
-        dump( "rad: ".__LINE__." ".__METHOD__);    
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
         }
         
         // we dont need to get the comments unless a tag is picked
@@ -340,7 +350,8 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
     public function prepareToAddNewComment( $param = null ){
         
         if( $this->verbose == true ){
-            dump( "rad: ".__LINE__." ".__METHOD__);
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
         }
         if( $param ){
             
@@ -374,9 +385,9 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
     public function outputUpdateList( $param = null ){
         
         if( $this->verbose == true ){
-            dump( "rad: ".__LINE__." ".__METHOD__);
+            
             $callers=debug_backtrace();
-            dump( "function called by ". $callers[1]['function']);
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
         }
         
         $new = ( isset( $param['new'] ) ) ? $param['new'] : '';

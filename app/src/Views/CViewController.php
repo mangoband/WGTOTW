@@ -102,6 +102,8 @@ class CViewController extends CViewsFlash {
         $param['url']       = ( isset( $currentUrl ) ) ? $currentUrl : null;
         $param['user']      = $user;
         
+        $param['verbose']   = false; // If set to true info is written to screen
+        
         $this->param        = $param;
         
         

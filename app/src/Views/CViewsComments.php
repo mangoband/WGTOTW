@@ -31,6 +31,10 @@ class CViewsComments  {
      */  
     public function doAction(){
         
+        if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
+        }
         // we need to have param to check where to go
         if ( isset( $this->param ) ){
             
@@ -86,7 +90,10 @@ class CViewsComments  {
     private function returnAnswers(  $commentid = null, $cc = null ){
         
       
-       
+       if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
+        }
         
         $rows = 0;
         if ( $commentid  && $cc ){
@@ -104,7 +111,10 @@ class CViewsComments  {
     public function viewListWithComments( $param = null, $data = null, $isTag = false, $tagid = null ){
         
        
-       dump( __METHOD__);
+       if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
+        }
        
         // view tags from db ( CDatabaseModel)
         $this->viewPopularTags( $tagid);
@@ -121,44 +131,50 @@ class CViewsComments  {
             
         // define content & header
         $header = '<h2>Kommentarer</h2>';
-        $content = "\n<table class='commentList'>";
+        if ( $comments ){
+           $content = "\n<table class='commentList'>";
         
-        // declare th
-        $content .= "<tr><th>Svar</th><th class='commentHeader'>Inlägg</th><th>Datum</th></tr>";
-        $parentID = null;
-        
-        $totalAnswers = count( $comments ) - 1;
-        
-       
-        // fill td in table
-        foreach( $comments as $comment ){
-          
-          
-            $answers = ( isset($comment->answers ) ) ? $comment->answers : $this->returnAnswers($comment->parentid, $cc); 
+            // declare th
+            $content .= "<tr><th class='commentAnswerNr'>Svar</th><th class='commentHeader'>Inlägg</th><th>Datum</th></tr>";
+            $parentID = null;
             
-            if( $parentID != $comment->parentid ){
+            $totalAnswers = count( $comments ) - 1;
             
-                $url = $this->app->url->create("kommentar/visa/".$comment->parentid);
+           
+            // fill td in table
+            foreach( $comments as $comment ){
+              
+              
+                $answers = ( isset($comment->answers ) ) ? $comment->answers : $this->returnAnswers($comment->parentid, $cc); 
                 
-                $content .= "\n\t<tr class='commentListRow'>".$this->createCommentRow([
-                                                 'date'     => $comment->created,
-                                                 'header'   => $comment->header,
-                                                 'views'    => 1,
-                                                 'answerNr' => $answers,
-                                                 'url'      => $url
-                                                 ])."</tr>";
-                $parentID = $comment->parentid;   
+                if( $parentID != $comment->parentid ){
+                
+                    $url = $this->app->url->create("kommentar/visa/".$comment->parentid);
+                    
+                    $content .= "\n\t<tr class='commentListRow'>".$this->createCommentRow([
+                                                     'date'     => $comment->created,
+                                                     'header'   => $comment->header,
+                                                     'views'    => 1,
+                                                     'answerNr' => $answers,
+                                                     'url'      => $url
+                                                     ])."</tr>";
+                    $parentID = $comment->parentid;   
+                }
+                if ( $parentID != $comment->parentid ){
+                     
+                }
+                
             }
-            if ( $parentID != $comment->parentid ){
-                 
-            }
+            $content .= "\n</table>";
             
+            
+            
+        } else{
+            $content = "Inga inlägg gjorda under tagg";
         }
-        $content .= "\n</table>";
         
         // view comments
         $this->app->views->add('default/article', ['header'=>$header, 'content' => $content], 'main-wide');
-       
        
         
      
@@ -222,7 +238,11 @@ class CViewsComments  {
      */
     public function commentActionWithDb( $app, $currentUrl ){
        
-      
+        if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
+        }
+        
         try{
        
         $title = "Kommentera";
@@ -241,12 +261,6 @@ class CViewsComments  {
         
         $allUserComments = $ch->fetchUserComments( $this->app->db);
         $comments = $ch->getAllCommentData();
-        
-        // errors
-        $errorContent   = ( isset( $this->error['errorContent'] ) )  ? $this->error['errorContent']  : null;
-        $errorMail      = ( isset( $this->error['errorMail'] ) )     ? $this->error['errorMail']     : null;
-        $errorHomepage  = ( isset( $this->error['errorHomepage'] ) ) ? $this->error['errorHomepage'] : null;
-        $errorName      = ( isset( $this->error['errorName'] ) )     ? $this->error['errorName']     : null;
         
       
         // make content to updateform
@@ -267,10 +281,10 @@ class CViewsComments  {
             'online'    => $online,
             'new'       => '',
             'userid'    => $comment->user_id,
-            'errorContent'  => $errorContent,
-            'errorMail'     => $errorMail,
-            'errorHomepage' => $errorHomepage,
-            'errorName'     => $errorName,
+            'errorContent'  => getError(0),
+            'errorMail'     => getError(1),
+            'errorHomepage' => getError(2),
+            'errorName'     => getError(4),
             'children'      => $childComments,
             'header'        => $comment->header,
             'group'         => null,
@@ -520,15 +534,6 @@ class CViewsComments  {
         $tags = $ch->fillTagsfromDb($this->app->db);
         
         
-        //
-        //
-        // get comment user respond to
-        //
-        $commentToRespond = $ch->getCommentToRespond( $param['parentid'] );
-       
-        // sets header to parent comment
-        $responseHeader = ( isset( $commentToRespond->header )) ? $commentToRespond->header   : '';
-        $responsComment = ( isset( $commentToRespond->parent )) ? $commentToRespond->parent   : '';
         
         
         $online = $user->isUserOnline();
@@ -559,7 +564,7 @@ class CViewsComments  {
         }
         $this->app->views->add('me/article', ['header'=>$header, 'content' => $content], 'main');
         
-        $this->app->views->add('me/article', ['header'=>$responseHeader, 'content' => $responsComment], 'main');
+        $this->app->views->add('me/article', ['header'=> $param['header'], 'content' => $param['comment']], 'main');
         
                 
         
@@ -574,6 +579,10 @@ class CViewsComments  {
     public function respondComment( $app = null, $commentID = null ){
         
         
+        if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
+        }
         $title = "Kommentera";
         $app->theme->setTitle($title);
         $app->theme->setVariable('gridColor', '');
@@ -600,11 +609,14 @@ class CViewsComments  {
         $res = $ch->getCommentList( $commentID, 75, 'child' );
         $content = $this->formatChildComments($res);
        
-        $header = ( isset( $res['data'][0]->header) ) ? "re: ".$res['data'][0]->header : '';
+      //  $header = ( isset( $res['data'][0]->header) ) ? $res['data'][0]->header : '';
+        $header = ( isset( $res['data'][0]->cheader) ) ? $res['data'][0]->cheader : '';
+        $comment = ( isset( $res['data'][0]->comment ) ) ? $res['data'][0]->comment : '';
        
         
         // make form
-        $this->addNewComment( $app, ['commentid'=>null, 'parentid'=>$commentID, 'tags'=>$tags, 'selectedTags'=>$selectedTags, 'header'=>$header] );
+        $this->addNewComment( $app, ['commentid'=>null, 'parentid'=>$commentID, 'tags'=>$tags,
+                                     'selectedTags'=>$selectedTags, 'responseHeader'=>$header,'header'=>'re: '.$header, 'comment' =>$comment] );
        
         //$this->updateComment( $app, $commentID, 'answer');
         // check if user is online
@@ -678,10 +690,10 @@ class CViewsComments  {
         $tmp         = $ch->getGroupedComments($this->app->db, $commentID, 'parent');
         $answers        = $ch->getGroupedComments($this->app->db, $commentID, 'child');
         
-       // $parent = $tmp[0];
+        $parent = $tmp[0];
         $childComments   = $ch->getChildToComment( $commentID );
         
-        dump( $childComments);
+        
         
         // get formated childdata
        // $childComments[$parent[0]->commentid][] =  $this->formatChildComments( $parent, $parent[0]->commentid );
@@ -689,12 +701,7 @@ class CViewsComments  {
         $this->user->isOnline();
         $online = $this->user->isUserOnline();
         
-        // errors
-            $errorContent   = ( isset( $this->error['errorContent'] ) )  ? $this->error['errorContent']  : null;
-            $errorMail      = ( isset( $this->error['errorMail'] ) )     ? $this->error['errorMail']     : null;
-            $errorHomepage  = ( isset( $this->error['errorHomepage'] ) ) ? $this->error['errorHomepage'] : null;
-            $errorName      = ( isset( $this->error['errorName'] ) )     ? $this->error['errorName']     : null;
-           
+          
           
            
             $header = "<h2>{$title}</h2>";
@@ -707,10 +714,10 @@ class CViewsComments  {
                 'online'    => $online,
                 'new'       => '',
                 'userid'    => $userid[0],
-                'errorContent'  => $errorContent,
-                'errorMail'     => $errorMail,
-                'errorHomepage' => $errorHomepage,
-                'errorName'     => $errorName,
+                'errorContent'  => getError(0),
+                'errorMail'     => getError(1),
+                'errorHomepage' => getError(2),
+                'errorName'     => getError(4),
                 'children'      => null,
                 'header'        => $header,
                 'group'         => null,
