@@ -6,7 +6,7 @@ class CViewsComments  {
     
     private $app = null;
     private $user = null;
-    private $param  = null;
+    public $param  = null;
     
     public function __construct( $app, $user = null, $param = null ){
         
@@ -34,7 +34,7 @@ class CViewsComments  {
         
         if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
             $callers=debug_backtrace();
-            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
+            dump( "rad: ".__LINE__. " ".__METHOD__." ( option: ".$this->param['option']." ) function called by ". $callers[1]['function']);
         }
         // we need to have param to check where to go
         if ( isset( $this->param ) ){
@@ -686,18 +686,20 @@ class CViewsComments  {
                                     'errorName' => getError(3)) );
         // get tags
         $CTagViews = new \Mango\Views\CTagViews( $this->app );
+        
         $tags = $CTagViews->fillTagsfromDb( $this->app->db );
+        
         $commentTags = $CTagViews->outputCheckboxes( $tags[0] );
         
         
         // get parent comment
-        $tmp         = $ch->getGroupedComments($this->app->db, $commentID, 'parent');
+        //$tmp         = $ch->getGroupedComments($this->app->db, $commentID, 'parent');
         $answers        = $ch->getGroupedComments($this->app->db, $commentID, 'child');
         
-        $parent = $tmp[0];
-        $childComments   = $ch->getChildToComment( $commentID );
+       // $parent = $tmp[0];
+       // $childComments   = $ch->getChildToComment( $commentID );
         
-        
+        $commentTags = $CTagViews->getTagForComment( $answers );
         
         // get formated childdata
        // $childComments[$parent[0]->commentid][] =  $this->formatChildComments( $parent, $parent[0]->commentid );
@@ -725,6 +727,7 @@ class CViewsComments  {
                 'children'      => null,
                 'header'        => $header,
                 'group'         => null,
+                'tags'          => null,
                 
                 ]); 
       

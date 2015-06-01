@@ -12,6 +12,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
     
     private $tagid      = null;
     private $option     = null;
+    private $param      = null;
     
     private $items      = null; // array to put made checkboxes in
     private $names      = null; // all names of made checkboxes
@@ -36,40 +37,49 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         $this->option    = getPickedData( $param, 'option' );
         $tagid           = getPickedData( $param, 'id' );
         $this->tagid     = $tagid;
+        $this->param     = $param;
         
         $this->cHandler  = new CommentHandler( $this->app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
                                         'errorName' => getError(3)) );
         
         
             
-            switch( $param['option'] ){
-                case 'view':
-                case 'visa':
-                    
-                    $this->prepareTagList( $tagid, 'visa');    
-                    if (! $tagid ){
-                        
-                        $this->prepareBtns();
-                        };
-                    $this->prepareCommentView( $tagid );
-                    break;
-                case 'update':
-                    $this->prepareTagsToUpdate( $tagid, $param['page'] );
-                      
-                    break;
-                case 'add':
-                    $this->prepareTagsToUpdate( $tagid, $param['page'] );
-                    break;
-                default:
-                    if( $param['option'] != 'home'){
-                        $this->prepareTagList();
-                    }
-            }
+            
         
         
       
         
         
+    }
+    
+    /**
+     *  doAction
+     */
+    public function doAction(){
+        
+        switch( $param['option'] ){
+            case 'view':
+            case 'visa':
+                
+                $this->prepareTagList( $tagid, 'visa');    
+                if (! $tagid ){
+                    
+                    $this->prepareBtns();
+                    };
+                $this->prepareCommentView( $tagid );
+                break;
+            case 'update':
+                $this->prepareTagsToUpdate( $tagid, $param['page'] );
+                  
+                break;
+            case 'add':
+                $this->prepareTagsToUpdate( $tagid, $param['page'] );
+                break;
+            default:
+                if( $param['option'] != 'home'){
+                    $this->prepareTagList();
+                }
+        }
     }
     
     
@@ -80,7 +90,35 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
      **********************************************************************/
     
     /**
-     *  prepareTagList for later output
+     *  getTagForComment
+     *  @param int commentid
+     *  @return htmlcode tags
+     */
+    public function getTagForComment( $comments = null ){
+        
+        
+        
+        if ( $comments ){
+            foreach( $comments as $comment ){
+                $html = '';
+                
+                $tagnames = $this->getTags( $this->app->db, true, null,null, $comment->catid );
+                foreach( $tagnames as $tag ){
+                    $url = $this->app->url->create("taggar/visa/{$tag->id}");
+                    $html .= "<a href='{$url}'> {$tag->category}</a>";    
+                }
+                
+                
+                
+                $tagList[$comment->commentid] = $html;
+                
+            }
+            return $tagList;
+        }
+    }
+    
+    /**
+     *  prepareTagList for output
      */  
     private function prepareTagList( $tagid = null, $option = null ){
         
@@ -214,6 +252,11 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         
         $this->app->views->add('default/article', ['content' => $html], 'main-wide');
         
+        } else{
+            $CViewsComments = new CViewsComments( $this->app );
+            
+            
+            $CViewsComments->viewListWithComments( null, null, null, null, true );
         }
         
     }

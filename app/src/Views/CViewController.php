@@ -102,7 +102,7 @@ class CViewController extends CViewsFlash {
         $param['url']       = ( isset( $currentUrl ) ) ? $currentUrl : null;
         $param['user']      = $user;
         
-        $param['verbose']   = true; // If set to true info is written to screen
+        $param['verbose']   = false; // If set to true info is written to screen
         
         $this->param        = $param;
         
@@ -170,7 +170,7 @@ class CViewController extends CViewsFlash {
         switch($param['page']){
             case 'taggar':
                 $CTagViews = new \Mango\Views\CTagViews( $app, $param );
-               // $CTagViews->outputTags(  );
+                $CTagViews->doAction();
                 
                 break;
             

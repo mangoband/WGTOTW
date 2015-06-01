@@ -111,7 +111,7 @@ function getPickedData( $var = null, $item = null, $default = null ){
     
     $default = ($default) ? $default : null;
     
-    if( is_array( $var ) ){
+    if( is_array( $var ) && $item ){
         $data = ( isset( $var[$item] ) ) ? $var[$item] : $default;    
     } else{
         $data = ( isset( $var ) ) ? $var : $default;    

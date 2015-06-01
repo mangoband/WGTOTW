@@ -13,19 +13,6 @@
 if ( isset( $header )) { echo $comment->header; }
 
 ?></h4>
-
-<div class="commentInfo <?php echo isParent( $comment->parentid, $comment->id ) ?>">    
-<span class='commentContent <?php echo isParent( $comment->parentid, $comment->id ) ?>'><?=markdown($comment->comment)?></span>
-<p class='commentRespond'><?php
-if ( isset( $children[$comment->id][0] ) ) {
- 
- echo $children[$comment->id][0];
- 
-} else { echo '&nbsp;'; } 
-   ?></p>
-
-</div>
-
 <div class="commentUser">
     
     <p><?=$comment->name?></p>
@@ -38,10 +25,24 @@ if ( isset( $children[$comment->id][0] ) ) {
     <input type='submit' name='doCommentUpdate' id='<?= $comment->commentid ?>' value='Uppdatera' title='Uppdatera' onclick='form.action="<?=$this->url->create('kommentar/uppdatera/'.$comment->commentid)?>"'  />
     <input type='submit' name='doCommentDelete' id='<?= $comment->commentid ?>' value='Ta bort' title='Ta bort' onclick='form.action="<?=$this->url->create('kommentar/radera/'.$comment->commentid)?>"'  />
     
-<?php }?>
+<?php } ?>
     
     <?php }?>
 </div>
+<div class="commentInfo <?php echo isParent( $comment->parentid, $comment->id ) ?>">    
+<span class='commentContent <?php echo isParent( $comment->parentid, $comment->id ) ?>'><?=markdown($comment->comment)?></span>
+<span class='commentTags'></span>
+<p class='commentRespond'><?php
+if ( isset( $children[$comment->id][0] ) ) {
+ 
+ echo $children[$comment->id][0];
+ 
+} else { echo '&nbsp;'; } 
+   ?></p>
+
+</div>
+
+
 
 </div>
 <?php endforeach; ?>

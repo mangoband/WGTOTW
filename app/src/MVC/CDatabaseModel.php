@@ -130,9 +130,14 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     }
                   // get category id from db
                     $db->select("*")
-                    ->from("commentCategory")
-                    ->where('category = ?');
-                    $res = $db->executeFetchAll( [strtolower($category)] );
+                    ->from("commentCategory");
+                     if ( $catid ){
+                        $db->where("id = ?");
+                    } else{
+                        $db->where('category = ?');    
+                    }
+                    
+                    $res = ( is_null( $catid ) ) ? $db->executeFetchAll( [strtolower($category)] ) :$db->executeFetchAll( [strtolower($catid)] );
                     
                     
                     return $res;
