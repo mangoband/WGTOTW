@@ -13,7 +13,9 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
     public $verbose = false;
     public $dbVerbose = false;
     
-    function __construct(){
+    function __construct( ){
+        
+        
         //date_default_timezone_set('Europe/Stockholm');
        
     }
@@ -82,12 +84,13 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
         
     }
+    
     /**
      *  getTags
      *  @param array $db
      *  @return object $result
      */
-    public function getTags( $db = null, $category = null, $popular = null, $commentid = null ){
+    public function getTags( $db = null, $category = null, $popular = null, $commentid = null, $catid = null ){
         
            if ( $db ){
                 
@@ -98,7 +101,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     }
                 } else if ( $popular ){
                     if( $this->verbose == true ){
-                        dump( __LINE__. " ". __METHOD__." get all categories.");
+                        dump( __LINE__. " ". __METHOD__." get all categories 1.");
                     }
                     
                     //
@@ -112,8 +115,12 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     ->groupby("catid")
                     ->orderby("popular desc");
                     
+                    if ( $catid ){
+                        $db->where("catid = ?");
+                    }
+                    $res = (! $catid ) ? $db->executeFetchAll(  ): $db->executeFetchAll( [$catid] );
                     
-                    $res = $db->executeFetchAll(  );
+                    
                
                     return $res;
                 
@@ -149,11 +156,12 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     
                     // get all categories
                     if( $this->verbose == true ){
-                        dump( __LINE__. " ". __METHOD__." get all categories.");
+                        dump( __LINE__. " ". __METHOD__." get all categories 2.");
                     }
                   
                     $db->select("category, id")
-                    ->from("commentCategory");
+                    ->from("commentCategory as c2c")
+                    ->orderby("category");
                     $res = $db->executeFetchAll(  );
                     
                     return $res;
@@ -564,7 +572,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         if( $db && $parentid){
             $db->select("*, c.comment as comment, c.header as header, c.created as created, c2c.parentid")
             ->from("comment2Category as c2c")
-            ->join("comment as c", "c2c.commentid = c.id")
+            ->join("comment as c", "c.id = c2c.commentid")
             ->join("comment as p", "p.id = c2c.parentid")
             ->join("user ", "user.id = c2c.userid")
             ->where("c2c.parentid = ?")
@@ -615,9 +623,11 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                // $db->andwhere("p.id != child.id");
                 $param = [$commentid];
                 
+                
             } else if( $child && $child == 'tag' ){
                 $db->where("c2c.catid = ?");
-                $param = [$commentid]; 
+                $param = [$commentid];
+                
             }
             
             $db->orderby('c2c.parentid asc, child.id asc ,created desc, childdate desc' );

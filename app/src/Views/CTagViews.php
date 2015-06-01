@@ -23,6 +23,8 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
     
     private $output     = null; // data to output
     
+    private $printed    = false;
+    
     public function __construct( $app, $param = null ){
         
         $this->app = $app;
@@ -31,7 +33,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         $this->maxColumn = getPickedData( $param, 'maxCol', $this->maxColumn ); 
         $this->maxRow    = getPickedData( $param, 'maxRow', $this->maxRow ); 
         
-        $option          = getPickedData( $param, 'option' );
+        $this->option    = getPickedData( $param, 'option' );
         $tagid           = getPickedData( $param, 'id' );
         $this->tagid     = $tagid;
         
@@ -39,28 +41,35 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
                                         'errorName' => getError(3)) );
         
         
+            
+            switch( $param['option'] ){
+                case 'view':
+                case 'visa':
+                    
+                    $this->prepareTagList( $tagid, 'visa');    
+                    if (! $tagid ){
+                        
+                        $this->prepareBtns();
+                        };
+                    $this->prepareCommentView( $tagid );
+                    break;
+                case 'update':
+                    $this->prepareTagsToUpdate( $tagid, $param['page'] );
+                      
+                    break;
+                case 'add':
+                    $this->prepareTagsToUpdate( $tagid, $param['page'] );
+                    break;
+                default:
+                    if( $param['option'] != 'home'){
+                        $this->prepareTagList();
+                    }
+            }
+        
+        
       
         
-        switch( $param['option'] ){
-            case 'view':
-            case 'visa':
-                
-                if (! $tagid ){
-                    $this->prepareTagList( $tagid );    
-                    $this->prepareBtns();
-                    };
-                $this->prepareCommentView( $tagid );
-                break;
-            case 'update':
-                $this->prepareTagsToUpdate( $tagid );
-                  
-                break;
-            case 'add':
-                $this->prepareTagsToUpdate( $tagid );
-                break;
-            default:
-                $this->prepareTagList();
-        }
+        
     }
     
     
@@ -73,27 +82,40 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
     /**
      *  prepareTagList for later output
      */  
-    private function prepareTagList( $tagid = null ){
+    private function prepareTagList( $tagid = null, $option = null ){
         
         
-        
-        
-       
         //
         // fill $tags with all tags from db
         //
-        $tags = $this->cHandler->getTags( $this->app->db, null, null, $tagid );
+        $tags = (! $option || $option == 'visa'  ) ? $this->getTags( $this->app->db, null, true ) : $this->getTags( $this->app->db, null, null );
         
-        // popular tags
         
-        foreach( $tags as $key => $tag ){
-            $nr = $key + 1;
-            $url = $this->app->url->create("taggar/view/{$tag->id}");
-            $list[] = "{$nr} : <a href='{$url}'>{$tag->category}</a>";
+        switch($this->option){
+            
+            case 'update':
+            
+                $action = 'update';
+                break;
+            default:
+            $action = 'visa';
         }
         
-        // make html to view nr and tag
-        $this->output[] = $this->outputCheckboxes( $list );
+       
+            // popular tags
+            
+            foreach( $tags as $key => $tag ){
+                $nr = $key + 1;
+                $url = $this->app->url->create("taggar/{$action}/{$tag->catid}");
+                $list[] = "<a href='{$url}'>{$tag->popular} : {$tag->category}</a>";
+            }
+            
+        
+            // output data
+        
+                $this->app->views->add('default/article', ['content' => $this->outputCheckboxes( $list )], 'main-wide');
+                
+        
         
     }
     
@@ -103,6 +125,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
      */  
     private function prepareCommentView( $tagid = null ){
         
+        
         // we dont need to get the comments unless a tag is picked
         if ( $tagid ){
          
@@ -110,7 +133,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
             $CViewsComments = new CViewsComments( $this->app );
             
             
-            $CViewsComments->viewListWithComments( null, $res['data'], true, $tagid );
+            $CViewsComments->viewListWithComments( null, $res['data'], true, $tagid, true );
             
         }
     }
@@ -118,7 +141,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
     /**
      *  prepareTagsToUpdate
      */
-    private function prepareTagsToUpdate( $tagid){
+    private function prepareTagsToUpdate( $tagid, $page = null){
         
         //
         // fill $tags with all tags from db
@@ -126,7 +149,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         $tags = $this->cHandler->getTags( $this->app->db, null,null );
         
         // make html to view nr and tag
-        $html = $this->listTags( $tags, 'update' );
+        $html = $this->listTags( $tags, 'update', $page );
         
         $this->app->views->add('default/article', ['content' => $html], 'main-wide');
         
@@ -135,6 +158,9 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         
     }
     
+    /**
+     *  prepareForm
+     */  
     protected function prepareForm( $tagid = null, $tags = null, $app ){
         
         $form = new  \Anax\CFormContact\CFormComment( $this->app, null, null, $this );
@@ -181,9 +207,13 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         if ( isset( $online[0] ) && $online[0] == 1 ||$online[0] == 2 ){
             $url = $this->app->url->create("taggar/update/");
         $url2 = $this->app->url->create("taggar/add/");
-        $html = "<p><a href='{$url}' class='clear'>[Hantera taggar]</a></p>";
-        $html .= "<p><a href='{$url2}' class='clear'>[Skapa nya taggar]</a></p>";
-        $this->output[] = $html;    
+        $html = "\t<p class='makeTag'><hr /><a href='{$url}' class='tag' >Hantera taggar</a>";
+        $html .= "\n\t<a href='{$url2}'  class='tag' >Skapa nya taggar</a></p>";
+        
+        // output data
+        
+        $this->app->views->add('default/article', ['content' => $html], 'main-wide');
+        
         }
         
     }
@@ -191,7 +221,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
     /**
      *  outputTags - sends view to app->views
      */
-    public function outputTags(){
+    public function outputTags( $data = null){
         
         
         
@@ -201,7 +231,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         if( $data ){
             foreach( $data as $html ){
                 // output data
-                $this->app->views->add('default/article', ['content' => $html], 'main-wide');        
+      //          $this->app->views->add('default/article', ['content' => $html], 'main-wide');        
             }
         }
         
@@ -211,12 +241,25 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
      *  listTags
      *
      */
-    public function listTags( $tagid = null ){
+    public function listTags( $tagid = null, $action = null, $page = null ){
+        
+        $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['class']."::". $callers[1]['function']);
+        
+        switch($this->option){
+            
+            case 'update':
+            
+                $action = 'update';
+                break;
+            default:
+            $action = 'visa';
+        }
         
         //
         // fill $tags with all tags from db
         //
-        $tags = $this->getTags( $this->app->db, null, null );
+        $tags = (! $page ) ? $this->getTags( $this->app->db, null, true ) : $this->getTags( $this->app->db, null, false );
         
         // popular tags
         
@@ -225,8 +268,8 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
             $selected = ( $tagid == $tag->id ) ? " class='selected'": '';
             
             $nr = $key + 1;
-            $url = $this->app->url->create("taggar/view/{$tag->id}");
-            $list[] = "{$nr} : <a href='{$url}'{$selected}>{$tag->category}</a>";
+            $url = $this->app->url->create("taggar/{$action}/{$tag->id}");
+            $list[] = "<a href='{$url}'{$selected}>{$tag->category}</a>";
         }
         
         
@@ -236,6 +279,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         $html = $this->outputCheckboxes( $list );
         
         $this->app->views->add('default/article', ['content' => $html], 'main-wide');
+        $this->printed = true;
     }
     
     /**

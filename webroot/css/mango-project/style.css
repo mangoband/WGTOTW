@@ -472,9 +472,22 @@ textarea {
   float: left;
   display: inline-block;
 }
-.checkboxAria li {
+.checkboxAria li a,
+.tag {
   float: left;
   padding: 5px;
+  margin: 5px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  background-color: #ccc;
+  text-decoration: none;
+}
+.checkboxAria li a:hover,
+.tag:hover {
+  background-color: #ffcc66;
+}
+.checkboxAria li {
+  float: left;
 }
 .viewTags {
   display: block;
@@ -488,6 +501,12 @@ textarea {
 }
 .users li {
   padding: 5px;
+  float: left;
+}
+.makeTag {
+  float: left;
+}
+.tag {
   float: left;
 }
 .comment {

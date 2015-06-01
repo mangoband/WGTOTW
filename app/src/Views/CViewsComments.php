@@ -19,10 +19,11 @@ class CViewsComments  {
     
     /**
      *  viewPopularTags
-     */  
+     */
+   
     private function viewPopularTags( $tagid = null ){
-        $CTagViews = new \Mango\Views\CTagViews( $this->app );
-        $CTagViews->listTags($tagid);
+        $CTagViews = new \Mango\Views\CTagViews( $this->app, $this->param, true );
+      
     }
     
     /**
@@ -108,7 +109,7 @@ class CViewsComments  {
     /**
      *  viewListWithComments
      */
-    public function viewListWithComments( $param = null, $data = null, $isTag = false, $tagid = null ){
+    public function viewListWithComments( $param = null, $data = null, $isTag = false, $tagid = null, $popular = null ){
         
        
        if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
@@ -117,7 +118,10 @@ class CViewsComments  {
         }
        
         // view tags from db ( CDatabaseModel)
-        $this->viewPopularTags( $tagid);
+        if ( is_null( $popular) ){
+            $this->viewPopularTags( $tagid);    
+        }
+        
         
         // make object of commentControll
         $cc = null;

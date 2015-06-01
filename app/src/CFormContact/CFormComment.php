@@ -12,14 +12,15 @@ class CFormComment extends h\CForm  {
     private $app        = null;
     private $comments   = null;
     private $user       = null;
-    
+    private $CTagViews   = null;
      private $Checkbox  = null;
     
-    public function __construct( $app = null, $user = null, $commentController = null ){
+    public function __construct( $app = null, $user = null, $commentController = null, $tagView = null ){
         parent::__construct();
         $this->app      = $app;
         $this->comments = $commentController;
         $this->user     = $user;
+        $this->CTagViews = $tagView;
         
         
     }
