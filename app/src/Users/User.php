@@ -85,7 +85,6 @@ private $online;
       } else {
       }
       
-      dump( $userid);
       // define link
       $link = ( $link ) ? $link : 'anv/visa-en'; 
       
@@ -117,8 +116,7 @@ private $online;
          
           $html = '';
           foreach( $trashedUsers as $trashed){
-            dump($trashed->id." ".$trashed->name);
-            dump($userid[0]);
+            
             if( $okToShow == true ){
                $trash = '';
                if ( $trashed->deleted == true ){ $trash = " <i class='fa fa-trash'></i> "; }
