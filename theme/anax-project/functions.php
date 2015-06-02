@@ -101,9 +101,17 @@ function getProfileLink( $app ){
     $tmp  =  \Anax\Users\User::getUserID();
     $id = $tmp[0];
     $acronym = $tmp[1];
-    $link = ( is_null( $id ) ) ? $app->url->create() : $app->url->create("profil/show/id/{$id}/{$acronym}");
+    $link = ( is_null( $id ) ) ? $app->url->create("loggain") : $app->url->create("profil/show/id/{$id}/{$acronym}");
     
     return $link;
+}
+
+/**
+ *  getGravatarAlt
+ */
+function getGravatarAlt(){
+    $text = ( isset( $_SESSION['user']['acronym'] ) ) ? "Användarprofil" : "Gravatar";
+    return $text;
 }
 /**
  *  getName

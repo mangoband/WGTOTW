@@ -989,7 +989,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             }
             
             // return all comments
-            $db->select("c.*, u.name, u.email, c2c.parentid, c2c.commentid, c2c.userid")
+            $db->select("c.*, u.name, u.email, c2c.parentid, c2c.commentid, c2c.userid, c2c.catid")
             ->from('comment AS c')
             ->join('user AS u', 'c2c.userid = u.id')
             ->join("comment2Category as c2c", "c2c.commentid = c.id")
@@ -1079,8 +1079,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
         $check = $this->getThisComment( $id, $db, 'parent' );
         
-        dump( $check);
-        die();
+        $msg = "<h3>Följande inlägg är raderade:</h3>\n";
         if( isset($check[0]) && $check[0]->commentid == $check[0]->parentid ){
             
             // remove comment and answers...
@@ -1088,8 +1087,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 dump( "rad: ".__LINE__." ".__METHOD__ ." remove parent and answers ". $id);
                
             }
-            die();
-            $msg = "<h3>Följande inlägg är raderade:</h3>\n";
+            
+            
             foreach( $check as $comment ){
                 
                 // remove link to categories
@@ -1113,7 +1112,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             
         } else{
              $check = $this->getThisComment( $id, $db, null );
-             dump( $check);
+             
              if( $this->verbose == true ){
                 dump( "rad: ".__LINE__." ".__METHOD__ ." remove answer ". $id);
                 
@@ -1125,19 +1124,19 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 "id = ?"
             );
           
-           // $res = $db->execute([$id]);
+            $res = $db->execute([$id]);
             
             $db->delete(
                 'comment2Category',
                 'commentid = ?'
             );
-          //  $res = $db->execute([$id]);
-            $msg .= "<p>{$check->header}</p>\n";
+            $res = $db->execute([$id]);
+            $msg .= "<p>".$check[0]->header." är raderad</p>\n";
         }
        
         
         
-        return $res;
+        return $msg;
     }
     
     /**

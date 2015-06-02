@@ -549,12 +549,16 @@ textarea {
   margin-top: 27px;
   padding: 5px;
 }
+.commentUser a {
+  text-align: right;
+}
 .commentUser {
+  text-align: right;
   float: right;
   background-color: #eee;
   display: inline-block;
   display: inline;
-  width: 200px;
+  width: 300px;
   margin: 0 0%;
 }
 .commentUser p {
@@ -570,7 +574,7 @@ textarea {
   display: inline-block;
   float: left;
   width: 74%;
-  min-height: 100px;
+  min-height: 20px;
 }
 .commentListResponse {
   margin-left: 20px;

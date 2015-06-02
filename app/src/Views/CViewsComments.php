@@ -132,12 +132,14 @@ class CViewsComments  {
         
         $comments = (  $isTag == true ) ? $data :$cc->getGroupedComments($this->app->db, null, 'parent');
         
-    //    echo ( $isTag == true  ) ? dump(__LINE__." data ".$callers[1]['function']) : dump(__LINE__." getGroupedComments ".$callers[1]['function']);
+    
             
         // define content & header
         $title = "Svar";
         $header = "<h2>{$title}</h2>";
         if ( $comments ){
+            $loggedUserid = \Anax\Users\User::getUserID();
+           
            $content = "\n<table class='commentList'>";
         
             // declare th
@@ -151,9 +153,9 @@ class CViewsComments  {
             foreach( $comments as $comment ){
               
               
-                $answers = ( isset($comment->answers ) ) ? $comment->answers : $this->returnAnswers($comment->parentid, $cc);
+              //  $answers = ( isset($comment->answers ) ) ? $comment->answers : $this->returnAnswers($comment->parentid, $cc);
                 $answers = $this->returnAnswers($comment->parentid, $cc); 
-           //     echo ( isset($comment->answers ) ) ? dump(__LINE__." comment->answers ".$callers[1]['function']) : dump(__LINE__." returnAnswers ".$callers[1]['function']);
+           
                 if( $parentID != $comment->parentid ){
                 
                     $url = $this->app->url->create("kommentar/visa/".$comment->parentid);
@@ -163,7 +165,10 @@ class CViewsComments  {
                                                      'header'   => $comment->header,
                                                      'views'    => 1,
                                                      'answerNr' => $answers,
-                                                     'url'      => $url
+                                                     'url'      => $url,
+                                                     'loggedUser' => $loggedUserid,
+                                                     'userid'   => $comment->userid,
+                                                     'commentid'=> $comment->commentid
                                                      ])."</tr>";
                     $parentID = $comment->parentid;   
                 }
@@ -191,7 +196,6 @@ class CViewsComments  {
     }
     
     
-    
     /**
      *  createCommentRow
      */
@@ -205,7 +209,15 @@ class CViewsComments  {
         $commentDate        = ( isset( $p['date'] ) )       ?  "<td class=''>{$p['date']}</td>"          : '';
         $commentViews       = ( isset( $p['views'] ) )      ?  "<td class='commentViews'><p>( {$p['views']} )</p></td>"        : '';
         
-        return $commentAnswerNr.$commentHeader.$commentDate;
+        if( isset( $p['loggedUser'][0] ) ){
+            $url_update = $this->app->url->create('kommentar/uppdatera/'.$p['commentid']);
+            $url_remove = $this->app->url->create('kommentar/radera/'.$p['commentid']);
+        }
+        
+        
+        $removeLink         = ( isset( $p['loggedUser'][0] ) && ( $p['loggedUser'][0] == 1 || $p['loggedUser'][0] == 2 || $p['loggedUser'][0] == $p['userid'] ) )
+                            ?  "<td class='commentRemove'><a href='{$url_remove}' class='tag'>Radera</a><a href='{$url_update}' class='tag'>Uppdatera</a></td>": '';
+        return $commentAnswerNr.$commentHeader.$commentDate.$removeLink;
         
     }
     
@@ -303,9 +315,8 @@ class CViewsComments  {
         $CTagViews = new \Mango\Views\CTagViews( $this->app );
         
         $tags = $CTagViews->fillTagsfromDb( $this->app->db );
-        $commentTags = $CTagViews->outputCheckboxes( $tags[0] );
-        dump(__METHOD__.__LINE__);
-        dump( $commentTags);
+        $commentTags = $CTagViews->getTagForComment( $allUserComments );
+        
         // make content to updateform
         
         foreach( $comments as $comment ){
@@ -332,7 +343,7 @@ class CViewsComments  {
             'header'        => $comment->header,
             'group'         => null,
             'tags'          => $commentTags,
-            'sectionheader' => null,
+            'sectionheader' => '',
             'parentHeader'  => $parentHeader
             ]);
         

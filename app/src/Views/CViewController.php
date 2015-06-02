@@ -199,7 +199,7 @@ class CViewController extends CViewsFlash {
             case 'logout':
                 if ( isset($_SESSION['user'])){
                     unset($_SESSION['user']);
-                    $url = $this->app->url->create('kommentera');
+                    $url = $this->app->url->create('home');
                     $this->app->response->redirect($url);
                 }
                 break;
