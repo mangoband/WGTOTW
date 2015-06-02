@@ -16,7 +16,14 @@
  */
 function dump($array) 
 {
-    echo "<pre>" . htmlentities(print_r($array, 1)) . "</pre>";
+    if( is_null($array) ){
+        $callers=debug_backtrace();
+            
+        echo "<pre>NULL Value from ".$callers[1]['class']."::".$callers[1]['function']."</pre>";    
+    } else {
+        echo "<pre>" . htmlentities(print_r($array, 1)) . "</pre>";    
+    }
+    
 }
 
  
@@ -82,6 +89,26 @@ function setMenu( ){
 }
 
 /**
+*  setPageTitle
+*/
+function setPageTitle( $title = null, $app ){
+   if ( $title ){
+       // set pagetitle
+    $app->theme->setTitle($title);
+    $app->theme->setVariable('title', $title);
+    $isTrue = $app->theme->getVariable('isTitle');
+    
+    // if title is set we dont print it again
+    if ( $isTrue == false ){
+        $app->theme->setVariable('isTitle', true);
+        $pt = $app->theme->getVariable('title');
+        $app->views->add('me/title', [ 'title' => $pt], 'title');    
+    }
+    
+   }
+}
+    
+/**
  *  getLastUrl
  *  @return string url
  */
@@ -120,6 +147,8 @@ function getPickedData( $var = null, $item = null, $default = null ){
     
     return $data;
 }
+
+
 /*
 function markdown($text) {
     echo '<br />'.ANAX_3pp. 'php-markdown/Michelf/Markdown.php<br />';

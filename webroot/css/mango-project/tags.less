@@ -4,7 +4,7 @@
     float:left;
     display:inline-block;
 }
-.checkboxAria li a, .tag{
+.checkboxAria li a, .tag, .commentTags a, .respondBtn{
     float:left;
     padding:5px;
     margin:5px;
@@ -13,7 +13,7 @@
     background-color:@grey;
     text-decoration:none;
 }
-.checkboxAria li a:hover, .tag:hover{
+.checkboxAria li a:hover, .tag:hover, .respondBtn:hover{
     
     background-color:#ffcc66;
 }
@@ -33,9 +33,19 @@ float:left;
 }
 
 .makeTag{
-
 float:left;
 }
 .tag{
 float:left;
+}
+.commentTags{
+    clear:both;
+    
+    display:block;
+    height:50px;
+}
+.respondBtn{
+margin-top:22px;
+    background-color:#828b4b;
+    color:#000;
 }

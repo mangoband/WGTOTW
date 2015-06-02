@@ -1,0 +1,1 @@
+<h1 id='pagetitle'><?=$title?></h1>

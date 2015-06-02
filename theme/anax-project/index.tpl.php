@@ -31,7 +31,9 @@
 <div id='sitelogo'>
 <?php $this->views->render('sitelogo')?>
 </div>
+<?php $this->views->render('title')?>
 <div id='navbar'>
+
 <?php $this->views->render('navbar')?>
 </div>
 <?php endif; ?>

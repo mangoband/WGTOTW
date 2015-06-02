@@ -42,13 +42,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         $this->cHandler  = new CommentHandler( $this->app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
                                         'errorName' => getError(3)) );
         
-        
-            
-            
-        
-        
-      
-        
+  
         
     }
     
@@ -57,26 +51,29 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
      */
     public function doAction(){
         
-        switch( $param['option'] ){
+        switch( $this->param['option'] ){
             case 'view':
             case 'visa':
-                
-                $this->prepareTagList( $tagid, 'visa');    
-                if (! $tagid ){
+                // set pagetitle
+                setPageTitle( 'Visa Taggar', $this->app);
+                $this->prepareTagList( $this->param['id'], 'visa');    
+                if (! $this->param['id'] ){
                     
                     $this->prepareBtns();
                     };
-                $this->prepareCommentView( $tagid );
+                $this->prepareCommentView( $this->param['id'] );
                 break;
             case 'update':
-                $this->prepareTagsToUpdate( $tagid, $param['page'] );
+                
+                $this->prepareTagsToUpdate( $this->param['id'], $this->param['page'] );
                   
                 break;
             case 'add':
-                $this->prepareTagsToUpdate( $tagid, $param['page'] );
+                
+                $this->prepareTagsToUpdate( $this->param['id'], $this->param['page'] );
                 break;
             default:
-                if( $param['option'] != 'home'){
+                if( $this->param['option'] != 'home'){
                     $this->prepareTagList();
                 }
         }
@@ -104,6 +101,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
                 
                 $tagnames = $this->getTags( $this->app->db, true, null,null, $comment->catid );
                 foreach( $tagnames as $tag ){
+                    
                     $url = $this->app->url->create("taggar/visa/{$tag->id}");
                     $html .= "<a href='{$url}'> {$tag->category}</a>";    
                 }

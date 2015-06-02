@@ -403,7 +403,10 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
             'errorMail'     => $param['errorMail'],
             'errorHomepage' => $param['errorHomepage'],
             'errorName'     => $param['errorName'],
-            'children'      => $param['children']
+            'children'      => $param['children'],
+            'tags'          => $param['tags'],
+            'sectionheader' => $param['sectionheader'],
+            'parentHeader'  => $param['parentHeader'],
         ]);
     }
 }

@@ -473,7 +473,9 @@ textarea {
   display: inline-block;
 }
 .checkboxAria li a,
-.tag {
+.tag,
+.commentTags a,
+.respondBtn {
   float: left;
   padding: 5px;
   margin: 5px;
@@ -483,7 +485,8 @@ textarea {
   text-decoration: none;
 }
 .checkboxAria li a:hover,
-.tag:hover {
+.tag:hover,
+.respondBtn:hover {
   background-color: #ffcc66;
 }
 .checkboxAria li {
@@ -509,6 +512,16 @@ textarea {
 .tag {
   float: left;
 }
+.commentTags {
+  clear: both;
+  display: block;
+  height: 50px;
+}
+.respondBtn {
+  margin-top: 22px;
+  background-color: #828b4b;
+  color: #000;
+}
 .comment {
   display: block;
   border-top: 1px solid gray;
@@ -530,6 +543,11 @@ textarea {
   padding: 5px;
   display: inline-block;
   float: left;
+}
+.parentComment {
+  float: right;
+  margin-top: 27px;
+  padding: 5px;
 }
 .commentUser {
   float: right;
@@ -620,7 +638,21 @@ p.commentViews {
   display: block;
   float: right;
   width: 100%;
+  max-width: 700px;
   z-index: 2;
+  text-align: right;
+}
+#pagetitle {
+  clear: both;
+  display: inline-block;
+  margin-top: 12px;
+  margin-right: 2px;
+  text-align: left;
+  float: left;
+  display: inline;
+  width: 16.666666666667%;
+  margin: 0 0%;
+  z-index: 4;
 }
 .navbar a {
   width: 100%;
@@ -641,6 +673,7 @@ li {
 nav {
   float: right;
   margin-top: 22px;
+  display: inline-block;
 }
 nav ul {
   list-style: none;

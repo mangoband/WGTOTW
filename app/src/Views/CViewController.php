@@ -87,6 +87,13 @@ class CViewController extends CViewsFlash {
         $this->app->theme->setVariable('wrapperClass', '');
         $this->app->theme->setVariable('gridColor', '');
         
+        // set pagetitle
+        $this->app->theme->setVariable('isTitle', false);
+       /* $this->app->theme->setVariable('title', 'Visa');
+        $pt = $this->app->theme->getVariable('title');
+        $this->app->views->add('me/title', [ 'title' => $pt], 'title');
+        */
+        
         $this->app->navbar->configure(ANAX_APP_PATH . 'config/' . setMenu() );
         
         
@@ -197,6 +204,7 @@ class CViewController extends CViewsFlash {
                 }
                 break;
             case 'loggain':
+                
                 $this->login( $user );
                 
                 break;
@@ -311,6 +319,8 @@ class CViewController extends CViewsFlash {
     
     private function login( $user = null ){
         
+        // set pagetitle
+        setPageTitle( 'Login', $this->app);
         if ( $user ){
             $form = new  \Anax\CFormContact\CFormComment( $this->app, $user, null );
             $form->loginForm();
@@ -341,6 +351,8 @@ class CViewController extends CViewsFlash {
         $url2 = $app->url->create('reset-kommentarer');
         $url3 = $app->url->create();
         
+        // set pagetitle
+        setPageTitle( 'Hantera databas', $app);
         
         $CViewsComments = new \Mango\Views\CViewsComments( $app );
         $user = null;
@@ -365,6 +377,7 @@ EOD;
    $app->views->add('default/article', ['content' => $html], 'main');
     }
     
+    
     /**
      *  addUser
      *  @param $add
@@ -379,7 +392,8 @@ EOD;
         $app->theme->setVariable('gridColor', '');
         
         $title  = "Lägg till användare";
-        $app->theme->setTitle($title);
+        // set pagetitle
+        setPageTitle( 'Användare', $app);
         $header = "<h2>{$title}</h2>";
         
         $form = new  \Anax\CFormContact\CFormContact( $app, $user );
@@ -433,7 +447,8 @@ EOD;
         $app->theme->setVariable('gridColor', '');
         
         $title  = "Skapa tabell";
-        $app->theme->setTitle($title);
+        // set pagetitle
+        setPageTitle( $title, $app);
         $header = "<h2>{$title}</h2>";
         
         
@@ -482,7 +497,8 @@ EOD;
         $app->theme->setVariable('gridColor', '');
         
         $title  = "Uppdatera användare";
-        $app->theme->setTitle($title);
+        // set pagetitle
+        setPageTitle( 'Uppdatera', $app);
         $header = "<h2>{$title}</h2>";
         
         $user = new \Anax\Users\User( $app );
@@ -506,7 +522,8 @@ EOD;
         $app->theme->setVariable('gridColor', '');
         
         $title  = "Visa användare";
-        $app->theme->setTitle($title);
+        // set pagetitle
+        setPageTitle( 'Uppdatera', $app);
         $header = "<h2>{$title}</h2>";
         $content = 'Till höger ser du en lista på de användare som är registrerade.';
    //     $app->views->add('me/timeOfDay', ['icon' => $this->viewTimeWithFa(date('G')),'timeOfDay' => date('G : i'), 'email'=> $this->email], 'header');
@@ -531,7 +548,8 @@ EOD;
         $app->theme->setVariable('wrapperClass', '');
         $app->theme->setVariable('gridColor', '');
         $title  = "Visa användare";
-        $app->theme->setTitle($title);
+        // set pagetitle
+        setPageTitle( 'Uppdatera', $app);
         $header = "<h2>{$title}</h2>";
         $content = '';
        
@@ -575,7 +593,7 @@ EOD;
             
         } else {
             if ( $online === true ){
-                $content = "Du måste välja en användare först...";
+                $content = "Välj en användare till höger...";
               //  $this->app->views->add('users/list', ['content' => $user->getLogoutBtn()], 'sidebar'); 
             } else {
                 $content = "Du måste logga in först...";
@@ -708,7 +726,9 @@ EOD;
      */
     private function omAction( $app = null ){
         
-        $app->theme->setTitle("Om");
+        
+        // set pagetitle
+        setPageTitle( 'Om', $app);
         
         // read content of file
         $om = $app->fileContent->get('om.md');

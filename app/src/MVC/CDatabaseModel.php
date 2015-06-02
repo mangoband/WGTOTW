@@ -534,10 +534,11 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         if ( $db ){
             $db->setVerbose($this->dbVerbose);
             // gets a list of with parent comments
-            $db->select("*,commentid, c.comment, c.header, c.created, catid, userid, name, parentid, count(c2c.parentid) -1  as answers")
+            $db->select("*,commentid, c.comment, c.header, c.created, catid, userid, name, parentid,
+                        group_concat(cc.category) as tag, group_concat(cc.id) as tagid, count(c2c.parentid) -1  as answers")
             ->from("comment as c")
             ->join("comment2Category as c2c", "c2c.parentid = c.id")
-            
+            ->join("commentCategory as cc", "c2c.catid = cc.id")
             ->join("user","user.id = c2c.userid");
            
            // if parentid is set
@@ -575,14 +576,16 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         }
         // gets a list with answers to comment
         if( $db && $parentid){
-            $db->select("*, c.comment as comment, c.header as header, c.created as created, c2c.parentid")
+            $db->select("*, c.comment as comment, c.header as header, c.created as created, c2c.parentid,
+                        group_concat(cc.category) as tag, group_concat(cc.id) as tagid,count(c2c.parentid) -1  as answers")
             ->from("comment2Category as c2c")
+            ->join("commentCategory as cc", "cc.id = c2c.catid")
             ->join("comment as c", "c.id = c2c.commentid")
             ->join("comment as p", "p.id = c2c.parentid")
             ->join("user ", "user.id = c2c.userid")
             ->where("c2c.parentid = ?")
            // ->andwhere("c2c.parentid != c.id")
-            ->groupby("c2c.id")
+            ->groupby("c2c.parentid")
             ->orderby(' parentid asc, commentid asc,created desc' );
             
             $data = $db->executeFetchAll( [$parentid] );
@@ -706,10 +709,10 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
         } else if ( $db ){
             
-            $db->select("count(*) as rows, parent")
+            $db->select("count(*) as rows, parentid")
             ->from("comment2Category as c2c")
             
-            ->groupby("parent, c2c.commentid");
+            ->groupby("parentid");
             
             $data = $db->executeFetchAll(  );
             

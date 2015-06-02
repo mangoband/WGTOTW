@@ -111,7 +111,7 @@ class CViewsComments  {
      */
     public function viewListWithComments( $param = null, $data = null, $isTag = false, $tagid = null, $popular = null ){
         
-       
+       $callers=debug_backtrace();
        if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
             $callers=debug_backtrace();
             dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
@@ -132,9 +132,11 @@ class CViewsComments  {
         
         $comments = (  $isTag == true ) ? $data :$cc->getGroupedComments($this->app->db, null, 'parent');
         
+    //    echo ( $isTag == true  ) ? dump(__LINE__." data ".$callers[1]['function']) : dump(__LINE__." getGroupedComments ".$callers[1]['function']);
             
         // define content & header
-        $header = '<h2>Kommentarer</h2>';
+        $title = "Svar";
+        $header = "<h2>{$title}</h2>";
         if ( $comments ){
            $content = "\n<table class='commentList'>";
         
@@ -149,8 +151,9 @@ class CViewsComments  {
             foreach( $comments as $comment ){
               
               
-                $answers = ( isset($comment->answers ) ) ? $comment->answers : $this->returnAnswers($comment->parentid, $cc); 
-                
+                $answers = ( isset($comment->answers ) ) ? $comment->answers : $this->returnAnswers($comment->parentid, $cc);
+                $answers = $this->returnAnswers($comment->parentid, $cc); 
+           //     echo ( isset($comment->answers ) ) ? dump(__LINE__." comment->answers ".$callers[1]['function']) : dump(__LINE__." returnAnswers ".$callers[1]['function']);
                 if( $parentID != $comment->parentid ){
                 
                     $url = $this->app->url->create("kommentar/visa/".$comment->parentid);
@@ -180,9 +183,13 @@ class CViewsComments  {
         // view comments
         $this->app->views->add('default/article', ['header'=>$header, 'content' => $content], 'main-wide');
        
+        // set pagetitle
+        setPageTitle( 'Frågor', $this->app);
+        
         
      
     }
+    
     
     
     /**
@@ -211,16 +218,39 @@ class CViewsComments  {
      */
     private function createCommentStructure( $p = null ){
         
+        if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
+            $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
+        }
+        
+        // make tags as links
+        function makeATag( $id = null, $name = null, $app = null ){
+            
+                $a = '';
+                if( $name && $id ){
+                    foreach( $name as $key => $value ){
+
+                        $url = $app->url->create("taggar/visa/{$id[$key]}");
+                        $a .= "<a href='$url' class='tag'>{$name[$key]}</a>";
+                    }       
+                }
+            
+            return $a;
+            
+            
+        }
+       
         // collect data from array $p
-        $header     = ( isset( $p['header'] ) ) ? $p['header']  : '';
-        $content    = ( isset( $p['content']) ) ? $p['content'] : '';
-        $id         = ( isset( $p['parentid'] ) )     ? $p['parentid']      : '';
-        $userid     = ( isset( $p['userid'] ) ) ? $p['userid']  : '';
-        $user       = ( isset( $p['user'] ) )   ? $p['user']    : '';
-        $date       = ( isset( $p['date'] ) )   ? $p['date']    : '';
-        $row        = ( isset( $p['row'] ) )    ? $p['row']     : '';
-        $tags       = ( isset( $p['tags'] ) )   ? $p['tags']    : '';
-        $answers    = ( isset( $p['answers']))  ? $p['answers'] : '';
+        $header     = ( isset( $p->header ) ) ? $p->header  : '';
+        $content    = ( isset( $p->comment) ) ? $p->comment : '';
+        $id         = ( isset( $p->parentid ) ) ? $p->parentid      : '';
+        $userid     = ( isset( $p->userid ) ) ? $p->userid  : '';
+        $user       = ( isset( $p->name ) )   ? $p->name    : '';
+        $date       = ( isset( $p->date ) )   ? $p->date    : '';
+        $row        = ( isset( $p->row ) )    ? $p->row     : '';
+        $tags       = ( isset( $p->tag ) )   ? explode(',', $p->tag)    : null;
+        $tagid       = ( isset( $p->tagid ) )   ? explode(',',$p->tagid)    : null;
+        $answers    = ( isset( $p->answers))  ? $p->answers : '';
         
         $url = $this->app->url->create("kommentar/visa/".$id);
         $url2 = $this->app->url->create("kommentar/svara/".$id);
@@ -231,8 +261,8 @@ class CViewsComments  {
         }
         $html .= "\n\t<li class='comment'>".markdown($content)."</li>";
         if ( $row == 0 ){
-            $html .= "\n\t<li class='viewTags'>{$tags}<input type='hidden' value='{$id}' name='view[{$id}]' /></li>";
-            $html .= "\n\t<li><span class='commentAnswerList'><a href='{$url2}'>Besvara</a>  <a href='{$url}'>Svar</a>({$answers}) </span><span class='commentUserList'>{$user}</li>";
+            $html .= "\n\t<li class='viewTags'>".makeATag( $tagid, $tags, $this->app )."<input type='hidden' value='{$id}' name='view[{$id}]' /></li>";
+            $html .= "\n\t<li><span class='commentAnswerList'><a href='{$url2}' class='respondBtn'>Besvara</a>  </span><span class='commentUserList parentComment'>{$user}</li>";
         }
         return $html;
     }
@@ -252,6 +282,9 @@ class CViewsComments  {
         $title = "Kommentera";
         $app->theme->setTitle($title);
        
+        // set pagetitle
+        setPageTitle( $title, $this->app);
+        
         $app->MangoFlash->get('notice');
         
         //$user = new \Anax\Users\User( $app );
@@ -266,7 +299,13 @@ class CViewsComments  {
         $allUserComments = $ch->fetchUserComments( $this->app->db);
         $comments = $ch->getAllCommentData();
         
-      
+        // get tags
+        $CTagViews = new \Mango\Views\CTagViews( $this->app );
+        
+        $tags = $CTagViews->fillTagsfromDb( $this->app->db );
+        $commentTags = $CTagViews->outputCheckboxes( $tags[0] );
+        dump(__METHOD__.__LINE__);
+        dump( $commentTags);
         // make content to updateform
         
         foreach( $comments as $comment ){
@@ -276,7 +315,7 @@ class CViewsComments  {
         
             // get formated childdata
             $childComments[$comment->commentid][] = $this->formatChildComments( $tmpData, $comment->parentid );
-            
+            $parentHeader = ( isset( $parent[0]->header ) ) ? $parent[0]->header : null;
       
         }
         
@@ -292,7 +331,9 @@ class CViewsComments  {
             'children'      => $childComments,
             'header'        => $comment->header,
             'group'         => null,
-            
+            'tags'          => $commentTags,
+            'sectionheader' => null,
+            'parentHeader'  => $parentHeader
             ]);
         
         
@@ -522,8 +563,9 @@ class CViewsComments  {
     public function addNewComment( $app, $param  = null , $commentid = null, $tags = null, $parentID = null ){
         
     
-        $title = ( is_null( $parentID ) )? "Lägg till ny kommentar" : 'Svara';
-        $app->theme->setTitle($title);
+        $title = ( is_null( $parentID ) )? "Ställ fråga" : 'Svara';
+        // set pagetitle
+        setPageTitle( $title, $this->app);
         $header = "<h2>{$title}</h2>";
         
         $app->session(); // Will load the session service which also starts the session
@@ -566,7 +608,7 @@ class CViewsComments  {
         } else {
             $content = "Logga in för att kommentera";
         }
-        $this->app->views->add('me/article', ['header'=>$header, 'content' => $content], 'main');
+        $this->app->views->add('me/article', ['header'=>null, 'content' => $content], 'main');
         
         $this->app->views->add('me/article', ['header'=> $param['header'], 'content' => $param['comment']], 'main');
         
@@ -673,7 +715,12 @@ class CViewsComments  {
     public function showComment(  $commentID = null ){
         
         
-        $title = "Kommentarer";
+        $title = "Konversationer";
+        
+        // set pagetitle
+        setPageTitle( $title, $this->app);
+        
+        
         
         $content = "<ul class='commentList'>";
         $row        = 0;
@@ -693,13 +740,22 @@ class CViewsComments  {
         
         
         // get parent comment
-        //$tmp         = $ch->getGroupedComments($this->app->db, $commentID, 'parent');
+        $parent         = $ch->getGroupedComments($this->app->db, $commentID, 'parent');
         $answers        = $ch->getGroupedComments($this->app->db, $commentID, 'child');
         
-       // $parent = $tmp[0];
-       // $childComments   = $ch->getChildToComment( $commentID );
+        $parentHeader = ( isset( $parent[0]->header ) ) ? $parent[0]->header : null;
+        
+        $header = "<h2>{$title}</h2>";
+        $this->app->theme->setTitle($title);
+        
+        $parentTags = $CTagViews->getTagForComment( $parent );
+        
+        $htmlParent = $this->createCommentStructure( $parent[0] );
+        $this->app->views->add('default/article', ['header'=>null, 'content' => "<ul>{$htmlParent}</ul>"], 'main');
+       
         
         $commentTags = $CTagViews->getTagForComment( $answers );
+        
         
         // get formated childdata
        // $childComments[$parent[0]->commentid][] =  $this->formatChildComments( $parent, $parent[0]->commentid );
@@ -708,12 +764,6 @@ class CViewsComments  {
         $online = $this->user->isUserOnline();
         
           
-          
-           
-            $header = "<h2>{$title}</h2>";
-        $this->app->theme->setTitle($title);
-        
-       
         
         $ch->outputUpdateList([
                 'all'       => $answers,
@@ -727,8 +777,9 @@ class CViewsComments  {
                 'children'      => null,
                 'header'        => $header,
                 'group'         => null,
-                'tags'          => null,
-                
+                'tags'          => $commentTags,
+                'sectionheader' => 'Svar',
+                'parentHeader'  => $parentHeader
                 ]); 
       
         
@@ -742,7 +793,8 @@ class CViewsComments  {
         
       
         if ( $app  ){
-            
+            // set pagetitle
+            setPageTitle( 'Användare', $app);
             $link = ( $userid) ? "anv/visa" : "anv/visa";
             
             // list users

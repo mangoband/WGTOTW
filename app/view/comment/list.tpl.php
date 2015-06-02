@@ -1,11 +1,15 @@
-
-<h2 class='commentHead' id='comments'>Kommentarer</h2>
+<article>
+<h2 class='commentHead' id='comments'><?=$sectionheader?></h2>
 
 <?php if (is_array($comments)) : ?>
+
 <div class='comments'>
     <form method=post >
-<?php foreach ($comments as $id => $comment) : ?>
+<?php foreach ($comments as $id => $comment) { ?>
+<?php
 
+    if ( $comment->header != $parentHeader ){
+?>
 <div class="comment <?php echo isParent( $comment->parentid, $comment->id ) ?>">
 <input type='hidden' name='commentId[<?= $comment->id?>][]' id='<?= $comment->id ?>' value='<?= $comment->id ?>' readonly />
 <input type='hidden' name='page' value='<?= $this->di->request->getCurrentUrl() ?>' />
@@ -31,7 +35,9 @@ if ( isset( $header )) { echo $comment->header; }
 </div>
 <div class="commentInfo <?php echo isParent( $comment->parentid, $comment->id ) ?>">    
 <span class='commentContent <?php echo isParent( $comment->parentid, $comment->id ) ?>'><?=markdown($comment->comment)?></span>
-<span class='commentTags'></span>
+<span class='commentTags'><?php
+if ( isset( $tags[$comment->commentid] )){ echo $tags[$comment->commentid];  } 
+?></span>
 <p class='commentRespond'><?php
 if ( isset( $children[$comment->id][0] ) ) {
  
@@ -45,7 +51,8 @@ if ( isset( $children[$comment->id][0] ) ) {
 
 
 </div>
-<?php endforeach; ?>
+<?php } } ?>
 </form>
 </div>
+</article>
 <?php endif; ?>

@@ -35,6 +35,7 @@ return [
             ], 
             'sort'     => -1
         ],
+        
          // header
         [
         'region' => 'navbar', 
