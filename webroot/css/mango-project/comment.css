@@ -179,6 +179,7 @@ li {
   font-style: italic;
 }
 .users{
+  clear:left;
   margin-bottom:44px;
   
 }

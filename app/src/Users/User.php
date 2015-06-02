@@ -85,7 +85,7 @@ private $online;
       } else {
       }
       
-      
+      dump( $userid);
       // define link
       $link = ( $link ) ? $link : 'anv/visa-en'; 
       
@@ -108,13 +108,18 @@ private $online;
       //
       $this->app->views->add('users/list', ['header'=> 'Inlagda personer ', 'content' => $html], "{$position}");
       
+      $okToShow = ( isset($userid[0] ) &&  $userid[0] == 1 || $userid[0] == 2 ) ? true : false;
+      
       //
       // list trashedUsers
       //
-      if ( isset( $trashedUsers[0] ) && $userid && ($userid == 1 || $userid == 2) ){
+      if ( isset( $trashedUsers[0] ) && $userid && ($userid[0] == 1 || $userid[0] == 2) ){
+         
           $html = '';
           foreach( $trashedUsers as $trashed){
-            if( $trashed->id == $userid ){
+            dump($trashed->id." ".$trashed->name);
+            dump($userid[0]);
+            if( $okToShow == true ){
                $trash = '';
                if ( $trashed->deleted == true ){ $trash = " <i class='fa fa-trash'></i> "; }
                $path = $this->app->url->create("{$link}/".$trashed->id.'/'.$trashed->acronym);
