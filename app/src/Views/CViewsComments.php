@@ -276,7 +276,7 @@ class CViewsComments  {
         
         $url = $this->app->url->create("kommentar/visa/".$id);
         $url2 = $this->app->url->create("kommentar/svara/".$id);
-        dump($loggedid[0]);
+        
         $respondBtn = ( isset($loggedid[0]) ) ? "<span class='commentAnswerList'><a href='{$url2}' class='respondBtn'>Besvara</a></span>" : null;
         
         $html = '';
