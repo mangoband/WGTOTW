@@ -30,11 +30,11 @@ float:left;
   width: 100%;
   padding: 1em;
   text-decoration: none;
-  color: inherit;
+  color: white;
   white-space: nowrap; 
 }
 .navbar a:hover{
-background-color: #ffcc66;
+background-color: @navhover;
 border-color: #95280c;
 color: #95280c; 
 }
@@ -63,7 +63,7 @@ nav ul li {
 }
 nav ul li a{
 	padding:10px;
-	background-color:#828b4b;
+	background-color:@navcolor;
 	border-radius:5px;
 }
 .navbar ul li:hover ul {
@@ -92,19 +92,19 @@ nav ul li li.selected {
 }
 .navbar li:hover {
   color: #95280c; 
-  border-color: #95280c;
+  border-color: @navtext;
   
 }
 .navbar li li:hover {
   color: #95280c; 
-  border-color: #95280c;
+  border-color: @navtext;
   
 }
 
 .navbar li li.selected {
   color: #22f; 
   border-color: #22f;
-  background-color: #ffcc66; 
+  background-color: @navselected; 
 }
 .navbar li li {
   border-top: none;  
@@ -132,7 +132,7 @@ position:relative;
 top:13px;
 margin-top:13px;
 background-color: #ffcc66;
-color: #000; 
+color: @navtext; 
 }
 .navbar {}
 
@@ -143,7 +143,7 @@ color: #000;
   border-color: #95280c;
 }
 a{
-color: @anchorColor;
+color: @navtext;
 }
 a .selected{
 color: #95280c; 

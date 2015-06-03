@@ -365,7 +365,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
             $data = [
                 'tags' => ( isset( $param['items'] ) ) ? $param['items'] : ['default'],
             ];
-            
+            echo __METHOD__. " ".__LINE__;
             //addNewComment( $comment, $id, $app, $commentid = null, $tags = null, $parentid = null ) {
            
             return $this->addNewComment( $values['comment'], $id, $this->app, $commentid, $tags, $parentid );
@@ -407,6 +407,6 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
             'tags'          => $param['tags'],
             'sectionheader' => $param['sectionheader'],
             'parentHeader'  => $param['parentHeader'],
-        ]);
+        ], 'main-wide');
     }
 }

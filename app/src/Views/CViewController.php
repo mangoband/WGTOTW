@@ -341,7 +341,7 @@ class CViewController extends CViewsFlash {
             // What to do if the form was submitted?
            if($status === true) {
                 
-                $url = $this->app->url->create('kommentera');
+                $url = $this->app->url->create('home');
                header("Location: " . $url);
            }
         
@@ -628,7 +628,7 @@ EOD;
     private function redovisningAction( $app, $grid = false ){
         
         if ( $grid == true ){
-            $app->theme->setVariable('bodyColor', 'bodyColorGray');
+            $app->theme->setVariable('bodyColor', '');
             $app->theme->setVariable('wrapperClass', 'bg');
         } else {
              $app->theme->setVariable('bodyColor', '');
@@ -730,6 +730,7 @@ EOD;
         $this->app->views->add('me/sidebar', ['img' => $bas, 'byline' => $byline], 'sidebar');
         
     }
+    
     
     
     

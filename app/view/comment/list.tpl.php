@@ -36,6 +36,7 @@ if ( isset( $header )) { echo $comment->header; } ?></h4>
         </li>
         <li>
             <?=markdown($comment->comment)?>
+            
         </li>
         <li class='viewTags'>
             <?php
@@ -46,7 +47,7 @@ if ( isset( $tags[$comment->commentid] )){ echo $tags[$comment->commentid];  }
         <?php
 if ( isset( $children[$comment->id][0] ) ) { ?>
 <li>
-     <?= $children[$comment->id][0]?>;
+     <?= $children[$comment->id][0]?>
 </li>
 <?php } ?>
         

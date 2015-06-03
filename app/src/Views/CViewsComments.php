@@ -140,10 +140,14 @@ class CViewsComments  {
         if ( $comments ){
             $loggedUserid = \Anax\Users\User::getUserID();
            
+           // get tags
+            $CTagViews = new \Mango\Views\CTagViews( $this->app );
            $content = "\n<table class='commentList'>";
         
             // declare th
-            $content .= "<tr><th class='commentAnswerNr'>Svar</th><th class='commentHeader'>Inlägg</th><th>Datum</th></tr>";
+            $content .= "<thead><tr class='commentListRow'><th class='commentAnswerNr'>Svar</th>
+            <th class='commentHeader'>Inlägg</th>
+            <th class='commentDate'  colspan='2'>Datum</th></tr></thead>";
             $parentID = null;
             
             $totalAnswers = count( $comments ) - 1;
@@ -152,7 +156,7 @@ class CViewsComments  {
             // fill td in table
             foreach( $comments as $comment ){
               
-              
+              $commentTags = $CTagViews->getTagForComment( $comment, 'parent' );
               //  $answers = ( isset($comment->answers ) ) ? $comment->answers : $this->returnAnswers($comment->parentid, $cc);
                 $answers = $this->returnAnswers($comment->parentid, $cc); 
            
@@ -168,7 +172,9 @@ class CViewsComments  {
                                                      'url'      => $url,
                                                      'loggedUser' => $loggedUserid,
                                                      'userid'   => $comment->userid,
-                                                     'commentid'=> $comment->commentid
+                                                     'commentid'=> $comment->commentid,
+                                                     'tag'     => $commentTags,
+                                                     'comment'  => markdown($comment->comment),
                                                      ])."</tr>";
                     $parentID = $comment->parentid;   
                 }
@@ -204,20 +210,24 @@ class CViewsComments  {
         // collect data from array $p
         $url                = ( isset( $p['url'] ) )        ?  $p['url']    : '';
         $element            = ( isset( $p['type'] ))        ?  "<{$p['type']}>" : "<li>";
-        $commentHeader      = ( isset( $p['header'] ) )     ?  "<td class='commentHeader'><a href='{$url}'>{$p['header']}</a></td>"      : '';
-        $commentAnswerNr    = ( isset( $p['answerNr'] ) )   ?  "<td class='commentAnswerNr'><p>( {$p['answerNr']} )</p></td>"  : '';
-        $commentDate        = ( isset( $p['date'] ) )       ?  "<td class=''>{$p['date']}</td>"          : '';
-        $commentViews       = ( isset( $p['views'] ) )      ?  "<td class='commentViews'><p>( {$p['views']} )</p></td>"        : '';
+        $commentHeader      = ( isset( $p['header'] ) )     ?  "\n\t<td class='commentHeader'><a href='{$url}'>{$p['header']}</a></td>"      : '';
+        $commentText        = ( isset( $p['comment'] ) )    ?  "</tr>\n<tr><td class='commentAnswerNr'></td>\n\t<td class='commentText' colspan='3'>{$p['comment']}</td>"      : '';
+        $commentAnswerNr    = ( isset( $p['answerNr'] ) )   ?  "\n\t<td class='commentAnswerNr'><p>( {$p['answerNr']} )</p></td>"  : '';
+        $commentDate        = ( isset( $p['date'] ) )       ?  "\n\t<td class='commentDate'>{$p['date']}</td>"          : '';
+        $commentViews       = ( isset( $p['views'] ) )      ?  "\n\t<td class='commentViews'><p>( {$p['views']} )</p></td>"        : '';
+        $commentTags        = ( isset( $p['tag'] ) )        ?  "</tr>\n<tr><td class='commentAnswerNr'></td>\n\t<td colspan='3' class='commentBtn'>{$p['tag'][$p['commentid']]}</td>": '';
+        
         
         if( isset( $p['loggedUser'][0] ) ){
-            $url_update = $this->app->url->create('kommentar/uppdatera/'.$p['commentid']);
-            $url_remove = $this->app->url->create('kommentar/radera/'.$p['commentid']);
+            $url_update     = $this->app->url->create('kommentar/uppdatera/'.$p['commentid']);
+            $url_remove     = $this->app->url->create('kommentar/radera/'.$p['commentid']);
+            $url_respond    = $this->app->url->create('kommentar/svara/'.$p['commentid']);
         }
         
-        
+        $respond            = ( isset( $p['loggedUser'][0] ) ) ? "<a href='{$url_respond}' class='respondBtn'>Svara</a>" : null;
         $removeLink         = ( isset( $p['loggedUser'][0] ) && ( $p['loggedUser'][0] == 1 || $p['loggedUser'][0] == 2 || $p['loggedUser'][0] == $p['userid'] ) )
-                            ?  "<td class='commentRemove'><a href='{$url_remove}' class='tag'>Radera</a><a href='{$url_update}' class='tag'>Uppdatera</a></td>": '';
-        return $commentAnswerNr.$commentHeader.$commentDate.$removeLink;
+                            ?  "\n<td class='commentRemove'><a href='{$url_remove}' class='respondBtn'>Radera</a><a href='{$url_update}' class='respondBtn'>Uppdatera</a>": '';
+        return $commentAnswerNr.$commentHeader.$commentDate.$removeLink.$respond."</td>".$commentText.$commentTags;
         
     }
     
@@ -228,7 +238,7 @@ class CViewsComments  {
      *  @return string $html
      *
      */
-    private function createCommentStructure( $p = null ){
+    private function createCommentStructure( $p = null, $loggedid = null ){
         
         if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
             $callers=debug_backtrace();
@@ -266,10 +276,12 @@ class CViewsComments  {
         
         $url = $this->app->url->create("kommentar/visa/".$id);
         $url2 = $this->app->url->create("kommentar/svara/".$id);
+        dump($loggedid[0]);
+        $respondBtn = ( isset($loggedid[0]) ) ? "<span class='commentAnswerList'><a href='{$url2}' class='respondBtn'>Besvara</a></span>" : null;
         
         $html = '';
        if ( $row == 0 ){
-            $html .= "\n\t<li>\n\t<h2>\n\t{$header}</h2>\n\t<span class='commentAnswerList'><a href='{$url2}' class='respondBtn'>Besvara</a>  </span>\n\t<span class='commentUserList parentComment'>{$user}</span></li>";
+            $html .= "\n\t<li>\n\t<h2>\n\t{$header}</h2>\n\t{$respondBtn}\n\t<span class='commentUserList parentComment'>{$user}</span></li>";
         }
         $html .= "\n\t<li class='comment'>".markdown($content)."</li>";
         if ( $row == 0 ){
@@ -315,7 +327,7 @@ class CViewsComments  {
         $CTagViews = new \Mango\Views\CTagViews( $this->app );
         
         $tags = $CTagViews->fillTagsfromDb( $this->app->db );
-        $commentTags = $CTagViews->getTagForComment( $allUserComments );
+        $commentTags = $CTagViews->getTagForComment( $allUserComments, 'parent' );
         
         // make content to updateform
         
@@ -752,6 +764,9 @@ class CViewsComments  {
         $parent         = $ch->getGroupedComments($this->app->db, $commentID, 'parent');
         $answers        = $ch->getGroupedComments($this->app->db, $commentID, 'child');
         
+        $answersNr       = $this->returnAnswers($commentID, $ch);
+        
+        
         $parentHeader = ( isset( $parent[0]->header ) ) ? $parent[0]->header : null;
         
         $header = "<h2>{$title}</h2>";
@@ -759,11 +774,11 @@ class CViewsComments  {
         
         $parentTags = $CTagViews->getTagForComment( $parent );
         
-        $htmlParent = ( isset($parent[0] )) ? $this->createCommentStructure( $parent[0] ) : '';
-        $this->app->views->add('default/article', ['header'=>null, 'content' => "<ul class='comment_holder'>{$htmlParent}</ul>"], 'main');
+        $htmlParent = ( isset($parent[0] )) ? $this->createCommentStructure( $parent[0], $userid ) : '';
+        $this->app->views->add('default/article', ['header'=>null, 'content' => "<ul class='comment_holder'>{$htmlParent}</ul>"], 'main-wide');
        
         
-        $commentTags = $CTagViews->getTagForComment( $answers );
+        $commentTags = $CTagViews->getTagForComment( $answers, 'parent' );
         
         
         // get formated childdata
@@ -840,7 +855,7 @@ class CViewsComments  {
                         $content .= "\n\t<tr class='commentListRow'>".$this->createCommentRow([
                                                          'date'     => $comment->created,
                                                          'header'   => $comment->header,
-                                                         
+                                                         'comment'  => markdown($comment->comment),
                                                          'answerNr' => $this->returnAnswers($comment->id, $cc),
                                                          'url'      => $url
                                                          ])."</tr>";

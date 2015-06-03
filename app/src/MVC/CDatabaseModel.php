@@ -174,7 +174,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     $db->select("*")
                     ->from("commentCategory");
                      if ( $catid ){
-                        $db->where("id = ?");
+                        $db->where("commentid = ?");
                     } else{
                         $db->where('category = ?');    
                     }
@@ -582,7 +582,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             $db->setVerbose($this->dbVerbose);
             // gets a list of with parent comments
             $db->select("*,commentid, c.comment, c.header, c.created, catid, userid, name, parentid,
-                        group_concat( distinct cc.category) as tag, group_concat( cc.id) as tagid, count(c2c.parentid) -1  as answers")
+                        group_concat( distinct cc.category) as tag, group_concat( distinct cc.id) as tagid, count(c2c.parentid) -1  as answers")
             ->from("comment as c")
             ->join("comment2Category as c2c", "c2c.parentid = c.id")
             ->join("commentCategory as cc", "c2c.catid = cc.id")
@@ -623,7 +623,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         }
         // gets a list with answers to comment
         if( $db && $parentid){
-            $db->select("*, c.comment as comment, c.header as header, c.created as created, c2c.parentid") 
+            $db->select("*, c.comment as comment, c.header as header, c.created as created, c2c.parentid,
+                        group_concat( distinct cc.category) as tag, group_concat( distinct cc.id) as tagid") 
             ->from("comment2Category as c2c")
             ->join("commentCategory as cc", "cc.id = c2c.catid")
             ->join("comment as c", "c.id = c2c.commentid")
@@ -897,7 +898,9 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         ->from("comment2Category as c2c")
         ->join("commentCategory as c", "c.id = c2c.catid")
         ->join("comment", "comment.id = c2c.commentid")
-        ->join("user", "user.id = userid");
+        ->join("user", "user.id = userid")
+        ->where("commentid = 14")
+        ;
          $data = $db->executeFetchAll();
          foreach( $data as $row ){
             $r[] = "id: {$row->id}, catid: {$row->catid}, commentid: {$row->commentid}, parent: {$row->parentid} category: {$row->category}, header: {$row->header}, userid: {$row->userid}, name: {$row->name}";
@@ -1139,7 +1142,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             ->from('comment AS c')
             ->join('user AS u', 'c.userid = u.id')
             ->join("comment2Category as c2c", "c2c.commentid = c.id")
-            ->orderby('created desc' );
+            ->orderby('created desc' )
+            ->groupby("c2c.commentid");
     
             $data = $db->executeFetchAll();
             
@@ -1293,7 +1297,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
      */  
     public function addNewComment(  $comment, $id, $app, $commentid = null, $tags = null, $parentid = null, $header = null ) {
         
-       
+       dump( $tags);
         $db = $app->db;
         $ip = $app->request->getServer('REMOTE_ADDR');
         $db->setVerbose(false);
@@ -1337,7 +1341,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 //
                 $catid = $this->getTags( $db, $tag);
            
-               
+               dump( $catid);
                 //
                 // insert data to connect comment and category
                 //
@@ -1359,8 +1363,9 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 ]);
                 
            }
+           $db->dump();
            $url = $app->url->create("kommentar/visa/{$parentid}"); 
-           $app->response->redirect($url);
+     //      $app->response->redirect($url);
         }
          
     

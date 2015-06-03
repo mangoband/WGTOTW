@@ -81,7 +81,19 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         }
     }
     
-    
+    /**
+     *  makeTag
+     *  @param int tagid
+     *  @param string tagname
+     */
+    private function makeTag( $tagid = null, $tagname = null, $comentid = null ){
+        
+        if( $tagid && $tagname ){
+            $url = $this->app->url->create("taggar/visa/{$tagid}");
+            $html = "<a href='{$url}' class='tag'> {$tagname}</a>";
+            return $html;
+        }
+    }
     /**********************************************************************
      *
      *      Prepare data
@@ -93,32 +105,120 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
      *  @param int commentid
      *  @return htmlcode tags
      */
-    public function getTagForComment( $comments = null ){
+    public function getTagForComment( $comments = null, $level = 'child' ){
         
+       
+        $level = ( isset($comments ) && is_array($comments)) ? 'child' : 'parent';
+       $style = '';
+       $html = '';
+       
+       // set style to use
+       if( isset( $comments->tagid ) ){
+            
+            $style = 'one';
+            
+       } else if ( is_array($comments) && isset( $comments[0]->tagid ) ){
         
-        $list= [];
-        if ( $comments ){
-            foreach( $comments as $comment ){
-                $html = '';
+            $style = 'two';
+            
+       } else if ( isset( $comments->commentid )){
+            
+            $style ='tree';
+            
+       } else if ( isset( $comments ) ) {
+        
+            $style = 'four';
+            
+       } else {
+        
+            return null;
+            
+       }
+       $list= [];
+       $tagList = null;
+       
+       // pick style
+       switch( $style ){
+            case 'one':
                 
-                $tagnames = $this->getTags( $this->app->db, true, null,null, $comment->catid );
-                foreach( $tagnames as $tag ){
-                    if (! in_array( $tag->id, $list )){
-                      
-                       $list[] = $tag->id;
-                    $url = $this->app->url->create("taggar/visa/{$tag->id}");
-                    $html .= "<a href='{$url}' class='tag'> {$tag->category}</a>";    
+                // page
+                // home
+                $tagid = explode(',', $comments->tagid);
+                $tagname = explode(',', $comments->tag);
+                
+                foreach( $tagname as $key => $tags ){
+                   
+                    $html .= $this->makeTag($tagid[$key], $tagname[$key]);
+                }
+                $tagList[$comments->commentid] = $html;
+                
+                break;
+            case 'two':
+                
+                // page
+                // kommentar/visa
+                 foreach( $comments as $comment ){ 
+                    $tagid = explode(',', $comment->tagid);
+                    $tagname = explode(',', $comment->tag);
+                    
+                    
+                   // $tagnames = $this->getTags( $this->app->db, true, null,null, $comment->catid );
+                    
+                    foreach( $tagname as $key => $tag ){
+                        if (! in_array( $tagid[$key], $list )){
+                          
+                           $list[] = $tagid[$key];
+                           $html .= $this->makeTag($tagid[$key], $tagname[$key], $comment->commentid);
+                        
+                       }
+                         
                     }
-                     
+                    
+                    
+                    
+                    $tagList[$comment->commentid] = $html;
+                    
                 }
                 
+                break;
+            case 'tree':
+                // page
+                // taggar/visa
+                 $tmp = $this->getTags( $this->app->db, null, null, $comments->commentid );
+                    
+                foreach( $tmp as $key => $tags ){
+                  
+                   $html .= $this->makeTag($tags->id, $tags->category);
+                   
+                }
                 
+                $tagList[$comments->commentid] = $html;
+                break;
+            case 'four':
                 
-                $tagList[$comment->commentid] = $html;
+                // page
+                // kommentera
                 
-            }
-            return $tagList;
-        }
+                foreach( $comments as $key => $value ){
+               
+                    $tmp = $this->getTags( $this->app->db, null, null, $value->commentid );
+                 //   dump( $tmp);
+                    foreach( $tmp as $key => $tags ){
+                        
+                        if (! in_array( $tmp[$key]->id, $list )){
+                          
+                            $list[] = $tmp[$key]->id;
+                            $html .= $this->makeTag($tmp[$key]->id, $tags->category);
+                        }
+                    }
+                     
+                     $tagList[$value->commentid] = $html;
+                }
+                break;
+       }
+       
+       return $tagList;
+     
     }
     
     /**

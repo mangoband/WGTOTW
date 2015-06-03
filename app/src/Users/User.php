@@ -227,7 +227,7 @@ private $online;
         // Logout the user
         if(isset($_POST['doLogout'])) {
           unset($_SESSION['acronym']);
-            $url = $this->app->url->create('kommentera');
+            $url = $this->app->url->create('kommentar/visa');
             $this->app->response->redirect($url);
         } 
       

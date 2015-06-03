@@ -71,7 +71,7 @@ return [
         'stylesheets' => [$css],
         
         // BodyTheme
-        'bodyClass' => 'bodyColorGray',
+        'bodyClass' => 'bodyColorWhite',
 
         // Inline style
         'style' => null,

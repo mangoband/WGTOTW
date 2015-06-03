@@ -28,11 +28,11 @@ return [
                 'items' => [
 
                     // This is a menu item of the submenu
-                    'item 1'  => [
+                  /*  'item 1'  => [
                         'text'  => 'Visa Kommentarer',
-                        'url'   => $this->di->get('url')->create('kommentera'),
+                        'url'   => $this->di->get('url')->create('kommentar/visa'),
                         'title' => 'Lägg till ny Kommentar'
-                    ],
+                    ],*/
                     
                     // This is a menu item of the submenu
                     'item 2'  => [
