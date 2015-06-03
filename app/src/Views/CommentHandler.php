@@ -75,7 +75,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
         $this->app->db->select("*")
             ->from("comment as c")
             ->join("comment2Category as c2c", "c2c.commentid = c.id")
-            ->join("user", "user_id = c2c.userid")
+            ->join("user as u", "c.userid = u.id")
             ->groupby("c2c.parentid");
             
         $res = $this->app->db->executeFetchAll(  );
@@ -138,7 +138,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
                 ->from("comment as c")
                 ->join("comment2Category as c2c", "c2c.commentid = c.id")
                 ->join("comment as p", "p.id = c2c.parentid")
-                ->join("user", "userid = c2c.userid")
+                ->join("user", "user.id = c.userid")
                 
                 ->where("parentid = ?")
                 ->groupby("parentid")
@@ -178,7 +178,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
         }
     
         if ( $db && $type ){
-            
+           //$this->displayDb( $this->app, $parentid);
             return ( $type == "child" ) ? $this->getCommentAnswersFromParentID($db, $parentid) : $this->getCommentsGroupedByParentID( $this->app->db, $parentid );
         } else if ( $db && is_null( $type ) ){
             

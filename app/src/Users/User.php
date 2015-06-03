@@ -63,7 +63,7 @@ private $online;
     * list all users 'softDeleted' and normal
     * output result on screen
     */
-   public function getUsers( $link = null, $position = 'sidebar' ){
+   public function getUsers( $link = null, $position = 'sidebar', $alt = null ){
       
      
       //
@@ -86,7 +86,8 @@ private $online;
       }
       
       // define link
-      $link = ( $link ) ? $link : 'anv/visa-en'; 
+      $link = ( $link ) ? $link : 'anv/visa-en';
+      
       
       // 
       // set path to homepage
@@ -94,18 +95,19 @@ private $online;
       $path = $this->app->request->getBaseUrl() ."/index.php";
       $html = '';
       foreach( $users as $values){
+         $title = ( $alt ) ? $alt   : "Visa inlägg av: ".$values->name;
           $trash = '';
           if ( $values->deleted == true ){ $trash = " <i class='fa fa-trash'></i> "; }
           $path = $this->app->url->create("{$link}/".$values->id);
            $gravatarImg = "<img src='".$gravatar->get_gravatar($values->email, 15, 'identicon')."' alt='gravatar' title='gravatar' class='userlist_gravatar' />";
-        $html .= "\n<li >{$gravatarImg}<a href='{$path}' title='Uppdatera ". $values->name."'>". $values->name ." </a>{$trash}</li>\n";
+        $html .= "\n<li >{$gravatarImg}<a href='{$path}' title='{$title}'>". $values->name ." </a>{$trash}</li>\n";
       }
       
       
       //
       // view user/list
       //
-      $this->app->views->add('users/list', ['header'=> 'Inlagda personer ', 'content' => $html], "{$position}");
+      $this->app->views->add('users/list', ['header'=> 'Inlagda personer ', 'content' => $html, 'position' => $position], "{$position}");
       
       $okToShow = ( isset($userid[0] ) &&  $userid[0] == 1 || $userid[0] == 2 ) ? true : false;
       
@@ -121,12 +123,12 @@ private $online;
                $trash = '';
                if ( $trashed->deleted == true ){ $trash = " <i class='fa fa-trash'></i> "; }
                $path = $this->app->url->create("{$link}/".$trashed->id.'/'.$trashed->acronym);
-               $html .= "\n<li ><a href='{$path}' title='Uppdatera ". $trashed->name."'>". $trashed->name ." </a>{$trash}</li>\n";
+               $html .= "\n<li ><a href='{$path}'  title='Uppdatera ". $trashed->name."'>". $trashed->name ." </a>{$trash}</li>\n";
             }
           }
           
           // view trashed people
-          $this->app->views->add('users/list', ['header'=> 'Andra chansen', 'content' => $html], "{$position}");  
+          $this->app->views->add('users/list', ['header'=> 'Andra chansen', 'content' => $html, 'position' => $position], "{$position}");  
        }
 
       

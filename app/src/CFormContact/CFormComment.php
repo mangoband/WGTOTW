@@ -24,18 +24,7 @@ class CFormComment extends h\CForm  {
         
         
     }
-    /**
-     *  addComment
-     */
- /*   public function addComment( $comments = array(), $userId = '', $group = '', $error = array() ){
-        
-        $this->AddElement(new h\CFormElementTextarea('comment', array('label' => 'Kommentar:', 'required' => true)))
-         ->AddElement(new h\CFormElementHidden('userId', array('value' =>  $userId )))
-         ->AddElement(new h\CFormElementHidden('parentId', array('value' =>  $userId )))
-         ->AddElement(new h\CFormElementSubmit('submit', array('callback'=>array($this, 'DoNewComment'))))
-         ->AddElement(new h\CFormElementSubmit('Reset', array('callback'=>array($this, 'DoSubmitFail'))));
-        
-    }*/
+    
     /**
      *  newComment
      */  
@@ -44,7 +33,7 @@ class CFormComment extends h\CForm  {
         
         $this->Checkbox = new Checkboxes(['maxRow' => '3']);
         
-        //$Checkbox( ['tags'=>$tags, 'maxRows'=>2]);
+        
         
         $this->AddElement(new h\CFormElementText('header', array('label'=>'Ämne','value' =>  $param['header'], 'required' => true )))
         ->AddElement(new h\CFormElementTextarea('comment', array('label' => 'Kommentar:', 'required' => true)))
@@ -97,12 +86,11 @@ class CFormComment extends h\CForm  {
         if ( $comment ){
             $this->AddElement(new h\CFormElementText('header', array('label'=>'Ämne','value' =>  $comment->header ,'required')))
             ->AddElement(new h\CFormElementTextarea('comment', array('label' => 'Kommentar:', 'required' => true, 'value'=> $comment->comment)))
-            ->AddElement(new h\CFormElementHidden('userId', array('value' =>  $comment->user_id )))
+            ->AddElement(new h\CFormElementHidden('userId', array('value' =>  $comment->userid )))
             ->AddElement(new h\CFormElementHidden('commentId', array('value' =>  $comment->id )));
         
             // get tags
-        // $tags          = ( isset( $param['tags'] ) ) ? $param['tags'] : $tags;
-      //   $selectedTags  = ( isset( $param['selectedTags'] ) ) ? $param['selectedTags'] : null;
+        
         $selected = null;
         
       

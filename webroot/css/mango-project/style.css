@@ -526,9 +526,26 @@ textarea {
   background-color: #828b4b;
   color: #000;
 }
+.comment_holder li {
+  list-style: none;
+  clear: left;
+}
+.comment_holder li h2 {
+  display: inline-block;
+}
+.commentAnswerList,
+.commentUserList {
+  margin-left: 12px;
+  float: right;
+}
+li.top {
+  border-top: 1px solid #ccc;
+}
+li.bottom {
+  border-bottom: 1px solid #ccc;
+}
 .comment {
   display: block;
-  border-top: 1px solid gray;
   padding-bottom: 15px;
   margin-bottom: 15px;
   clear: both;

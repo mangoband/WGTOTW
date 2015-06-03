@@ -183,3 +183,6 @@ li {
   margin-bottom:44px;
   
 }
+.name_main-wide li a{
+  float:left;
+}

@@ -29,6 +29,48 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
      *********************************************************************/
     
     /**
+     *  createTagTable
+     */
+    private function createTagTable( $db = null ){
+        
+        if( $db ){
+            
+            $app->db->dropTableIfExists('commentTag')->execute();
+        
+            $app->db->createTable(
+                'commentTag',
+                [
+                        'id' => ['integer', 'primary key', 'not null', 'auto_increment'],                    
+                        'tag'      => ['varchar(50)'],
+                        'commentid' => ['integer']
+                        
+                ]
+            )->execute();
+            
+            // insert values into category
+            $app->db->insert(
+                   'commentTag',
+                   ['tag', 'commentid']
+            );
+            
+            $app->db->execute([
+                    "Mysql",1
+                    
+            ]);
+            
+            // insert values into category
+            $app->db->insert(
+                   'commentTag',
+                   ['tag', 'commentid']
+            );
+            
+            $app->db->execute([
+                    "Mysql",1
+                    
+            ]);
+        }
+    }
+    /**
      *  updateTag
      *  @param int id
      *  @param string Tag
@@ -454,7 +496,12 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
     public function restoreTable( $app ){
         
       //  $this->countTable( $app->db );
-        $app->db->dropTableIfExists('user')->execute();
+      try{
+            $app->db->dropTableIfExists('user')->execute();
+        } catch(EXCEPTION $e){
+            
+        }
+        
      
         $app->db->createTable(
             'user',
@@ -535,11 +582,11 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             $db->setVerbose($this->dbVerbose);
             // gets a list of with parent comments
             $db->select("*,commentid, c.comment, c.header, c.created, catid, userid, name, parentid,
-                        group_concat(cc.category) as tag, group_concat(cc.id) as tagid, count(c2c.parentid) -1  as answers")
+                        group_concat( distinct cc.category) as tag, group_concat( cc.id) as tagid, count(c2c.parentid) -1  as answers")
             ->from("comment as c")
             ->join("comment2Category as c2c", "c2c.parentid = c.id")
             ->join("commentCategory as cc", "c2c.catid = cc.id")
-            ->join("user","user.id = c2c.userid");
+            ->join("user","user.id = c.userid");
            
            // if parentid is set
            if ( ! is_null( $parentid ) ){
@@ -576,22 +623,116 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         }
         // gets a list with answers to comment
         if( $db && $parentid){
-            $db->select("*, c.comment as comment, c.header as header, c.created as created, c2c.parentid,
-                        group_concat(cc.category) as tag, group_concat(cc.id) as tagid,count(c2c.parentid) -1  as answers")
+            $db->select("*, c.comment as comment, c.header as header, c.created as created, c2c.parentid") 
             ->from("comment2Category as c2c")
             ->join("commentCategory as cc", "cc.id = c2c.catid")
             ->join("comment as c", "c.id = c2c.commentid")
             ->join("comment as p", "p.id = c2c.parentid")
-            ->join("user ", "user.id = c2c.userid")
+            ->join("user ", "user.id = c.userid")
             ->where("c2c.parentid = ?")
            // ->andwhere("c2c.parentid != c.id")
-            ->groupby("c2c.parentid")
-            ->orderby(' parentid asc, commentid asc,created desc' );
+            ->groupby("c2c.commentid")
+            ->orderby(' commentid asc,created desc' );
             
             $data = $db->executeFetchAll( [$parentid] );
             
             return $data;
-          
+          //group_concat(cc.category) as tag, group_concat(cc.id) as tagid,count(c2c.parentid) -1  as answers")
+        }
+    }
+    
+    /**
+     *  displayDb
+     */
+    public function displayDbs( $app = null, $id = null ){
+        
+        $db = $app->db;
+        dump(__METHOD__." ".__LINE__ ." ".$id);
+        $commentid =  ($id) ? $id : 7;
+        if ( $db ){
+            ///
+            /// Hämta frågor i toppnivå
+            
+            $db->select("parentid, header, comment, created,updated, ip, userid,  group_concat(c2c.commentid) as child")
+            ->from("comment as c")
+            ->join("comment2Category as c2c", "c2c.parentid = c.id")
+            ->groupby("parentid")
+            ;
+            
+            $toplevel = $db->executeFetchAll( );
+            
+            dump($toplevel );
+            // Hämta taggar till fråga
+            
+            $db->select("group_concat( DISTINCT  c2c.catid) as tagid, group_concat( DISTINCT cc.category) as tagname")
+            ->from("comment2Category as c2c")
+            ->join("commentCategory as cc", "cc.id = c2c.catid")
+            ->groupby("cc.id");
+            
+            $tag = $db->executeFetchAll( );
+            
+            // Hämta svar
+            
+            // Hämta taggar till svar
+     /*       $db->select("*")
+            ->from("comment")
+            
+            ;
+            
+            $data = $db->executeFetchAll( );
+        //    dump( $data);
+     */   
+            $db->select("group_concat(c2c.commentid) as child, group_concat(c2c.catid) as tag, c.id,
+                        p.header as quest, c.header as answer, c.comment, u.name, u.email, c.created, c.updated")
+            ->from("comment2Category as c2c")
+            ->join("comment as c", "c.id = c2c.commentid")
+            ->join("comment as p", "p.id = c2c.parentid")
+            ->join("commentCategory as cc", "c2c.catid = cc.id")
+            ->join("user as u", "u.id = c.userid")
+            ->orderby("parentid, commentid")
+            ->where("parentid = ?")
+            ->groupby("parentid");
+            
+            $data = $db->executeFetchAll( [$commentid] );
+        //    dump( $data);
+            
+            
+            $db->select("*, group_concat(c2c.commentid) as child")
+            ->from("comment as c")
+            ->join("comment2Category as c2c", "c2c.commentid = c.id")
+            ->join("commentCategory as cc", "c2c.catid = cc.id")
+            ->groupby("parentid")
+            
+            ->where("c.id = parentid");
+            
+            
+            $comment = $db->executeFetchAll( );
+        //    dump( $comment);
+            $html = "<table>";
+            $html .="<tr><th colspan='3'>Comment</th></tr>";
+            $html .="<tr><td>id</td><td>Rubrik</td></tr>";
+            $html .="<tr><td >{$comment[0]->id}</td><td>{$comment[0]->header}</td></tr>";
+            
+            $db->select("*,group_concat(c2c.commentid) as child, group_concat(c2c.catid) as tag")
+            ->from("comment2Category as c2c")
+            ->join("commentCategory as cc", "cc.id = c2c.catid")
+            ->join("comment as c", "c2c.parentid = c.id")
+            
+            ->where("parentid = ?")
+            ->orderby("parentid, commentid")
+            ->groupby("parentid");
+            
+            $comment2Category = $db->executeFetchAll( [$commentid] );
+            $html .="<tr><th colspan='3'>Comment2Category</th></tr>";
+            $html .="<tr><td>Commentid</td><td>Parentid</td><td>Tag</td></tr>";
+            foreach( $comment2Category as $key => $c2c ){
+                $html .="<tr><td>{$comment2Category[$key]->commentid}</td><td>{$comment2Category[$key]->parentid}</td><td>{$comment2Category[$key]->tag}</td></tr>";    
+            }
+            
+            
+            $html .= "</table>";
+            
+        //    $app->views->add('default/article', ['header'=>'Databas', 'content' => $html], 'main-wide');
         }
     }
     
@@ -610,13 +751,13 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             $rowCount   = null;
             
             $db->setVerbose($this->dbVerbose );
-            $db->select("c2c.commentid, cc.category,p.ip, c2c.userid, u.name, p.comment as parent, p.id, c2c.commentid, c2c.parentid, p.created as created,
+            $db->select("c2c.commentid, cc.category,p.ip, child.userid, u.name, p.comment as parent, p.id, c2c.commentid, c2c.parentid, p.created as created,
                         child.comment as comment, child.id as childid, child.created as childdate, p.header as header, child.header as cheader")
             ->from("comment2Category as c2c")
             ->join("comment as p", "p.id = c2c.parentid")
             ->join("comment as child", "child.id = c2c.commentid")
             ->join("commentCategory as cc", "cc.id = c2c.catid")
-            ->join('user AS u', 'c2c.userid = u.id');
+            ->join('user AS u', 'child.userid = u.id');
             
             // if not commentid = null
             if ( $commentid && ! $child){
@@ -638,7 +779,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 
             }
             
-            $db->orderby('c2c.parentid asc, child.id asc ,created desc, childdate desc' );
+            $db->orderby('created desc, childdate desc, c2c.parentid asc, child.id asc' );
             
             if ( $limit ){
                 $db->limit(1);
@@ -692,7 +833,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
         if ( $commentID && $db ){
             
-            $db->select("count(*) as rows, parentid")
+            $db->select("count(DISTINCT c2c.commentid) as rows, parentid")
             ->from("comment2Category as c2c")
             ->where("parentid = ?")
             ->groupby("c2c.parentid")
@@ -709,7 +850,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
         } else if ( $db ){
             
-            $db->select("count(*) as rows, parentid")
+            $db->select("count(DISTINCT c2c.commentid) as rows, parentid")
             ->from("comment2Category as c2c")
             
             ->groupby("parentid");
@@ -756,7 +897,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         ->from("comment2Category as c2c")
         ->join("commentCategory as c", "c.id = c2c.catid")
         ->join("comment", "comment.id = c2c.commentid")
-        ->join("user", "user.id = c2c.userid");
+        ->join("user", "user.id = userid");
          $data = $db->executeFetchAll();
          foreach( $data as $row ){
             $r[] = "id: {$row->id}, catid: {$row->catid}, commentid: {$row->commentid}, parent: {$row->parentid} category: {$row->category}, header: {$row->header}, userid: {$row->userid}, name: {$row->name}";
@@ -783,7 +924,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     'id' => ['integer', 'primary key', 'not null', 'auto_increment'],
                     'catid'     => ['integer'],
                     'commentid' => ['integer'],
-                    'userid'    => ['integer'],
+                    
                     'parentid'    => ['integer']
                     
             ]
@@ -792,33 +933,33 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         // insert values into category
         $app->db->insert(
                'comment2Category',
-               ['catid', 'commentid', 'userid', 'parentid']
+               ['catid', 'commentid',  'parentid']
         );
         
         $app->db->execute([
-                1,1,1,1
+                1,1,1
                 
         ]);
         
         // insert values into category
         $app->db->insert(
                'comment2Category',
-               ['catid', 'commentid', 'userid', 'parentid']
+               ['catid', 'commentid', 'parentid']
         );
         
         $app->db->execute([
-                2,2,2,1
+                2,2,1
                 
         ]);
         
         // insert values into category
         $app->db->insert(
                'comment2Category',
-               ['catid', 'commentid', 'userid', 'parentid']
+               ['catid', 'commentid',  'parentid']
         );
         
         $app->db->execute([
-                2,3,2,2
+                2,3,2
                 
         ]);
         
@@ -907,7 +1048,12 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         //
         //  create table comment
         //
-        $app->db->dropTableIfExists('comment')->execute();
+        try{
+            $app->db->dropTableIfExists('comment')->execute();    
+        } catch(EXCEPTION $e){
+            
+        }
+        
         
         $app->db->createTable(
             'comment',
@@ -917,7 +1063,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     'comment' => ['varchar(255)'],                    
                     'created' => ['datetime'],
                     'updated' => ['datetime'],
-                    'user_id' => ['integer'],
+                    'userid' => ['integer'],
                     'ip'      => ['varchar(30)']
                     
             ]
@@ -926,7 +1072,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
         $app->db->insert(
                'comment',
-               ['comment', 'header', 'created', 'updated',  'user_id', 'ip']
+               ['comment', 'header', 'created', 'updated',  'userid', 'ip']
         );
         
         $app->db->execute([
@@ -942,7 +1088,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
         $app->db->insert(
                'comment',
-               ['comment', 'header', 'created', 'updated',  'user_id', 'ip']
+               ['comment', 'header', 'created', 'updated',  'userid', 'ip']
         );
         
         $app->db->execute([
@@ -958,7 +1104,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
         $app->db->insert(
                'comment',
-               ['comment', 'header', 'created', 'updated',  'user_id', 'ip']
+               ['comment', 'header', 'created', 'updated',  'userid', 'ip']
         );
         
         $app->db->execute([
@@ -989,9 +1135,9 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             }
             
             // return all comments
-            $db->select("c.*, u.name, u.email, c2c.parentid, c2c.commentid, c2c.userid, c2c.catid")
+            $db->select("c.*, u.name, u.email, c2c.parentid, c2c.commentid, c.userid, c2c.catid")
             ->from('comment AS c')
-            ->join('user AS u', 'c2c.userid = u.id')
+            ->join('user AS u', 'c.userid = u.id')
             ->join("comment2Category as c2c", "c2c.commentid = c.id")
             ->orderby('created desc' );
     
@@ -1006,7 +1152,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             // return only this users comments
             $db->select("c.*, u.name, u.email, c2c.parentid")
             ->from('comment AS c')
-            ->join('user AS u', 'c2c.userid = u.id')
+            ->join('user AS u', 'c.userid = u.id')
             ->join("comment2Category as c2c", "c2c.parentid = c.id")
             ->where("u.id = ?")
             
@@ -1164,7 +1310,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             // make stmt to comment
             $db->insert(
                     'comment',
-                    ['comment', 'header', 'created', 'updated',  'user_id', 'ip']
+                    ['comment', 'header', 'created', 'updated',  'userid', 'ip']
              );   
             
             // make insert
@@ -1199,7 +1345,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     'comment2Category',
                     ['catid'     ,
                     'commentid' ,
-                    'userid',
+                    
                     'parentid']
                     
                 );
@@ -1207,13 +1353,13 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 $db->execute([
                     $catid[0]->id,                
                     $lastInserted,
-                    $id,
+                    
                     $parentid
                    
                 ]);
                 
            }
-           $url = $app->url->create("kommentar/visa/{$lastInserted}"); 
+           $url = $app->url->create("kommentar/visa/{$parentid}"); 
            $app->response->redirect($url);
         }
          

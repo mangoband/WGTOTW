@@ -77,9 +77,7 @@ class CViewController extends CViewsFlash {
             $pageUrl = explode( 'webroot/', $currentUrl);
         }
         
-        // set timedata and gravatar in header
-        $user = new \Anax\Users\User( $this->app );
-        $this->email = $user->getUserMailAdr();
+      
       //  $this->app->views->add('me/timeOfDay', ['icon' => viewTimeWithFa(date('G')),'timeOfDay' => date('G : i'), 'email'=> $this->email, 'btn' => $user->getLogoutBtn()], 'header');
         
         // set default colors
@@ -107,6 +105,15 @@ class CViewController extends CViewsFlash {
         $param['option']    = ( isset( $tmp[1] ) ) ? $tmp[1] : null;
         $param['page']      = ( isset( $tmp[0] ) ) ? $tmp[0] : null;
         $param['url']       = ( isset( $currentUrl ) ) ? $currentUrl : null;
+        
+          // set timedata and gravatar in header
+          if ( $param['page'] != 'firstTime' && $param['page'] != 'reset-user' && $param['page'] != 'reset-kommentarer'){
+            $user = new \Anax\Users\User( $this->app );
+            $this->email = $user->getUserMailAdr();    
+          } else {
+            $user = null;
+          }
+        
         $param['user']      = $user;
         
         $param['verbose']   = false; // If set to true info is written to screen
@@ -316,7 +323,10 @@ class CViewController extends CViewsFlash {
         }
     }
   
-    
+    /**
+     *  login
+     *  @param object user
+     */  
     private function login( $user = null ){
         
         // set pagetitle
@@ -344,7 +354,10 @@ class CViewController extends CViewsFlash {
     }
     
     
-    
+    /**
+     *  restoreDb
+     *  @param object app 
+     */
     private function restoreDb( $app ){
         
         $url = $app->url->create('reset-user');
@@ -352,7 +365,7 @@ class CViewController extends CViewsFlash {
         $url3 = $app->url->create();
         
         // set pagetitle
-        setPageTitle( 'Hantera databas', $app);
+        setPageTitle( 'Databashantering', $app);
         
         $CViewsComments = new \Mango\Views\CViewsComments( $app );
         $user = null;
@@ -526,7 +539,7 @@ EOD;
         setPageTitle( 'Uppdatera', $app);
         $header = "<h2>{$title}</h2>";
         $content = 'Till höger ser du en lista på de användare som är registrerade.';
-   //     $app->views->add('me/timeOfDay', ['icon' => $this->viewTimeWithFa(date('G')),'timeOfDay' => date('G : i'), 'email'=> $this->email], 'header');
+   
         $app->views->add('me/article', ['header'=>$header, 'content' => $content], 'main');
         $user = new \Anax\Users\User( $app );
         $user->isOnline();
@@ -535,7 +548,7 @@ EOD;
         
         
         if(  $this->loggedInUser[0] == 1 || $this->loggedInUser[0] == 2 ){
-            $user->getUsers();
+            $user->getUsers(null, 'sidebar');
         }
     }
     /**
@@ -604,7 +617,8 @@ EOD;
    //    $app->views->add('me/timeOfDay', ['icon' => $this->viewTimeWithFa(date('G')),'timeOfDay' => date('G : i'), 'email'=> $this->email, 'btn' => $user->getLogoutBtn()], 'header');
         $app->views->add('me/article', ['header'=>$header, 'content' => $content], 'main');
         if(   $this->loggedInUser[0] == 1 || $this->loggedInUser[0] == 2  ){
-            $user->getUsers();
+            $user->getUsers(null, 'sidebar', 'Uppdatera');
+            
         }
     }
      /**

@@ -269,12 +269,12 @@ class CViewsComments  {
         
         $html = '';
        if ( $row == 0 ){
-            $html .= "\n\t<li>\n\t<h2>\n\t{$header}</h2></li>";
+            $html .= "\n\t<li>\n\t<h2>\n\t{$header}</h2>\n\t<span class='commentAnswerList'><a href='{$url2}' class='respondBtn'>Besvara</a>  </span>\n\t<span class='commentUserList parentComment'>{$user}</span></li>";
         }
         $html .= "\n\t<li class='comment'>".markdown($content)."</li>";
         if ( $row == 0 ){
             $html .= "\n\t<li class='viewTags'>".makeATag( $tagid, $tags, $this->app )."<input type='hidden' value='{$id}' name='view[{$id}]' /></li>";
-            $html .= "\n\t<li><span class='commentAnswerList'><a href='{$url2}' class='respondBtn'>Besvara</a>  </span><span class='commentUserList parentComment'>{$user}</li>";
+            $html .= "\n\t<li></li>";
         }
         return $html;
     }
@@ -334,7 +334,7 @@ class CViewsComments  {
             'all'       => $allUserComments,
             'online'    => $online,
             'new'       => '',
-            'userid'    => $comment->user_id,
+            'userid'    => $comment->userid,
             'errorContent'  => getError(0),
             'errorMail'     => getError(1),
             'errorHomepage' => getError(2),
@@ -364,8 +364,6 @@ class CViewsComments  {
      *  @return array $result
      */  
     private function formatChildComments( $result = null, $parentID = null ){
-        
-         
         
         // set defaultLength on comments
         $maxChars   = 75;//( $position == 'right' ) ? 14 : 75;
@@ -761,8 +759,8 @@ class CViewsComments  {
         
         $parentTags = $CTagViews->getTagForComment( $parent );
         
-        $htmlParent = $this->createCommentStructure( $parent[0] );
-        $this->app->views->add('default/article', ['header'=>null, 'content' => "<ul>{$htmlParent}</ul>"], 'main');
+        $htmlParent = ( isset($parent[0] )) ? $this->createCommentStructure( $parent[0] ) : '';
+        $this->app->views->add('default/article', ['header'=>null, 'content' => "<ul class='comment_holder'>{$htmlParent}</ul>"], 'main');
        
         
         $commentTags = $CTagViews->getTagForComment( $answers );

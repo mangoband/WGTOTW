@@ -25,6 +25,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
     private $output     = null; // data to output
     
     private $printed    = false;
+    private $tmpTags    = null;
     
     public function __construct( $app, $param = null ){
         
@@ -50,6 +51,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
      *  doAction
      */
     public function doAction(){
+        
         
         switch( $this->param['option'] ){
             case 'view':
@@ -94,16 +96,20 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
     public function getTagForComment( $comments = null ){
         
         
-        
+        $list= [];
         if ( $comments ){
             foreach( $comments as $comment ){
                 $html = '';
                 
                 $tagnames = $this->getTags( $this->app->db, true, null,null, $comment->catid );
                 foreach( $tagnames as $tag ){
-                    
+                    if (! in_array( $tag->id, $list )){
+                      
+                       $list[] = $tag->id;
                     $url = $this->app->url->create("taggar/visa/{$tag->id}");
-                    $html .= "<a href='{$url}'> {$tag->category}</a>";    
+                    $html .= "<a href='{$url}' class='tag'> {$tag->category}</a>";    
+                    }
+                     
                 }
                 
                 
