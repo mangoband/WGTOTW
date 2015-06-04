@@ -233,7 +233,7 @@ header {
 .siteslogan {
   display: inline;
   float: left;
-  width: 22.222222222222%;
+  width: 72.222222222222%;
   margin: 0 0%;
   min-width: 55%;
 }
@@ -558,7 +558,7 @@ li.bottom {
   display: inline-block;
 }
 .commentRemove {
-  width: 232px;
+  width: 242px;
   float: right;
 }
 .groupname {
@@ -648,12 +648,17 @@ li.bottom {
   padding: 5px;
   text-align: center;
 }
+th.commentHeader {
+  display: inline;
+  float: left;
+  width: 44.444444444444%;
+  margin: 0 0%;
+}
 .commentHeader {
   display: inline;
   float: left;
-  width: 50%;
+  width: 44.444444444444%;
   margin: 0 0%;
-  max-width: 300px;
 }
 .commentList tr:nth-child(5n ) {
   border-bottom: 22px solid white;
@@ -666,7 +671,7 @@ p.commentViews {
 .commentDate {
   display: inline;
   float: left;
-  width: 150px;
+  width: 155px;
   margin: 0 0%;
   text-align: left;
 }
@@ -1346,6 +1351,12 @@ hr {
 @media (min-width: 992px) {
   #content {
     padding-top: 0px;
+  }
+  .commentHeader {
+    display: inline;
+    float: left;
+    width: 100%*1*0.22222222222222 *-0 / 4px;
+    margin: 0 0%;
   }
   #mangoBas {
     height: auto;

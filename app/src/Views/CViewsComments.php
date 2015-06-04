@@ -147,7 +147,7 @@ class CViewsComments  {
             // declare th
             $content .= "<thead><tr class='commentListRow'><th class='commentAnswerNr'>Svar</th>
             <th class='commentHeader'>Inlägg</th>
-            <th class='commentDate'  colspan='2'>Datum</th></tr></thead>";
+            <th class='commentDate'>Datum</th></tr></thead>";
             $parentID = null;
             
             $totalAnswers = count( $comments ) - 1;
@@ -227,10 +227,20 @@ class CViewsComments  {
             $url_respond    = $this->app->url->create('kommentar/svara/'.$p['commentid']);
         }
         
-        $respond            = ( isset( $p['loggedUser'][0] ) && isset($commentHeader) ) ? "<a href='{$url_respond}' class='respondBtn'>Bevara {$callers[1]['function']}</a></td>" : null;
+        if( isset( $p['loggedUser'][0] ) && ($p['loggedUser'][0] == 1 || $p['loggedUser'][0] == 2 || $p['loggedUser'][0] == $p['userid'] )){
+            $respondBtn = "<a href='{$url_respond}' class='respondBtn'>Bevara</a></td>";
+        } else if ( isset( $p['loggedUser'][0] ) ){
+            $respondBtn = "<td><a href='{$url_respond}' class='respondBtn'>Bevara</a></td>";
+        } else{
+            $respondBtn = null;
+        }
+        $respond            = ( isset( $p['loggedUser'][0] ) && isset($commentHeader) ) ? "<a href='{$url_respond}' class='respondBtn'>Bevara</a>" : null;
+        
+       // $respondBtn         = ( isset( $p['loggedUser'][0] ) && $p['loggedUser'][0] == 1 || $p['loggedUser'][0] == 2 ) ? $respond."</td>" : "<td>".$respond;
         $removeLink         = ( isset( $p['loggedUser'][0] ) && ( $p['loggedUser'][0] == 1 || $p['loggedUser'][0] == 2 || $p['loggedUser'][0] == $p['userid'] ) )
-                            ?  "\n<td class='commentRemove'><a href='{$url_remove}' class='respondBtn'>Radera</a><a href='{$url_update}' class='respondBtn'>Uppdatera</a>{$respond}<td>": "<td>{$respond}</td>";
-        return $commentAnswerNr.$commentHeader.$commentDate.$removeLink.$respond.$commentText.$commentTags;
+                            ?  "\n<td class='commentRemove'><a href='{$url_remove}' class='respondBtn'>Radera</a><a href='{$url_update}' class='respondBtn'>Uppdatera</a>": "";
+                            
+        return $commentAnswerNr.$commentHeader.$commentDate.$removeLink.$respondBtn.$commentText.$commentTags;
         
     }
     
