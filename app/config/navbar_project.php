@@ -15,14 +15,14 @@ return [
         // This is a menu item
         'home'  => [
             'text'  => 'Hem',
-            'url'   => $this->di->get('url')->create('home'),
+            'url'   => $this->di->get('url')->create('hem'),
             'title' => ''
-        ],
+        ],/*
         'anv'  => [
             'text'  => 'Användare',
             'url'   => $this->di->get('url')->create('anv/visa'),
             'title' => ''
-        ],
+        ],*/
         'tags'  => [
             'text'  => 'Taggar',
             'url'   => $this->di->get('url')->create('taggar/visa'),

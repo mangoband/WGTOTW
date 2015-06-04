@@ -356,7 +356,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
         $this->app->MangoFlash->set( $msg , $type = 'notice' );
    
         $this->app->MangoFlash->get('notice');
-        $url = $this->app->url->create('home');
+        $url = $this->app->url->create('hem');
         
         $this->app->response->redirect($url);
     }

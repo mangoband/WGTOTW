@@ -557,8 +557,13 @@ li.bottom {
   float: left;
   display: inline-block;
 }
+.commentRemove a {
+  float: right;
+  margin-top: 0px;
+}
 .commentRemove {
   width: 242px;
+  text-align: right;
   float: right;
 }
 .groupname {
@@ -700,7 +705,7 @@ p.commentViews {
   width: 100%;
   padding: 1em;
   text-decoration: none;
-  color: white;
+  color: inherit;
   white-space: nowrap;
 }
 .navbar a:hover {
@@ -713,6 +718,7 @@ li {
   padding: 0px;
 }
 nav {
+  color: white;
   float: right;
   margin-top: 22px;
   display: inline-block;
@@ -796,14 +802,14 @@ nav ul li li.selected {
 .navbar li.selected-parent,
 .navbar li.is-parent,
 .navbar li.selected {
-  color: #95280c;
+  color: #F7F6BC;
   border-color: #95280c;
 }
 a {
   color: #95280c;
 }
-a .selected {
-  color: #95280c;
+li.selected {
+  color: #F7F6BC;
 }
 */
 
@@ -1242,7 +1248,10 @@ hr {
   }
   .siteslogan {
     font-size: 1.5em;
-    width: 100%;
+    display: inline;
+    float: left;
+    width: 55.555555555556%;
+    margin: 0 0%;
     margin: 0 auto;
     text-align: center;
   }
@@ -1305,6 +1314,41 @@ hr {
     text-align: right;
     padding: 8px;
   }
+  #pageTitle {
+    display: inline;
+    float: left;
+    width: 29.166666666667%;
+    margin: 0 0%;
+    margin-top: 5px;
+    background-color: blue;
+  }
+  #navbar {
+    display: inline;
+    float: left;
+    width: 67.083333333333%;
+    margin: 0 0%;
+  }
+  .commentHeader {
+    display: inline;
+    float: left;
+    width: 44.444444444444%;
+    margin: 0 0%;
+  }
+  #sitedescription ul li,
+  #sitedescription ul {
+    float: left;
+    z-index: 2;
+    height: 50px;
+  }
+  .siteslogan {
+    font-size: 2.375em;
+    display: inline;
+    float: left;
+    width: 55.555555555556%;
+    margin: 0 0%;
+    margin: 0 auto;
+    text-align: left;
+  }
   #content {
     width: 100%;
   }
@@ -1355,7 +1399,7 @@ hr {
   .commentHeader {
     display: inline;
     float: left;
-    width: 100%*1*0.22222222222222 *-0 / 4px;
+    width: 44.444444444444%;
     margin: 0 0%;
   }
   #mangoBas {

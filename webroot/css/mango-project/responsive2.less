@@ -118,7 +118,7 @@
     }
     .siteslogan{
         font-size: @fontSizeH1;
-        width: 100%;
+        .column(@columns /  18 * 10);
         margin:0 auto;
         text-align:center;
         
@@ -184,6 +184,35 @@
         
         padding:8px;
     }
+    #pageTitle{
+    .column(@columns / 12 * 3.5);
+    margin-top:5px;
+    background-color:blue;
+    }
+    #navbar{
+    .column(@columns / 12 * 8.05);
+    
+    }
+    .commentHeader {
+        display: inline;
+        float: left;
+         .column(@columns / 18 * 8 );
+         /*max-width:300px;*/
+        margin: 0 0%;
+        
+      }
+      #sitedescription ul li, #sitedescription ul{
+    float:left;
+    z-index:2;
+    height:50px;
+}
+      .siteslogan{
+        font-size: @fontSizeH1;
+        .column(@columns /  18 * 10);
+        margin:0 auto;
+        text-align:left;
+        
+    }
     #content {
         
         width:@total-width;
@@ -234,7 +263,7 @@
     .commentHeader {
         display: inline;
         float: left;
-         .column(@columns / 18 *  );
+         .column(@columns / 18 * 8 );
          /*max-width:300px;*/
         margin: 0 0%;
         

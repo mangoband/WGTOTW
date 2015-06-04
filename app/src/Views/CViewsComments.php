@@ -100,7 +100,7 @@ class CViewsComments  {
         if ( $commentid  && $cc ){
             $answers = $cc->getTotalAnswers( $commentid);
         
-            return ( isset( $answers[0]->rows ) &&  ! is_null( $answers[0]->rows ) && $answers[0]->rows > 1 ) ? $answers[0]->rows - 1 : 0;
+            return ( isset( $answers[0]->rows ) &&  ! is_null( $answers[0]->rows ) ) ? $answers[0]->rows  : 0;
             
             
         }
@@ -147,7 +147,7 @@ class CViewsComments  {
             // declare th
             $content .= "<thead><tr class='commentListRow'><th class='commentAnswerNr'>Svar</th>
             <th class='commentHeader'>Inlägg</th>
-            <th class='commentDate'>Datum</th></tr></thead>";
+            <th class='commentDate'>Datum</th></tr></thead><tbody>";
             $parentID = null;
             
             $totalAnswers = count( $comments ) - 1;
@@ -176,6 +176,7 @@ class CViewsComments  {
                                                      'commentid'=> $comment->commentid,
                                                      'tag'     => $commentTags,
                                                      'comment'  => markdown($comment->comment),
+                                                     'parentid' => $comment->parentid,
                                                      ])."</tr>";
                     $parentID = $comment->parentid;   
                 }
@@ -184,7 +185,7 @@ class CViewsComments  {
                 }
                 
             }
-            $content .= "\n</table>";
+            $content .= "\n</tbody></table>";
             
           //  dump($content);
             
@@ -208,8 +209,7 @@ class CViewsComments  {
      */
     public function createCommentRow( $p = null ){
         
-        $callers=debug_backtrace();
-   //         dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
+        
         // collect data from array $p
         $url                = ( isset( $p['url'] ) )        ?  $p['url']    : '';
         $element            = ( isset( $p['type'] ))        ?  "<{$p['type']}>" : "<li>";
@@ -220,25 +220,26 @@ class CViewsComments  {
         $commentViews       = ( isset( $p['views'] ) )      ?  "\n\t<td class='commentViews'><p>( {$p['views']} )</p></td>"        : '';
         $commentTags        = ( isset( $p['tag'] ) )        ?  "</tr>\n<tr><td class='commentAnswerNr'></td>\n\t<td colspan='3' class='commentBtn'>{$p['tag'][$p['commentid']]}</td>": '';
         
+        $removeLink = null;
         
         if( isset( $p['loggedUser'][0] ) ){
             $url_update     = $this->app->url->create('kommentar/uppdatera/'.$p['commentid']);
             $url_remove     = $this->app->url->create('kommentar/radera/'.$p['commentid']);
-            $url_respond    = $this->app->url->create('kommentar/svara/'.$p['commentid']);
+            $url_respond    = $this->app->url->create('kommentar/svara/'.$p['parentid']);
         }
         
         if( isset( $p['loggedUser'][0] ) && ($p['loggedUser'][0] == 1 || $p['loggedUser'][0] == 2 || $p['loggedUser'][0] == $p['userid'] )){
+            
+            $removeLink = "\n<td class='commentRemove'><a href='{$url_remove}' class='respondBtn'>Radera</a><a href='{$url_update}' class='respondBtn'>Uppdatera</a>";
             $respondBtn = "<a href='{$url_respond}' class='respondBtn'>Bevara</a></td>";
         } else if ( isset( $p['loggedUser'][0] ) ){
-            $respondBtn = "<td><a href='{$url_respond}' class='respondBtn'>Bevara</a></td>";
+            $respondBtn = "<td class='commentRemove'><a href='{$url_respond}' class='respondBtn'>Bevara</a></td>";
         } else{
             $respondBtn = null;
         }
         $respond            = ( isset( $p['loggedUser'][0] ) && isset($commentHeader) ) ? "<a href='{$url_respond}' class='respondBtn'>Bevara</a>" : null;
         
-       // $respondBtn         = ( isset( $p['loggedUser'][0] ) && $p['loggedUser'][0] == 1 || $p['loggedUser'][0] == 2 ) ? $respond."</td>" : "<td>".$respond;
-        $removeLink         = ( isset( $p['loggedUser'][0] ) && ( $p['loggedUser'][0] == 1 || $p['loggedUser'][0] == 2 || $p['loggedUser'][0] == $p['userid'] ) )
-                            ?  "\n<td class='commentRemove'><a href='{$url_remove}' class='respondBtn'>Radera</a><a href='{$url_update}' class='respondBtn'>Uppdatera</a>": "";
+       
                             
         return $commentAnswerNr.$commentHeader.$commentDate.$removeLink.$respondBtn.$commentText.$commentTags;
         
@@ -275,10 +276,12 @@ class CViewsComments  {
             
         }
        
+        //
         // collect data from array $p
         $header     = ( isset( $p->header ) ) ? $p->header  : '';
         $content    = ( isset( $p->comment) ) ? $p->comment : '';
         $id         = ( isset( $p->parentid ) ) ? $p->parentid      : '';
+        $commentid  = ( isset( $p->commentid) ) ? $p->commentid      : '';
         $userid     = ( isset( $p->userid ) ) ? $p->userid  : '';
         $user       = ( isset( $p->name ) )   ? $p->name    : '';
         $date       = ( isset( $p->date ) )   ? $p->date    : '';
@@ -287,10 +290,24 @@ class CViewsComments  {
         $tagid       = ( isset( $p->tagid ) )   ? explode(',',$p->tagid)    : null;
         $answers    = ( isset( $p->answers))  ? $p->answers : '';
         
+        
         $url = $this->app->url->create("kommentar/visa/".$id);
         $url2 = $this->app->url->create("kommentar/svara/".$id);
+        $url_update     = $this->app->url->create('kommentar/uppdatera/'.$commentid);
+        $url_remove     = $this->app->url->create('kommentar/radera/'.$commentid);
         
-        $respondBtn = ( isset($loggedid[0]) ) ? "<span class='commentAnswerList'><a href='{$url2}' class='respondBtn'>Besvara</a></span>" : null;
+        $removeLink = null;
+        
+        if( isset( $userid ) && ($loggedid[0] == 1 || $loggedid[0] == 2 || $userid == $loggedid[0] )){
+            $removeLink = "\n<a href='{$url_remove}' class='respondBtn'>Radera</a><a href='{$url_update}' class='respondBtn'>Uppdatera</a>";
+        }
+        
+      /*  $removeLink         = ( isset( $p['loggedUser'][0] ) && ( $p['loggedUser'][0] == 1 || $p['loggedUser'][0] == 2 || $p['loggedUser'][0] == $loggedid[0] ) )
+                            ?  "\n<a href='{$url_remove}' class='respondBtn'>Radera</a><a href='{$url_update}' class='respondBtn'>Uppdatera</a>": "";
+      */                      
+                            
+        $respondBtn = ( isset($loggedid[0]) ) ? "<span class='commentAnswerList'><a href='{$url2}' class='respondBtn'>Besvara</a>{$removeLink}</span>" : null;
+        
         
         $html = '';
        if ( $row == 0 ){

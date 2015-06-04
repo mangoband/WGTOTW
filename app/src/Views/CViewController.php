@@ -203,7 +203,7 @@ class CViewController extends CViewsFlash {
             case 'logout':
                 if ( isset($_SESSION['user'])){
                     unset($_SESSION['user']);
-                    $url = $this->app->url->create('home');
+                    $url = $this->app->url->create('hem');
                     $this->app->response->redirect($url);
                 }
                 break;
@@ -217,7 +217,7 @@ class CViewController extends CViewsFlash {
                 $this->meGridAction( $app );
                 break;
             case 'index.php':
-            case 'home':
+            case 'hem':
                 
                 $CViewsComments = new CViewsComments( $app, $user, $param );
                
@@ -339,7 +339,7 @@ class CViewController extends CViewsFlash {
             // What to do if the form was submitted?
            if($status === true) {
                 
-                $url = $this->app->url->create('home');
+                $url = $this->app->url->create('hem');
                header("Location: " . $url);
            }
         
@@ -804,167 +804,6 @@ EOD;
        
     }
     
-    /**
-     *  setupAction
-     *  @param $app
-     */
-    private function setupAction( $app ){
-       
-        $app->session(); // Will load the session service which also starts the session
-        $app->theme->setTitle("Setup");
-        $app->theme->setVariable('wrapperClass', '');
-        $app->theme->setVariable('gridColor', '');
-        $app->theme->setVariable('bodyColor', '');
-        
-        $app->db->setVerbose(false);
-      
-	
-        $app->db->dropTableIfExists('user')->execute();
-     
-        $app->db->createTable(
-            'user',
-            [
-                    'id' => ['integer', 'primary key', 'not null', 'auto_increment'],
-                    'acronym' => ['varchar(20)', 'unique', 'not null'],
-                    'email' => ['varchar(80)'],
-                    'name' => ['varchar(80)'],
-                    'password' => ['varchar(255)'],
-                    'created' => ['datetime'],
-                    'updated' => ['datetime'],
-                    'deleted' => ['datetime'],
-                    'active' => ['datetime'],
-            ]
-        )->execute();
-        
-        $app->db->insert(
-               'user',
-               ['acronym', 'email', 'name', 'password', 'created', 'active']
-        );
-     
-        $now = gmdate('Y-m-d H:i:s');
-     
-        $app->db->execute([
-                'admin',
-                'admin@dbwebb.se',
-                'Administrator',
-               // "md5(concat('admin', salt))",
-                password_hash('admin', PASSWORD_DEFAULT),
-                $now,
-                $now
-        ]);
-     
-        $app->db->execute([
-                'doe',
-                'doe@dbwebb.se',
-                'John/Jane Doe',
-              //  "md5(concat('doe', salt))",
-                password_hash('doe', PASSWORD_DEFAULT),
-                $now,
-                $now
-        ]);
-        
-       
-       $user = new Users\User( $app );
-       ;
-    
-        $app->views->add('default/article', ['content' => $user->getUsers()], 'main');
-        $app->views->add('me/simple', ['text_before' => '<h3>Inlagda personer</h3>', 'icon' => null], 'sidebar');
-        $app->views->add('me/simple', ['text_before' => $user->getUsers(), 'icon' => null], 'sidebar');
-     
-    }
     
     
-    
-    /**
-     *  cformAction
-     *  @param $app
-     */  
-    private function cformAction( $app ){
-        
-        $app->theme->setTitle("CForm");
-        
-        $app->theme->setVariable('wrapperClass', '');
-  
-        $app->theme->setVariable('gridColor', '');
-
-        
-        $app->session(); // Will load the session service which also starts the session
-
-        $form = $app->form->create([], [
-                'name' => [
-                        'type'        => 'text',
-                        'label'       => 'Name of contact person:',
-                        'required'    => true,
-                        'validation'  => ['not_empty'],
-                ],
-                'email' => [
-                        'type'        => 'text',
-                        'required'    => true,
-                        'validation'  => ['not_empty', 'email_adress'],
-                ],
-                'phone' => [
-                        'type'        => 'text',
-                        'required'    => true,
-                        'validation'  => ['not_empty', 'numeric'],
-                ],
-                'submit' => [
-                        'type'      => 'submit',
-                        'callback'  => function ($form) {
-                            
-                    $user = new Users\User( $this->app );
-                    
-                    $saveStatus = $user->addUser( $form->Value('name'), $form->Value('email'),$form->Value('phone') );
-                  //  echo $saveStatus;
-                            //$app->db
-                                $form->AddOutput("<p><i>{$saveStatus}DoSubmit(): Form was submitted here. Do stuff (save to database) and return true 
-                                (success) or false (failed processing form)</i></p>");
-                                $form->AddOutput("<p><b>Name: " . $form->Value('name') . "</b></p>");
-                                $form->AddOutput("<p><b>Email: " . $form->Value('email') . "</b></p>");
-                                $form->AddOutput("<p><b>Phone: " . $form->Value('phone') . "</b></p>");
-                                $form->saveInSession = true;
-                                return true;
-                        }
-                ],
-                ]);
-                
-                
-        // Check the status of the form
-        $status = $form->check();
-
-        if ($status === true) {
-
-                // What to do if the form was submitted?
-                $form->AddOUtput("<p><i>Form was submitted and the callback method returned true.</i></p>");
-                
-                $app->redirectTo();
-
-        } else if ($status === false) {
-        
-                // What to do when form could not be processed?
-                $form->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
-                
-                $app->redirectTo();
-
-        }
-        
-        $callbackSuccess = function ($form) use ($app) {
-                // What to do if the form was submitted?
-                $form->AddOUtput("<p><i>Form was submitted and the callback method returned true.</i></p>");
-                $app->redirectTo();
-        };
-
-        $callbackFail = function ($form) use ($app) {
-                        // What to do when form could not be processed?
-                        $form->AddOutput("<p><i>Form was submitted and the Check() method returned false.</i></p>");
-                        $app->redirectTo();
-        };
-
-        $app->views->add('default/article', ['content' => $form->getHTML()], 'main');
-        
-      //  $app->views->add('default/article', ['content' => print_r(  $app->theme  , 1)], 'main');
-        
-        
-        $app->views->addString('bodyColor', 'bodyColorGray');
-        
-    }
 }

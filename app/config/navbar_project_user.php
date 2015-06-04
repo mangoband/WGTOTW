@@ -20,8 +20,8 @@ return [
         ],
         
         'home' => [
-            'text'  => 'Home',
-            'url'   => $this->di->get('url')->create('home'),
+            'text'  => 'Hem',
+            'url'   => $this->di->get('url')->create('hem'),
             'title' => '',
             'mark-if-parent-of' => 'controller',
         ],

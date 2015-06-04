@@ -30,7 +30,7 @@ float:left;
   width: 100%;
   padding: 1em;
   text-decoration: none;
-  color: white;
+  color: inherit;
   white-space: nowrap; 
 }
 .navbar a:hover{
@@ -46,7 +46,7 @@ padding:0px;
 
 
 nav{
-
+ color:white;
 	float:right;
 	margin-top:22px;
 	display:inline-block;
@@ -108,6 +108,7 @@ nav ul li li.selected {
   background-color: @navselected; 
 }
 .navbar li li {
+  
   border-top: none;  
   border-left: 4px solid transparent;  
 }
@@ -140,14 +141,14 @@ color: @navtext;
 .navbar li.selected-parent, 
 .navbar li.is-parent, 
 .navbar li.selected {
-  color: #95280c; 
+  color: @navtextSelect; 
   border-color: #95280c;
 }
 a{
 color: @navtext;
 }
-a .selected{
-color: #95280c; 
+li.selected{
+color: @navtextSelect; 
 }
 */
 /* Just to sho off how class works */

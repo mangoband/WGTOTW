@@ -179,7 +179,7 @@ class CFormComment extends h\CForm  {
     protected function DoUpdateTag(){
         
         $this->CTagViews->updateTag($this->app->db, $this->Value('tagid'), $this->Value('tagg'));
-         $url = $this->app->url->create('taggar/view');
+         $url = $this->app->url->create('taggar/visa');
         $this->app->response->redirect($url);
     }
     
@@ -189,7 +189,7 @@ class CFormComment extends h\CForm  {
     protected function DoRemoveTag(){
         
         $this->CTagViews->removeTag( $this->app->db,  $this->Value('tagid'));
-         $url = $this->app->url->create('taggar/view');
+         $url = $this->app->url->create('taggar/visa');
         $this->app->response->redirect($url);
     }
     
@@ -220,7 +220,7 @@ class CFormComment extends h\CForm  {
         
        
         $id = $this->Value('commentId');
-        $url = $this->app->url->create('kommentera#'.$id);
+        $url = $this->app->url->create('kommentar/visa/'.$id);
         $this->app->response->redirect($url);
         return true;
     }

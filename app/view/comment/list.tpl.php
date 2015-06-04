@@ -11,26 +11,27 @@
         <li class='top'>
             <input type='hidden' name='commentId[<?= $comment->id?>][]' id='<?= $comment->id ?>' value='<?= $comment->id ?>'  />
             <input type='hidden' name='page' value='<?= $this->di->request->getCurrentUrl() ?>' />
-<h4 class='comment_id' <?= $new?>><?php
+<h2 class='comment_id' <?= $new?>><?php
 
 
-if ( isset( $header )) { echo $comment->header; } ?></h4>
+if ( isset( $header )) { echo $comment->header; } ?></h2>
 <div class='commentAnswerList'>
 <?php if ( isset( $online ) && $online == 'online'  ){
     $url_answer = $this->url->create('kommentar/svara/'.$comment->commentid);
     $url_del    = $this->url->create('kommentar/radera/'.$comment->commentid);
     $url_update = $this->url->create('kommentar/uppdatera/'.$comment->commentid);
 ?>
-<a href='<?=$url_answer?>' class='respondBtn' title='Svara'>Svara</a>
+<a href='<?=$url_answer?>' class='respondBtn' title='Svara'>Besvara</a>
 
-<?php if ( isset( $userid ) && ($userid == 1 || $userid == 2 || $userid == $comment->userid) ){ ?>
+<?php if ( isset( $userid ) && ($userid == 1 || $userid == 2 || $userid == $comment->childid) ){ ?>
 <a href='<?=$url_update?>' class='respondBtn' title='Uppdatera'>Uppdatera</a>
 <a href='<?=$url_del?>' class='respondBtn' title='radera'>Radera</a>
+
+<?php }}  ?>
 </div> 
-<?php }} ?>
-<div class='commentUserList'>
-    <p><?=$comment->name?>, <?= $comment->created;?></p>
-</div>
+<span class='commentUserList parentComment'>
+    <?= $comment->created;?>, <?=$comment->name?> 
+</span>
 
 
         </li>

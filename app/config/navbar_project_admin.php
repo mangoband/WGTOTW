@@ -27,12 +27,7 @@ return [
 
                 'items' => [
 
-                    // This is a menu item of the submenu
-                  /*  'item 1'  => [
-                        'text'  => 'Visa Kommentarer',
-                        'url'   => $this->di->get('url')->create('kommentar/visa'),
-                        'title' => 'Lägg till ny Kommentar'
-                    ],*/
+                  
                     
                     // This is a menu item of the submenu
                     'item 2'  => [
@@ -100,8 +95,8 @@ return [
         ],
         
         'home' => [
-            'text'  => 'Home',
-            'url'   => $this->di->get('url')->create('home'),
+            'text'  => 'Hem',
+            'url'   => $this->di->get('url')->create('hem'),
             'title' => '',
             'mark-if-parent-of' => 'controller',
         ],
