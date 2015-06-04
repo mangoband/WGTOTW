@@ -1166,7 +1166,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
     public function addNewComment(  $comment, $id, $app, $commentid = null, $tags = null, $parentid = null, $header = null ) {
         
         $callers=debug_backtrace();
-            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['class']." ".$callers[1]['function']);
+     //       dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['class']." ".$callers[1]['function']);
        
         $db = $app->db;
         $ip = $app->request->getServer('REMOTE_ADDR');
