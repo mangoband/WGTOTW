@@ -227,7 +227,7 @@ class CViewsComments  {
             $url_respond    = $this->app->url->create('kommentar/svara/'.$p['commentid']);
         }
         
-        $respond            = ( isset( $p['loggedUser'][0] ) && isset($commentHeader) ) ? "<a href='{$url_respond}' class='respondBtn'>Bevara {$callers[1]['function']}</a>" : null;
+        $respond            = ( isset( $p['loggedUser'][0] ) && isset($commentHeader) ) ? "<a href='{$url_respond}' class='respondBtn'>Bevara {$callers[1]['function']}</a></td>" : null;
         $removeLink         = ( isset( $p['loggedUser'][0] ) && ( $p['loggedUser'][0] == 1 || $p['loggedUser'][0] == 2 || $p['loggedUser'][0] == $p['userid'] ) )
                             ?  "\n<td class='commentRemove'><a href='{$url_remove}' class='respondBtn'>Radera</a><a href='{$url_update}' class='respondBtn'>Uppdatera</a>{$respond}<td>": "<td>{$respond}</td>";
         return $commentAnswerNr.$commentHeader.$commentDate.$removeLink.$respond.$commentText.$commentTags;
