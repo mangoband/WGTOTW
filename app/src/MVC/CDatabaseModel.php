@@ -31,7 +31,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
     /**
      *  createTagTable
      */
-    private function createTagTable( $db = null ){
+   /* private function createTagTable( $db = null ){
         
         if( $db ){
             
@@ -69,7 +69,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     
             ]);
         }
-    }
+    }*/
     /**
      *  updateTag
      *  @param int id
@@ -642,100 +642,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         }
     }
     
-    /**
-     *  displayDb
-     */
-    public function displayDbs( $app = null, $id = null ){
-        
-        $db = $app->db;
-        dump(__METHOD__." ".__LINE__ ." ".$id);
-        $commentid =  ($id) ? $id : 7;
-        if ( $db ){
-            ///
-            /// Hämta frågor i toppnivå
-            
-            $db->select("parentid, header, comment, created,updated, ip, userid,  group_concat(c2c.commentid) as child")
-            ->from("comment as c")
-            ->join("comment2Category as c2c", "c2c.parentid = c.id")
-            ->groupby("parentid")
-            ;
-            
-            $toplevel = $db->executeFetchAll( );
-            
-            dump($toplevel );
-            // Hämta taggar till fråga
-            
-            $db->select("group_concat( DISTINCT  c2c.catid) as tagid, group_concat( DISTINCT cc.category) as tagname")
-            ->from("comment2Category as c2c")
-            ->join("commentCategory as cc", "cc.id = c2c.catid")
-            ->groupby("cc.id");
-            
-            $tag = $db->executeFetchAll( );
-            
-            // Hämta svar
-            
-            // Hämta taggar till svar
-     /*       $db->select("*")
-            ->from("comment")
-            
-            ;
-            
-            $data = $db->executeFetchAll( );
-        //    dump( $data);
-     */   
-            $db->select("group_concat(c2c.commentid) as child, group_concat(c2c.catid) as tag, c.id,
-                        p.header as quest, c.header as answer, c.comment, u.name, u.email, c.created, c.updated")
-            ->from("comment2Category as c2c")
-            ->join("comment as c", "c.id = c2c.commentid")
-            ->join("comment as p", "p.id = c2c.parentid")
-            ->join("commentCategory as cc", "c2c.catid = cc.id")
-            ->join("user as u", "u.id = c.userid")
-            ->orderby("parentid, commentid")
-            ->where("parentid = ?")
-            ->groupby("parentid");
-            
-            $data = $db->executeFetchAll( [$commentid] );
-        //    dump( $data);
-            
-            
-            $db->select("*, group_concat(c2c.commentid) as child")
-            ->from("comment as c")
-            ->join("comment2Category as c2c", "c2c.commentid = c.id")
-            ->join("commentCategory as cc", "c2c.catid = cc.id")
-            ->groupby("parentid")
-            
-            ->where("c.id = parentid");
-            
-            
-            $comment = $db->executeFetchAll( );
-        //    dump( $comment);
-            $html = "<table>";
-            $html .="<tr><th colspan='3'>Comment</th></tr>";
-            $html .="<tr><td>id</td><td>Rubrik</td></tr>";
-            $html .="<tr><td >{$comment[0]->id}</td><td>{$comment[0]->header}</td></tr>";
-            
-            $db->select("*,group_concat(c2c.commentid) as child, group_concat(c2c.catid) as tag")
-            ->from("comment2Category as c2c")
-            ->join("commentCategory as cc", "cc.id = c2c.catid")
-            ->join("comment as c", "c2c.parentid = c.id")
-            
-            ->where("parentid = ?")
-            ->orderby("parentid, commentid")
-            ->groupby("parentid");
-            
-            $comment2Category = $db->executeFetchAll( [$commentid] );
-            $html .="<tr><th colspan='3'>Comment2Category</th></tr>";
-            $html .="<tr><td>Commentid</td><td>Parentid</td><td>Tag</td></tr>";
-            foreach( $comment2Category as $key => $c2c ){
-                $html .="<tr><td>{$comment2Category[$key]->commentid}</td><td>{$comment2Category[$key]->parentid}</td><td>{$comment2Category[$key]->tag}</td></tr>";    
-            }
-            
-            
-            $html .= "</table>";
-            
-        //    $app->views->add('default/article', ['header'=>'Databas', 'content' => $html], 'main-wide');
-        }
-    }
+    
     
     /**
      *  getCommentAndCategories
@@ -899,7 +806,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         ->join("commentCategory as c", "c.id = c2c.catid")
         ->join("comment", "comment.id = c2c.commentid")
         ->join("user", "user.id = userid")
-        ->where("commentid = 14")
+        //->where("commentid = 14")
         ;
          $data = $db->executeFetchAll();
          foreach( $data as $row ){
@@ -993,7 +900,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         );
         
         $app->db->execute([
-                'default'
+                'elbas'
                 
         ]);
         
@@ -1004,7 +911,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         );
         
         $app->db->execute([
-                'mysql'
+                'strängar'
                 
         ]);
         // insert values into category
@@ -1079,8 +986,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         );
         
         $app->db->execute([
-                'Första kommentar',
-                'Första rubriken',
+                'Var hittar man en bra elbas?',
+                'Köpa nytt',
                 $now,
                 null,
                 1,
@@ -1095,8 +1002,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         );
         
         $app->db->execute([
-                'Andra kommentar',
-                'Andra',
+                'Finns det någon bra ubass?',
+                'Ubass',
                 $now,
                 null,
                 2,
@@ -1297,6 +1204,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
      */  
     public function addNewComment(  $comment, $id, $app, $commentid = null, $tags = null, $parentid = null, $header = null ) {
         
+        $callers=debug_backtrace();
+            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['class']." ".$callers[1]['function']);
        dump( $tags);
         $db = $app->db;
         $ip = $app->request->getServer('REMOTE_ADDR');
@@ -1341,7 +1250,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 //
                 $catid = $this->getTags( $db, $tag);
            
-               dump( $catid);
+               dump( $tag);
+               if ( isset( $catid[0] )){
                 //
                 // insert data to connect comment and category
                 //
@@ -1361,9 +1271,11 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     $parentid
                    
                 ]);
+               }
+                
                 
            }
-           $db->dump();
+         //  die();
            $url = $app->url->create("kommentar/visa/{$parentid}"); 
      //      $app->response->redirect($url);
         }

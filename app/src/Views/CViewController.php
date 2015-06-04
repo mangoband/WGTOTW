@@ -78,7 +78,7 @@ class CViewController extends CViewsFlash {
         }
         
       
-      //  $this->app->views->add('me/timeOfDay', ['icon' => viewTimeWithFa(date('G')),'timeOfDay' => date('G : i'), 'email'=> $this->email, 'btn' => $user->getLogoutBtn()], 'header');
+      
         
         // set default colors
         $this->app->theme->setVariable('bodyColor', '');
@@ -87,10 +87,7 @@ class CViewController extends CViewsFlash {
         
         // set pagetitle
         $this->app->theme->setVariable('isTitle', false);
-       /* $this->app->theme->setVariable('title', 'Visa');
-        $pt = $this->app->theme->getVariable('title');
-        $this->app->views->add('me/title', [ 'title' => $pt], 'title');
-        */
+       
         
         $this->app->navbar->configure(ANAX_APP_PATH . 'config/' . setMenu() );
         
@@ -225,6 +222,7 @@ class CViewController extends CViewsFlash {
                 $CViewsComments = new CViewsComments( $app, $user, $param );
                
                 $CViewsComments->viewListWithComments( $param );
+                $this->listMostActive( $app );
                  
             break;
             case 'redovisning':
@@ -307,7 +305,7 @@ class CViewController extends CViewsFlash {
             // remove this code after install ------> or comment out with /*   */
             case 'reset-kommentarer':
             case 'reset-user':
-            case 'firstTime':
+            case 'setup':
                 $this->restoreDb( $app );
                 break;
             
@@ -353,6 +351,21 @@ class CViewController extends CViewsFlash {
         }
     }
     
+    /**
+     *  listMostActiveUsers
+     *  @param $app
+     */
+    private function listMostActive($app = null){
+        
+        $user = new \Anax\Users\User( $app );
+        
+        // get the object CommentHandler
+        $ch = new CommentHandler( $app );
+        $ch->listMostActiveUsers();
+        
+        $CTagViews = new \Mango\Views\CTagViews( $this->app );
+        $CTagViews->listPopularTags();
+    }
     
     /**
      *  restoreDb

@@ -19,11 +19,11 @@ function dump($array)
     if( is_null($array) ){
         $callers=debug_backtrace();
             
-        echo "<pre>NULL Value from ".$callers[1]['class']."::".$callers[1]['function']."</pre>";    
+        $content = "<pre>NULL Value from ".$callers[1]['class']."::".$callers[1]['function']."</pre>";    
     } else {
-        echo "<pre>" . htmlentities(print_r($array, 1)) . "</pre>";    
+        $content = "<pre>" . htmlentities(print_r($array, 1)) . "</pre>";    
     }
-    
+    echo $content;
 }
 
  

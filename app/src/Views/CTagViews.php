@@ -274,7 +274,6 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
             $res = $this->cHandler->getTagComments($tagid);
             $CViewsComments = new CViewsComments( $this->app );
             
-            
             $CViewsComments->viewListWithComments( null, $res['data'], true, $tagid, true );
             
         }
@@ -388,10 +387,8 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
      *  listTags
      *
      */
-    public function listTags( $tagid = null, $action = null, $page = null ){
+    public function listTags( $tagid = null, $action = null, $page = null, $position = 'main-wide' ){
         
-        $callers=debug_backtrace();
-            dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['class']."::". $callers[1]['function']);
         
         switch($this->option){
             
@@ -424,8 +421,9 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         
         // make html to view nr and tag
         $html = $this->outputCheckboxes( $list );
+        $header = ( $position == 'triptych_2') ? '<h2>Populära taggar</h2>' : null;
         
-        $this->app->views->add('default/article', ['content' => $html], 'main-wide');
+        $this->app->views->add('me/article', ['header' => $header, 'content' => $html], $position);
         $this->printed = true;
     }
     
@@ -472,6 +470,12 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
      *
      ************************************************************************/
     
+    /**
+     *  listPopularTags
+     */
+    public function listPopularTags(){
+        $this->listTags( null, null, null, 'triptych_2');
+    }
     /**
      *  btnForUpdate
      *  @return htmlcode

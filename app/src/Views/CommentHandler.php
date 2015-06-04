@@ -33,6 +33,33 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
      *************************************************************/
     
     /**
+     *  listMostActiveUsers
+     */
+    public function listMostActiveUsers(  ){
+        
+        $gravatar = new \Anax\Users\Gravatar();
+        
+        $this->app->db->select("count( userid) as exclusive, name, email")
+        ->from("comment as c")
+        ->join("user", "c.userid = user.id")
+        ->orderby("exclusive desc")
+        ->groupby("userid")
+        ->limit("5");
+        
+        $res = $this->app->db->executeFetchAll(  );
+        
+        $header = "<h2>De 5 flitigaste användarna</h2>";
+        $content = "<ul class='activeUsers'>";
+        foreach( $res as $key => $value ){
+            $gravatarImg = "<img src='".$gravatar->get_gravatar($value->email, 15, 'identicon')."' alt='gravatar' title='gravatar' class='userlist_gravatar' />";
+            $content .= "<li>{$gravatarImg} ( {$value->exclusive} ) {$value->name}</li>";
+            
+        }
+        $content .= "</ul>";
+        // view comments
+        $this->app->views->add('me/article', ['header'=>$header, 'content' => $content], 'triptych_1');
+    }
+    /**
      *  fetchUserComments
      *  @param obj $db
      *  @param userID - optional
@@ -356,7 +383,8 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
         if( $param ){
             
             if ( $param ){
-                
+                dump(__METHOD__." ".__LINE__);
+                dump( $param);
                  return $this->addNewComment( $param['comment'], $param['uid'],
                                              $this->app, $param['cid'],
                                              $param['tags'], $param['pid'], $param['header'] );

@@ -233,9 +233,9 @@ header {
 .siteslogan {
   display: inline;
   float: left;
-  width: 33.333333333333%;
+  width: 22.222222222222%;
   margin: 0 0%;
-  min-width: 70%;
+  min-width: 55%;
 }
 .sitegravatar {
   position: relative;
@@ -687,7 +687,7 @@ p.commentViews {
   text-align: left;
   float: left;
   display: inline;
-  width: 16.666666666667%;
+  width: 25%;
   margin: 0 0%;
   z-index: 4;
 }

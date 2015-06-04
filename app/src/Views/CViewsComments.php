@@ -152,12 +152,13 @@ class CViewsComments  {
             
             $totalAnswers = count( $comments ) - 1;
             
-           
             // fill td in table
             foreach( $comments as $comment ){
               
               $commentTags = $CTagViews->getTagForComment( $comment, 'parent' );
-              //  $answers = ( isset($comment->answers ) ) ? $comment->answers : $this->returnAnswers($comment->parentid, $cc);
+              //$commentTags = null;
+              
+              // $answers = ( isset($comment->answers ) ) ? $comment->answers : $this->returnAnswers($comment->parentid, $cc);
                 $answers = $this->returnAnswers($comment->parentid, $cc); 
            
                 if( $parentID != $comment->parentid ){
@@ -185,7 +186,7 @@ class CViewsComments  {
             }
             $content .= "\n</table>";
             
-            
+          //  dump($content);
             
         } else{
             $content = "Inga inlägg gjorda under tagg";
@@ -195,7 +196,7 @@ class CViewsComments  {
         $this->app->views->add('default/article', ['header'=>$header, 'content' => $content], 'main-wide');
        
         // set pagetitle
-        setPageTitle( 'Frågor', $this->app);
+        setPageTitle( 'Allt om Elbas', $this->app);
         
         
      
@@ -207,6 +208,8 @@ class CViewsComments  {
      */
     public function createCommentRow( $p = null ){
         
+        $callers=debug_backtrace();
+   //         dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
         // collect data from array $p
         $url                = ( isset( $p['url'] ) )        ?  $p['url']    : '';
         $element            = ( isset( $p['type'] ))        ?  "<{$p['type']}>" : "<li>";
@@ -224,10 +227,10 @@ class CViewsComments  {
             $url_respond    = $this->app->url->create('kommentar/svara/'.$p['commentid']);
         }
         
-        $respond            = ( isset( $p['loggedUser'][0] ) ) ? "<a href='{$url_respond}' class='respondBtn'>Svara</a>" : null;
+        $respond            = ( isset( $p['loggedUser'][0] ) && isset($commentHeader) ) ? "<a href='{$url_respond}' class='respondBtn'>Bevara {$callers[1]['function']}</a>" : null;
         $removeLink         = ( isset( $p['loggedUser'][0] ) && ( $p['loggedUser'][0] == 1 || $p['loggedUser'][0] == 2 || $p['loggedUser'][0] == $p['userid'] ) )
-                            ?  "\n<td class='commentRemove'><a href='{$url_remove}' class='respondBtn'>Radera</a><a href='{$url_update}' class='respondBtn'>Uppdatera</a>": '';
-        return $commentAnswerNr.$commentHeader.$commentDate.$removeLink.$respond."</td>".$commentText.$commentTags;
+                            ?  "\n<td class='commentRemove'><a href='{$url_remove}' class='respondBtn'>Radera</a><a href='{$url_update}' class='respondBtn'>Uppdatera</a>{$respond}<td>": "<td>{$respond}</td>";
+        return $commentAnswerNr.$commentHeader.$commentDate.$removeLink.$respond.$commentText.$commentTags;
         
     }
     
@@ -239,7 +242,7 @@ class CViewsComments  {
      *
      */
     private function createCommentStructure( $p = null, $loggedid = null ){
-        
+         
         if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
             $callers=debug_backtrace();
             dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
@@ -857,7 +860,8 @@ class CViewsComments  {
                                                          'header'   => $comment->header,
                                                          'comment'  => markdown($comment->comment),
                                                          'answerNr' => $this->returnAnswers($comment->id, $cc),
-                                                         'url'      => $url
+                                                         'url'      => $url,
+                                                         'views'    => 2,
                                                          ])."</tr>";
                         $cid = $comment->id;
                         }
