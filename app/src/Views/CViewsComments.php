@@ -165,6 +165,9 @@ class CViewsComments  {
                 
                     $url = $this->app->url->create("kommentar/visa/".$comment->parentid);
                     
+                 //   $htmlParent = ( isset($comment )) ? $this->createCommentStructure( $comment, $loggedUserid ) : '';
+                    
+                  //  dump( $htmlParent);
                     $content .= "\n\t<tr class='commentListRow'>".$this->createCommentRow([
                                                      'date'     => $comment->created,
                                                      'header'   => $comment->header,
@@ -221,10 +224,10 @@ class CViewsComments  {
         $commentTags        = ( isset( $p['tag'] ) )        ?  "</tr>\n<tr><td class='commentAnswerNr'></td>\n\t<td colspan='3' class='commentBtn'>{$p['tag'][$p['commentid']]}</td>": '';
         
         $removeLink = null;
-        
+      
         if( isset( $p['loggedUser'][0] ) ){
-            $url_update     = $this->app->url->create('kommentar/uppdatera/'.$p['commentid']);
-            $url_remove     = $this->app->url->create('kommentar/radera/'.$p['commentid']);
+            $url_update     = $this->app->url->create('kommentar/uppdatera/'.$p['parentid']);
+            $url_remove     = $this->app->url->create('kommentar/radera/'.$p['parentid']);
             $url_respond    = $this->app->url->create('kommentar/svara/'.$p['parentid']);
         }
         
@@ -237,9 +240,6 @@ class CViewsComments  {
         } else{
             $respondBtn = null;
         }
-        $respond            = ( isset( $p['loggedUser'][0] ) && isset($commentHeader) ) ? "<a href='{$url_respond}' class='respondBtn'>Bevara</a>" : null;
-        
-       
                             
         return $commentAnswerNr.$commentHeader.$commentDate.$removeLink.$respondBtn.$commentText.$commentTags;
         
@@ -293,8 +293,8 @@ class CViewsComments  {
         
         $url = $this->app->url->create("kommentar/visa/".$id);
         $url2 = $this->app->url->create("kommentar/svara/".$id);
-        $url_update     = $this->app->url->create('kommentar/uppdatera/'.$commentid);
-        $url_remove     = $this->app->url->create('kommentar/radera/'.$commentid);
+        $url_update     = $this->app->url->create('kommentar/uppdatera/'.$id);
+        $url_remove     = $this->app->url->create('kommentar/radera/'.$id);
         
         $removeLink = null;
         
@@ -302,9 +302,6 @@ class CViewsComments  {
             $removeLink = "\n<a href='{$url_remove}' class='respondBtn'>Radera</a><a href='{$url_update}' class='respondBtn'>Uppdatera</a>";
         }
         
-      /*  $removeLink         = ( isset( $p['loggedUser'][0] ) && ( $p['loggedUser'][0] == 1 || $p['loggedUser'][0] == 2 || $p['loggedUser'][0] == $loggedid[0] ) )
-                            ?  "\n<a href='{$url_remove}' class='respondBtn'>Radera</a><a href='{$url_update}' class='respondBtn'>Uppdatera</a>": "";
-      */                      
                             
         $respondBtn = ( isset($loggedid[0]) ) ? "<span class='commentAnswerList'><a href='{$url2}' class='respondBtn'>Besvara</a>{$removeLink}</span>" : null;
         
@@ -809,7 +806,6 @@ class CViewsComments  {
        
         
         $commentTags = $CTagViews->getTagForComment( $answers, 'parent' );
-        
         
         // get formated childdata
        // $childComments[$parent[0]->commentid][] =  $this->formatChildComments( $parent, $parent[0]->commentid );

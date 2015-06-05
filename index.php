@@ -1,4 +1,4 @@
 <?php
-header('Location: webroot/index.php/firstTime');
+header('Location: webroot/index.php/setup');
 exit;
 ?>

@@ -575,13 +575,26 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
      *  @return $object $result
      */
     protected function getCommentAnswersFromParentID( $db = null, $parentid = null ){
-        
+        dump( $parentid);
         if( $this->verbose == true ){
             $callers=debug_backtrace();
             dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
         }
         // gets a list with answers to comment
         if( $db && $parentid){
+           /* $db->select("*, c.comment as comment, c.header as header, c.created as created, c2c.parentid,
+                        group_concat( distinct cc.category) as tag, group_concat( distinct cc.id) as tagid, c.userid as childid") 
+            ->from("comment2Category as c2c")
+            ->join("commentCategory as cc", "cc.id = c2c.catid")
+            ->join("comment as c", "c.id = c2c.commentid")
+            ->join("comment as p", "p.id = c2c.parentid")
+            ->join("user ", "user.id = c.userid")
+            ->where("c2c.parentid = ?")
+           // ->andwhere("c2c.parentid != c.id")
+            ->groupby("c2c.commentid")
+            ->orderby(' commentid asc,created desc' );
+            */
+            
             $db->select("*, c.comment as comment, c.header as header, c.created as created, c2c.parentid,
                         group_concat( distinct cc.category) as tag, group_concat( distinct cc.id) as tagid, c.userid as childid") 
             ->from("comment2Category as c2c")
