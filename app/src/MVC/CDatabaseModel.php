@@ -578,7 +578,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
      *  @return $object $result
      */
     protected function getCommentAnswersFromParentID( $db = null, $parentid = null ){
-        dump( $parentid);
+        
         if( $this->verbose == true ){
             $callers=debug_backtrace();
             dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
@@ -611,7 +611,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             ->orderby(' commentid asc,created desc' );
             
             $data = $db->executeFetchAll( [$parentid] );
-            dump( $data);
+            
             return $data;
           //group_concat(cc.category) as tag, group_concat(cc.id) as tagid,count(c2c.parentid) -1  as answers")
         }
