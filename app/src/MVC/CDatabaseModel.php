@@ -168,7 +168,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                         dump( __LINE__. " ". __METHOD__." get all categories 2.");
                     }
                   
-                    $db->select("category, c2c.id")
+                    $db->select("category, id")
                     ->from("commentCategory as cc")
                     
                     ->orderby("category");
