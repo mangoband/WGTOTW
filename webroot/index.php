@@ -32,7 +32,7 @@ $app->theme->configure(ANAX_APP_PATH . 'config/theme-project.php');
 
 // get adminmenu or normal menu
 
-  $app->navbar->configure(ANAX_APP_PATH . 'config/navbar_project.php');
+$app->navbar->configure(ANAX_APP_PATH . 'config/navbar_project.php');
 
 
 

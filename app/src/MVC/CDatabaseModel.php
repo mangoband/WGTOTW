@@ -555,6 +555,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
            // if parentid is set
            if ( ! is_null( $parentid ) ){
             $db->where("parentid = ?");
+            
            }
            
             $db->groupby("c2c.parentid")
@@ -785,12 +786,50 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         ->join("commentCategory as c", "c.id = c2c.catid")
         ->join("comment", "comment.id = c2c.commentid")
         ->join("user", "user.id = userid")
+        ->orderby("parentid, parentid")
         //->where("commentid = 14")
         ;
+        $p = null;
+        $c = null;
+        $m      = [];
+        $child  = [];
          $data = $db->executeFetchAll();
          foreach( $data as $row ){
             $r[] = "id: {$row->id}, catid: {$row->catid}, commentid: {$row->commentid}, parent: {$row->parentid} category: {$row->category}, header: {$row->header}, userid: {$row->userid}, name: {$row->name}";
+            
+            /*$m[] = $row->parentid;
+            if( $p == $c  ){
+                
+            }
+            
+            dump( $row);
+            if ( $p && $p == $row->parentid ){
+                $commentkey = $p;
+            } else {
+               
+                $commentkey = $row->parentid;
+                
+            }
+            $p = array_search($row->parentid, $m); // $key = 2;
+            
+            $m[$commentkey] = [$row->commentid => [
+                    'id'        => $row->id,
+                    'catid'     => $row->catid,
+                    'commentid' => $row->commentid,
+                    'parentid'  => $row->parentid,
+                    'header'    => $row->header,
+                    'comment'   => $row->comment,
+                    'created'   => $row->created,
+                    'updated'   => $row->updated,
+                    'userid'    => $row->userid,
+                    'acronym'   => $row->acronym,
+                    'email'     => $row->email,
+                    'deleted'   => $row->deleted,
+                    ]
+                ];*/
          }
+         
+         
          
          return $r;
     }

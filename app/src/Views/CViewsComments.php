@@ -106,6 +106,37 @@ class CViewsComments  {
         }
         return $rows;
     }
+    
+    /**
+     *  makeSameParent
+     *  @param object $comments
+     *  @return array $comments
+     */  
+    private function makeSameParent( $comments = null ){
+       
+       if ( $comments ){
+            $parentid = [];
+            $childid = [];
+            $header = [];
+            foreach( $comments as $key => $value ){
+         //   dump( $value);
+                if( in_array( $value->header, $header ) == false ){
+                    $header[] = $value->header;
+                }
+                $id = array_key_exists($value->parentid, $parentid);
+             //   dump( $id.__LINE__);
+                if ( $id != false ){
+                    dump(array_search($value->parentid, $parentid) );
+                } else {
+                    $parentid[] = $value->parentid;
+                }
+              //  dump( in_array( $value->commentid, $list ) );
+               // $list[$value->parentid][] = $value->commentid;
+               // dump( in_array( $value->commentid, $list ) );
+            }
+            
+       }
+    }
     /**
      *  viewListWithComments
      */
@@ -132,6 +163,9 @@ class CViewsComments  {
         
         $comments = (  $isTag == true ) ? $data :$cc->getGroupedComments($this->app->db, null, 'parent');
         
+        
+        // put comments under same parent
+       // $comments = $this->makeSameParent( $comments );
     
             
         // define content & header
@@ -144,6 +178,7 @@ class CViewsComments  {
             $CTagViews = new \Mango\Views\CTagViews( $this->app );
            $content = "\n<table class='commentList'>";
         
+            $gravatar = new \Anax\Users\Gravatar();
             // declare th
             $content .= "<thead><tr class='commentListRow'><th class='commentAnswerNr'>Svar</th>
             <th class='commentHeader'>Inlägg</th>
@@ -180,7 +215,9 @@ class CViewsComments  {
                                                      'tag'     => $commentTags,
                                                      'comment'  => markdown($comment->comment),
                                                      'parentid' => $comment->parentid,
-                                                     ])."</tr>";
+                                                     'email'    => $comment->email,
+                                                     'name'     => $comment->name,
+                                                     ], $gravatar)."</tr>";
                     $parentID = $comment->parentid;   
                 }
                 if ( $parentID != $comment->parentid ){
@@ -214,18 +251,25 @@ class CViewsComments  {
     /**
      *  createCommentRow
      */
-    public function createCommentRow( $p = null ){
-        
-        
+    public function createCommentRow( $p = null, $gravatar = null ){
+     
+       
         // collect data from array $p
+      
+        $gravatar           = ( isset( $p['email'] ) )      ?  $gravatar->get_gravatar( $p['email'], 15, 'identicon', 'g', false ): null;
+        $name               = ( isset( $p['name'] ) )       ? $p['name'] : null;
+        $img                = ( isset( $p['email'] ))       ? "<img src='{$gravatar}' title='{$name}' alt='{$name}'  />" : null ;
+        
         $url                = ( isset( $p['url'] ) )        ?  $p['url']    : '';
         $element            = ( isset( $p['type'] ))        ?  "<{$p['type']}>" : "<li>";
-        $commentHeader      = ( isset( $p['header'] ) )     ?  "\n\t<td class='commentHeader'><a href='{$url}'>{$p['header']}</a></td>"      : '';
+        $commentHeader      = ( isset( $p['header'] ) )     ?  "\n\t<td class='commentHeader'>{$img} <a href='{$url}' title='man'>{$p['header']}</a></td>"      : '';
         $commentText        = ( isset( $p['comment'] ) )    ?  "</tr>\n<tr><td class='commentAnswerNr'></td>\n\t<td class='commentText' colspan='3'>{$p['comment']}</td>"      : '';
         $commentAnswerNr    = ( isset( $p['answerNr'] ) )   ?  "\n\t<td class='commentAnswerNr'><p>( {$p['answerNr']} )</p></td>"  : '';
         $commentDate        = ( isset( $p['date'] ) )       ?  "\n\t<td class='commentDate'>{$p['date']}</td>"          : '';
         $commentViews       = ( isset( $p['views'] ) )      ?  "\n\t<td class='commentViews'><p>( {$p['views']} )</p></td>"        : '';
         $commentTags        = ( isset( $p['tag'] ) )        ?  "</tr>\n<tr><td class='commentAnswerNr'></td>\n\t<td colspan='3' class='commentBtn'>{$p['tag'][$p['commentid']]}</td>": '';
+        
+        
         
         $removeLink = null;
       
@@ -780,6 +824,7 @@ class CViewsComments  {
         $parentid   = null;
         $userid     = $this->user->getUserIDIndex();
         
+        
         // get the object CommentHandler
         $ch = new CommentHandler( $this->app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
                                     'errorName' => getError(3)) );
@@ -862,6 +907,8 @@ class CViewsComments  {
             
             $name = ( isset( $selectedUser->name ) ) ? " av ".$selectedUser->name : '...';
             
+            $gravatar = new \Anax\Users\Gravatar();
+            
             // make object of commentControll
             $cc = null;
             $cc = new CommentHandler( $this->app, array('errorContent'=>getError(0), 'errorMail'=>getError(1), 'errorHomepage'=>getError(2),
@@ -882,7 +929,7 @@ class CViewsComments  {
                     $content .= "\n<table class='commentList'>";
                     
                     // loop and output data
-                    foreach( $comments as $comment ){
+                    foreach( $comments as $comment ){ 
                         if( $comment->id == $comment->parentid && $cid != $comment->id ){
                             $url = $app->url->create("kommentar/visa/".$comment->id);
                         $content .= "\n\t<tr class='commentListRow'>".$this->createCommentRow([
@@ -892,7 +939,8 @@ class CViewsComments  {
                                                          'answerNr' => $this->returnAnswers($comment->id, $cc),
                                                          'url'      => $url,
                                                          'views'    => 2,
-                                                         ])."</tr>";
+                                                         'email'    => $comment->email,
+                                                         ], $gravatar)."</tr>";
                         $cid = $comment->id;
                         }
                         
