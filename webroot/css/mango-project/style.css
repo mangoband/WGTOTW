@@ -479,7 +479,8 @@ textarea {
 .checkboxAria li a,
 .tag,
 .commentTags a,
-.respondBtn {
+.respondBtn,
+.name-main-wide li {
   float: left;
   padding: 5px;
   margin: 5px;
@@ -526,6 +527,19 @@ textarea {
   margin-top: 22px;
   background-color: green;
   color: #000;
+}
+.name-main-wide {
+  width: 100%;
+}
+.name-main-wide li:hover {
+  border: 1px solid green;
+  color: green;
+}
+.name-main-wide li a:hover {
+  color: inherit;
+}
+.name-main-wide li {
+  background-color: #eee;
 }
 .comment_holder li {
   list-style: none;

@@ -196,6 +196,10 @@ class CViewsComments  {
             $content = "Inga inlägg gjorda under tagg";
         }
         
+        //$link = ( $commentid) ? "anv/visa" : "anv/visa";
+        $url = $this->app->url->create();
+        $backUrl = "<a href='{$url}'>[Tillbaka]</a>";
+        $content .= $backUrl;
         // view comments
         $this->app->views->add('default/article', ['header'=>$header, 'content' => $content], 'main-wide');
        
@@ -284,7 +288,7 @@ class CViewsComments  {
         $commentid  = ( isset( $p->commentid) ) ? $p->commentid      : '';
         $userid     = ( isset( $p->userid ) ) ? $p->userid  : '';
         $user       = ( isset( $p->name ) )   ? $p->name    : '';
-        $date       = ( isset( $p->date ) )   ? $p->date    : '';
+        $date       = ( isset( $p->created ) )   ? $p->created    : '';
         $row        = ( isset( $p->row ) )    ? $p->row     : '';
         $tags       = ( isset( $p->tag ) )   ? explode(',', $p->tag)    : null;
         $tagid       = ( isset( $p->tagid ) )   ? explode(',',$p->tagid)    : null;
@@ -308,7 +312,7 @@ class CViewsComments  {
         
         $html = '';
        if ( $row == 0 ){
-            $html .= "\n\t<li>\n\t<h2>\n\t{$header}</h2>\n\t{$respondBtn}\n\t<span class='commentUserList parentComment'>{$user}</span></li>";
+            $html .= "\n\t<li>\n\t<h2>\n\t{$header}</h2>\n\t{$respondBtn}\n\t<span class='commentUserList parentComment'>{$date}, {$user}</span></li>";
         }
         $html .= "\n\t<li class='comment'>".markdown($content)."</li>";
         if ( $row == 0 ){
@@ -832,7 +836,10 @@ class CViewsComments  {
                 'parentHeader'  => $parentHeader
                 ]); 
       
-        
+        $url = $this->app->url->create();
+        $backUrl = "<a href='{$url}'>[Tillbaka]</a>";
+          // view comments
+        $this->app->views->add('default/article', ['header'=>null, 'content' => $backUrl], 'main-wide');
     }
     
     

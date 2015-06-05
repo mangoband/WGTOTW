@@ -91,7 +91,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
      *  @param array $db
      *  @return object $result
      */
-    public function getTags( $db = null, $category = null, $popular = null, $commentid = null, $catid = null ){
+    public function getTags( $db = null, $category = null, $popular = null, $commentid = null, $catid = null, $position = null ){
         
            if ( $db ){
                 
@@ -118,6 +118,9 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     
                     if ( $catid ){
                         $db->where("catid = ?");
+                    }
+                    if ( $position == 'triptych_2'){
+                        $db->limit("10");
                     }
                     $res = (! $catid ) ? $db->executeFetchAll(  ): $db->executeFetchAll( [$catid] );
                     
@@ -540,7 +543,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         if ( $db ){
             $db->setVerbose($this->dbVerbose);
             // gets a list of with parent comments
-            $db->select("*,commentid, c.comment, c.header, c.created, catid, userid, name, parentid,
+            $db->select("*,commentid, c.comment, c.header, c.created, catid, userid, name, parentid,strftime('%Y-%m-%d %H:%M', c.created) as created,
                         group_concat( distinct cc.category) as tag, group_concat(userid) as users, group_concat( distinct cc.id) as tagid, count(c2c.parentid) -1  as answers")
             ->from("comment as c")
             ->join("comment2Category as c2c", "c2c.parentid = c.id")
@@ -595,7 +598,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             ->orderby(' commentid asc,created desc' );
             */
             
-            $db->select("*, c.comment as comment, c.header as header, c.created as created, c2c.parentid,
+            $db->select("*, c.comment as comment, c.header as header, c.created as created, c2c.parentid, strftime('%Y-%m-%d %H:%M', p.created) as created, 
                         group_concat( distinct cc.category) as tag, group_concat( distinct cc.id) as tagid, c.userid as childid") 
             ->from("comment2Category as c2c")
             ->join("commentCategory as cc", "cc.id = c2c.catid")
@@ -608,7 +611,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             ->orderby(' commentid asc,created desc' );
             
             $data = $db->executeFetchAll( [$parentid] );
-            
+            dump( $data);
             return $data;
           //group_concat(cc.category) as tag, group_concat(cc.id) as tagid,count(c2c.parentid) -1  as answers")
         }

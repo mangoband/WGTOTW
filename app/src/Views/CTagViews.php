@@ -249,7 +249,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
             foreach( $tags as $key => $tag ){
                 $nr = $key + 1;
                 $url = $this->app->url->create("taggar/{$action}/{$tag->catid}");
-                $list[] = "<a href='{$url}'>{$tag->popular} : {$tag->category}</a>";
+                $list[] = "<a href='{$url}'>({$tag->popular}) {$tag->category}</a>";
             }
             
         
@@ -403,7 +403,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         //
         // fill $tags with all tags from db
         //
-        $tags = (! $page ) ? $this->getTags( $this->app->db, null, true ) : $this->getTags( $this->app->db, null, false );
+        $tags = (! $page ) ? $this->getTags( $this->app->db, null, true,null, null, $position ) : $this->getTags( $this->app->db, null, false  );
         
         // popular tags
         
@@ -413,7 +413,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
             
             $nr = $key + 1;
             $url = $this->app->url->create("taggar/{$action}/{$tag->id}");
-            $list[] = "<a href='{$url}'{$selected}>{$tag->category}</a>";
+            $list[] = "<a href='{$url}'{$selected}>({$tag->popular}) {$tag->category}</a>";
         }
         
         

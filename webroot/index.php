@@ -47,53 +47,7 @@ session_name('kmom4');
   
 });
 
-$app->router->add('firstTimes', function() use ( $app ) {
-  
-$app->theme->setVariable('gridColor', '');
-$url = $app->url->create('reset-user');
-$url2 = $app->url->create('reset-kommentarer');
-$url3 = $app->url->create();
 
-$currentUrl = $app->request->getCurrentUrl();
-
-if ( $app->url->getUrlType() != 'clean' ){
-    $pageUrl = explode( 'webroot/firstTime.php/', $currentUrl); 
-} else {
-    $pageUrl = explode( 'webroot/', $currentUrl); 
-}
-
-if ( !isset( $pageUrl[1])){
-    $site = 'home';
-} else {
-    $site = $pageUrl[1];
-}
-
-$tmp = explode( '/', $site );
-
-$page     = ( isset( $tmp[0] ) ) ? $tmp[0] : null;
-
-$CViewsComments = new Mango\Views\CViewsComments( $app );
-$user = null;
-$comment = null;
-
-if ( $page == 'reset-user'){
-    $CViewsComments->prepareDatabase( $app, 'user');
-    $user = '.......... Skapar databas';
-    
-} else if ( $page == 'reset-kommentarer'){
-    $CViewsComments->prepareDatabase( $app, 'comment');
-    $comment = ".......... Skapar databas <a href='{$url3}'>--> Startsida <-- </a><br />";
-}
-$html = <<<EOD
- <h1>Skapa databas</h1>
-        <p><a href='{$url}'>Skapa/Återställ tabell för användare</a></p>
-        <p>{$user}</p>
-        <p><a href='{$url2}'>Skapa/Återställ tabell för kommentarer</a></p>
-        <p>{$comment}</p>
-EOD;
-        
-   $app->views->add('default/article', ['content' => $html], 'main');
-});
 $app->router->add('source', function() use ($app) {
     $app->theme->setTitle("Källkod");
     $app->theme->addStylesheet('css/source.css');

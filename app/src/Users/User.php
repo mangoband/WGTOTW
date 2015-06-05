@@ -100,7 +100,7 @@ private $online;
           if ( $values->deleted == true ){ $trash = " <i class='fa fa-trash'></i> "; }
           $path = $this->app->url->create("{$link}/".$values->id);
            $gravatarImg = "<img src='".$gravatar->get_gravatar($values->email, 15, 'identicon')."' alt='gravatar' title='gravatar' class='userlist_gravatar' />";
-        $html .= "\n<li >{$gravatarImg}<a href='{$path}' title='{$title}'>". $values->name ." </a>{$trash}</li>\n";
+        $html .= "\n<li ><a href='{$path}' title='{$title}'>{$gravatarImg} ". $values->name ." </a>{$trash}</li>\n";
       }
       
       

@@ -93,7 +93,7 @@ class CViewController extends CViewsFlash {
         
         
         if ( !isset( $pageUrl[1])){
-            $site = 'home';
+            $site = 'hem';
         } else {
             $site = $pageUrl[1];
         }
@@ -216,15 +216,7 @@ class CViewController extends CViewsFlash {
             case 'me?grid':
                 $this->meGridAction( $app );
                 break;
-            case 'index.php':
-            case 'hem':
-                
-                $CViewsComments = new CViewsComments( $app, $user, $param );
-               
-                $CViewsComments->viewListWithComments( $param );
-                $this->listMostActive( $app );
-                 
-            break;
+            
             case 'redovisning':
                $this->redovisningAction( $app, false );
                 break;
@@ -317,8 +309,17 @@ class CViewController extends CViewsFlash {
             case 'om':
                 $this->omAction( $app );
                 break;
-            
+            case 'index.php':
+            case 'hem':
+                
+                $CViewsComments = new CViewsComments( $app, $user, $param );
+               
+                $CViewsComments->viewListWithComments( $param );
+                $this->listMostActive( $app );
+                 
+            break;
         }
+        
     }
   
     /**
@@ -402,6 +403,7 @@ EOD;
         
    $app->views->add('default/article', ['content' => $html], 'main');
     }
+    
     
     
     /**
@@ -634,40 +636,7 @@ EOD;
             
         }
     }
-     /**
-     *  redovisningAction
-     *  @param $app
-     */
-    private function redovisningAction( $app, $grid = false ){
-        
-        if ( $grid == true ){
-            $app->theme->setVariable('bodyColor', '');
-            $app->theme->setVariable('wrapperClass', 'bg');
-        } else {
-             $app->theme->setVariable('bodyColor', '');
-             $app->theme->setVariable('wrapperClass', '');
-             
-        }
-                        
-        $app->theme->setTitle("Redovisning");
-        
-        $app->theme->setVariable('gridColor', '');
-        
-        $content = $app->fileContent->get('redovisning.md');
-        $content = $app->textFilter->doFilter($content, 'shortcode, markdown');
-        
-        $bas = $app->fileContent->get('bas.md');
-        $bas = $app->textFilter->doFilter($bas, 'shortcode, markdown');
-        
-        $right = $app->fileContent->get('rightLinks.md');
-        $right = $app->textFilter->doFilter($right, 'shortcode, markdown');
      
-        $byline = $app->fileContent->get('byline.md');
-        $byline = $app->textFilter->doFilter($byline, 'shortcode, markdown');
-        
-        $app->views->add('default/article', ['content' => $content], 'main');
-        $app->views->add('me/sidebar', ['img' => $bas, 'byline' => $byline], 'triptych_1');
-    }
     
     
     
@@ -704,45 +673,7 @@ EOD;
                   ->addString('footer-col-4', 'footer-col-4');
         $this->app->views->addString('bodyColor', 'bodyColorGray');
     }
-    /**
-     *  regionerGridAction
-     *  @param $app
-     */
-    private function regionerGridAction( $app ){
-        
-        
-        $this->app->theme->setVariable('bodyColor', 'bodyColorGray');
-        $this->app->theme->setVariable('wrapperClass', 'bg');
-        $this->app->theme->setVariable('gridColor', '');
-            
-        $this->app->theme->setTitle("Me");
-        
-        
     
-        
-        $me = $this->app->fileContent->get('me.md');
-        $me = $this->app->textFilter->doFilter($me, 'shortcode, markdown');
-        
-        $bas = $this->app->fileContent->get('bas.md');
-        $bas = $this->app->textFilter->doFilter($bas, 'shortcode, markdown');
-        
-        $byline = $this->app->fileContent->get('byline.md');
-        $byline = $this->app->textFilter->doFilter($byline, 'shortcode, markdown');
-        
-      
-        $this->app->views->add('default/article', ['content' => $me], 'main');
-        
-        $this->app->views->add('me/timeOfDay', ['icon' => $this->viewTimeWithFa(date('G')),'timeOfDay' => date('G : i'), 'email'=> $this->email], 'header');
-        $this->app->views->add('me/simple', ['text_before' => 'Jag bor i', 'icon' => 'fa-building-o'], 'sidebar');
-        $this->app->views->add('me/simple', ['text_before' => 'När jag ska gå in behöver jag ', 'icon' => 'fa-key'], 'sidebar');
-        $this->app->views->add('me/simple', ['text_before' => 'Blir jag hungrig så fixar jag mat och plockar fram ', 'icon' => 'fa-cutlery', 'text_after' => 'och äter.'], 'sidebar');
-        $this->app->views->add('me/simple', ['text_before' => 'När timmen är sen och det snart är dax att sova använder jag', 'icon' => 'fa-headphones', 'text_after' => 'ofta framför datorn.'], 'sidebar');
-            
-        
-       // $this->app->views->add('me/simple', [ 'byline' => $byline], 'sidebar');
-        $this->app->views->add('me/sidebar', ['img' => $bas, 'byline' => $byline], 'sidebar');
-        
-    }
     
     
     
