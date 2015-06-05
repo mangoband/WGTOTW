@@ -403,7 +403,7 @@ class CTagViews extends \Anax\MVC\CDatabaseModel {
         //
         // fill $tags with all tags from db
         //
-        $tags = (! $page ) ? $this->getTags( $this->app->db, null, true,null, null, $position ) : $this->getTags( $this->app->db, null, false  );
+        $tags = (! $page ) ? $this->getTags( $this->app->db, null, true, null, null, $position ) : $this->getTags( $this->app->db, null, true  );
         
         // popular tags
         

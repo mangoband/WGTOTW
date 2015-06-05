@@ -107,36 +107,7 @@ class CViewsComments  {
         return $rows;
     }
     
-    /**
-     *  makeSameParent
-     *  @param object $comments
-     *  @return array $comments
-     */  
-    private function makeSameParent( $comments = null ){
-       
-       if ( $comments ){
-            $parentid = [];
-            $childid = [];
-            $header = [];
-            foreach( $comments as $key => $value ){
-         //   dump( $value);
-                if( in_array( $value->header, $header ) == false ){
-                    $header[] = $value->header;
-                }
-                $id = array_key_exists($value->parentid, $parentid);
-             //   dump( $id.__LINE__);
-                if ( $id != false ){
-                    dump(array_search($value->parentid, $parentid) );
-                } else {
-                    $parentid[] = $value->parentid;
-                }
-              //  dump( in_array( $value->commentid, $list ) );
-               // $list[$value->parentid][] = $value->commentid;
-               // dump( in_array( $value->commentid, $list ) );
-            }
-            
-       }
-    }
+    
     /**
      *  viewListWithComments
      */
@@ -152,7 +123,6 @@ class CViewsComments  {
         if ( is_null( $popular) ){
             $this->viewPopularTags( $tagid);    
         }
-        
         
         // make object of commentControll
         $cc = null;
@@ -187,22 +157,30 @@ class CViewsComments  {
             
             $totalAnswers = count( $comments ) - 1;
             
+            $children = [];
+            
             // fill td in table
             foreach( $comments as $comment ){
+              
+              
               
               $commentTags = $CTagViews->getTagForComment( $comment, 'parent' );
               //$commentTags = null;
               
               // $answers = ( isset($comment->answers ) ) ? $comment->answers : $this->returnAnswers($comment->parentid, $cc);
                 $answers = $this->returnAnswers($comment->parentid, $cc); 
-           
-                if( $parentID != $comment->parentid ){
+                $p = array_search($comment->commentid, $children);
                 
+                if( $parentID != $comment->parentid && $p == false  ){
+                    
+                    $children[] = $comment->commentid;
                     $url = $this->app->url->create("kommentar/visa/".$comment->parentid);
                     
                  //   $htmlParent = ( isset($comment )) ? $this->createCommentStructure( $comment, $loggedUserid ) : '';
                     
                   //  dump( $htmlParent);
+                  if ( substr( $comment->header, 0, 3 ) !== "re:" ){
+                  
                     $content .= "\n\t<tr class='commentListRow'>".$this->createCommentRow([
                                                      'date'     => $comment->created,
                                                      'header'   => $comment->header,
@@ -218,7 +196,8 @@ class CViewsComments  {
                                                      'email'    => $comment->email,
                                                      'name'     => $comment->name,
                                                      ], $gravatar)."</tr>";
-                    $parentID = $comment->parentid;   
+                    $parentID = $comment->parentid;
+                  }
                 }
                 if ( $parentID != $comment->parentid ){
                      
@@ -294,35 +273,81 @@ class CViewsComments  {
     }
     
     
+    
+    // make tags as links
+    private function makeATag( $id = null, $name = null, $app = null ){
+         
+             $a = '';
+             if( $name && $id ){
+                 foreach( $name as $key => $value ){
+
+                     $url = $app->url->create("taggar/visa/{$id[$key]}");
+                     $a .= "<a href='$url' class='tag'>{$name[$key]}</a>";
+                 }       
+             }
+         return $a;
+         
+     }
+     
+     private function returnData( $comments = null ){
+        
+             //
+        // collect data from array $p
+   
+        if ( $comments ){
+            $comment = [
+                'header' => ( isset( $comments->header ) ) ? $comments->header  : '',
+                'content' => ( isset( $p->comment) ) ? $p->comment : '',
+                'id'    => ( isset( $p->parentid ) ) ? $p->parentid      : '',
+                'commentid' => ( isset( $p->commentid) ) ? $p->commentid      : '',
+                'userid'     => ( isset( $p->userid ) ) ? $p->userid  : '',
+                'user'      => ( isset( $p->name ) )   ? $p->name    : '',
+                'date'      => ( isset( $p->created ) )   ? $p->created    : '',
+                'row'       => ( isset( $p->row ) )    ? $p->row     : '',
+                'tags'      => ( isset( $p->tag ) )   ? explode(',', $p->tag)    : null,
+                'tagid'     => ( isset( $p->tagid ) )   ? explode(',',$p->tagid)    : null,
+                'answers'   => ( isset( $p->answers))  ? $p->answers : ''
+    
+            ];
+            return $comment;
+        }
+   
+     }
+    /**
+     *  getHeaderFromAnswer
+     *  @param int commentid
+     *  @return string header
+     *  @return string email
+     */
+    private function getHeaderFromAnswer( $commentid = null, $parentid = null, $ch = null ){
+        
+        if( $commentid && $ch ){
+            $answers        = $ch->getGroupedComments($this->app->db, $commentid, 'child');
+            
+            $html = "<ul class='childComment'>";
+            foreach( $answers as $key => $value ){
+                $url = $this->app->url->create("kommentar/visa/{$value->parentid}");
+                $html .= "<li>{$value->created} :<a href='{$url}'> {$value->header}</a>";
+                   
+            }
+            return $html."</ul>";
+        }
+    }
     /**
      *  createCommentStructure
      *  @param array $param - $header, content, id, userid, date
      *  @return string $html
      *
      */
-    private function createCommentStructure( $p = null, $loggedid = null ){
+    private function createCommentStructure( $p = null, $loggedid = null, $viewChild = null, $ch = null ){
          
         if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
             $callers=debug_backtrace();
             dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
         }
         
-        // make tags as links
-        function makeATag( $id = null, $name = null, $app = null ){
-            
-                $a = '';
-                if( $name && $id ){
-                    foreach( $name as $key => $value ){
-
-                        $url = $app->url->create("taggar/visa/{$id[$key]}");
-                        $a .= "<a href='$url' class='tag'>{$name[$key]}</a>";
-                    }       
-                }
-            
-            return $a;
-            
-            
-        }
+       // dump( $p);
+       
        
         //
         // collect data from array $p
@@ -337,6 +362,9 @@ class CViewsComments  {
         $tags       = ( isset( $p->tag ) )   ? explode(',', $p->tag)    : null;
         $tagid       = ( isset( $p->tagid ) )   ? explode(',',$p->tagid)    : null;
         $answers    = ( isset( $p->answers))  ? $p->answers : '';
+        
+        // getAnswerHeader
+        $answerHeader = ( $viewChild )? $this->getHeaderFromAnswer( $commentid, $id, $ch ) : null;
         
         
         $url = $this->app->url->create("kommentar/visa/".$id);
@@ -359,10 +387,12 @@ class CViewsComments  {
             $html .= "\n\t<li>\n\t<h2>\n\t{$header}</h2>\n\t{$respondBtn}\n\t<span class='commentUserList parentComment'>{$date}, {$user}</span></li>";
         }
         $html .= "\n\t<li class='comment'>".markdown($content)."</li>";
+        
         if ( $row == 0 ){
-            $html .= "\n\t<li class='viewTags'>".makeATag( $tagid, $tags, $this->app )."<input type='hidden' value='{$id}' name='view[{$id}]' /></li>";
+            $html .= "\n\t<li class='viewTags'>".$this->makeATag( $tagid, $tags, $this->app )."<input type='hidden' value='{$id}' name='view[{$id}]' /></li>";
             $html .= "\n\t<li></li>";
         }
+        $html .= "\n\t<li class='comment'>".$answerHeader."</li>";
         return $html;
     }
     
@@ -457,11 +487,15 @@ class CViewsComments  {
         $chars      = $maxChars - 5;
         $html       = "\n";
         $parID      = 0;
-        
+        $newlist    = null;
         if ( $result && $parentID ){
-            
+            dump($result);
             // compress to only output header and date
             foreach( $result as $child ){
+                foreach( $child as $key => $value ){
+             //   dump( $value);
+                    $newlist[] = [];
+                }
                 
               
                 // create url to comment
@@ -839,7 +873,12 @@ class CViewsComments  {
         // get parent comment
         $parent         = $ch->getGroupedComments($this->app->db, $commentID, 'parent');
         $answers        = $ch->getGroupedComments($this->app->db, $commentID, 'child');
-        
+        $nextLevel      = null;
+        foreach( $answers as $key => $ask ){
+            $nextLevel[$ask->commentid]        = $ch->getGroupedComments($this->app->db, $ask->commentid, 'child');
+            
+        }
+      
         $answersNr       = $this->returnAnswers($commentID, $ch);
         
         
@@ -850,19 +889,30 @@ class CViewsComments  {
         
         $parentTags = $CTagViews->getTagForComment( $parent );
         
-        $htmlParent = ( isset($parent[0] )) ? $this->createCommentStructure( $parent[0], $userid ) : '';
+        $htmlParent = ( isset($parent[0] )) ? $this->createCommentStructure( $parent[0], $userid, null, $ch ) : '';
         $this->app->views->add('default/article', ['header'=>null, 'content' => "<ul class='comment_holder'>{$htmlParent}</ul>"], 'main-wide');
        
         
         $commentTags = $CTagViews->getTagForComment( $answers, 'parent' );
         
-        // get formated childdata
-       // $childComments[$parent[0]->commentid][] =  $this->formatChildComments( $parent, $parent[0]->commentid );
+        $htmlChild = '';
+        // get child data
+        foreach( $answers as $key => $value ){
+            if ( $value->parentid != $value->commentid ){
+                $htmlChild .= ( isset($answers )) ? $this->createCommentStructure( $value, $userid, true, $ch ) : '';    
+            }
+            
+            
+        }
+        
+        $this->app->views->add('default/article', ['header'=>null, 'content' => "<ul class='comment_holder'>{$htmlChild}</ul>"], 'main-wide');
+        
+        
         
         $this->user->isOnline();
         $online = $this->user->isUserOnline();
         
-          
+         /* 
         
         $ch->outputUpdateList([
                 'all'       => $answers,
@@ -873,13 +923,14 @@ class CViewsComments  {
                 'errorMail'     => getError(1),
                 'errorHomepage' => getError(2),
                 'errorName'     => getError(4),
-                'children'      => null,
+                'children'      => $nextLevel,
                 'header'        => $header,
                 'group'         => null,
                 'tags'          => $commentTags,
                 'sectionheader' => 'Svar',
-                'parentHeader'  => $parentHeader
-                ]); 
+                'parentHeader'  => $parentHeader,
+                
+                ]); */
       
         $url = $this->app->url->create();
         $backUrl = "<a href='{$url}'>[Tillbaka]</a>";

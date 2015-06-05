@@ -9,7 +9,7 @@
     <?php foreach ($comments as $id => $comment) { ?>
     <?php if ( $comment->header != $parentHeader ){ ?>
         <li class='top'>
-            <input type='hidden' name='commentId[<?= $comment->id?>][]' id='<?= $comment->id ?>' value='<?= $comment->id ?>'  />
+            <input type='hidden' name='commentId[<?= $comment->commentid?>][]' id='<?= $comment->commentid ?>' value='<?= $comment->commentid ?>'  />
             <input type='hidden' name='page' value='<?= $this->di->request->getCurrentUrl() ?>' />
 <h2 class='comment_id' <?= $new?>><?php
 
@@ -45,10 +45,10 @@ if ( isset( $tags[$comment->commentid] )){ echo $tags[$comment->commentid];  }
 ?>
         </li>
         
-        <?php
-if ( isset( $children[$comment->id][0] ) ) { ?>
+        <?php dump($children);
+if ( isset( $children[$comment->commentid][0] ) ) { dump($children); ?>
 <li>
-     <?= $children[$comment->id][0]?>
+    
 </li>
 <?php } ?>
         
