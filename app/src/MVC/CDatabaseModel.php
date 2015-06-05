@@ -543,8 +543,10 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         if ( $db ){
             $db->setVerbose($this->dbVerbose);
             // gets a list of with parent comments
-            $db->select("*,commentid, c.comment, c.header, c.created, catid, userid, name, parentid,strftime('%Y-%m-%d %H:%M', c.created) as created,
-                        group_concat( distinct cc.category) as tag, group_concat(userid) as users, group_concat( distinct cc.id) as tagid, count(c2c.parentid) -1  as answers")
+            $db->select("*,commentid, c.comment, c.header, c.created, catid, userid, name, parentid,
+                        strftime('%Y-%m-%d %H:%M', c.created) as created,
+                        group_concat( distinct cc.category) as tag, group_concat(userid) as users,
+                        group_concat( distinct cc.id) as tagid, count(c2c.parentid) -1  as answers")
             ->from("comment as c")
             ->join("comment2Category as c2c", "c2c.parentid = c.id")
             ->join("commentCategory as cc", "c2c.catid = cc.id")
@@ -566,7 +568,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
 
             $data = ( is_null( $parentid ) ) ? $db->executeFetchAll(  ) : $db->executeFetchAll( [$parentid] );
            
-          
+        
             
             return $data;
         }
