@@ -10,13 +10,10 @@ namespace Anax\MVC;
 class CDatabaseModel implements \Anax\DI\IInjectionAware
 {
     use \Anax\DI\TInjectable;
-    public $verbose = false;
-    public $dbVerbose = false;
-    
+    public $verbose     = false;
+    public $dbVerbose   = false;
+        
     function __construct( ){
-        
-        
-        
        
     }
     
