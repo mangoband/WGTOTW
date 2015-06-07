@@ -33,6 +33,7 @@ steg tre
 Gör följande mappar skrivbara
 
 webroot/css/mango-project
+
 app/db 
 
 

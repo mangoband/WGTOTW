@@ -793,7 +793,7 @@ nav ul li li.selected {
 .navbar li li.selected {
   color: #22f;
   border-color: #22f;
-  background-color: #95280c;
+  background-color: #ffcc66;
 }
 .navbar li li {
   border-top: none;

@@ -42,7 +42,7 @@ class CViewsComments  {
         if ( isset( $this->param ) ){
             
             if ( $this->param['page'] == 'kommentera' ){
-                $this->commentActionWithDb( $this->app, $this->param['url'] );
+           //     $this->commentActionWithDb( $this->app, $this->param['url'] );
             } else{
                 
                 switch( $this->param['option'] ){
