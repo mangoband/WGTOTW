@@ -118,7 +118,8 @@ class CViewController extends CViewsFlash {
         $param['verbose']   = false; // If set to true info is written to screen
         
         $this->param        = $param;
-        
+        $site           = ( isset($tmp[4]) ) ? $tmp[1]."-".$tmp[2] :null;
+       /*
         
         
         
@@ -150,7 +151,8 @@ class CViewController extends CViewsFlash {
             
            
             
-        }  else if ( startsWith( $site, 'profil' ) ){
+        }*/
+        /* if ( startsWith( $site, 'profil' ) ){
             
             $tmp = explode( '/', $site );
             
@@ -166,7 +168,7 @@ class CViewController extends CViewsFlash {
             $param['tag']       = ( isset( $tmp[2] ) ) ? $tmp[2] : null;
             
             
-        }
+        }*/
      // die();
         $this->getContent($site, $currentUrl, $user, $param);
     }
@@ -189,147 +191,91 @@ class CViewController extends CViewsFlash {
                     break;
                 
                 case 'kommentar':
-                case 'kommentera':
+                //case 'kommentera':
                     $CViewsComments = new CViewsComments( $app, $user, $param, $currentUrl );
                     $CViewsComments->doAction( );
                     
                     break;
                 
-            }
-       
-        
-        switch( $site ){
-            
-            case 'me':
-            
-		$this->meAction( $app );               
-                break;
-            case 'logout':
+                case 'anv':
+                    
+                    // go to user pages
+                    switch( $param['option']){
+                        case 'uppdatera':
+                        case 'visa-en':
+                            $this->showUserAction( $app, $param['id'] ); 
+                            break;
+                        case 'visa':
+                         
+                            $CViewsComments = new CViewsComments( $app, $user,$param );
+                            $CViewsComments->userComments( $app, $this->userID );
+                            break;
+                        
+                        case 'ny':
+                            $this->addUserAction( $app );
+                            break;
+                        case 'uppdateUser':
+                            break;
+                        case 'visa-alla':
+                        case 'visa':
+                            $this->showUsersAction( $app );
+                            break;
+                    }
+                    
+                    break;
+                case 'loggain':
+                    $this->login( $user );
+                    break;
+                
+                case 'logout':
                 if ( isset($_SESSION['user'])){
                     unset($_SESSION['user']);
                     $url = $this->app->url->create('hem');
                     $this->app->response->redirect($url);
                 }
                 break;
-            case 'loggain':
+                case 'profil':
+                case 'show-id':
+                    $this->showUserAction( $app ); 
+                    break;
                 
-                $this->login( $user );
-                
-                break;
-          
-            case 'me?grid':
-                $this->meGridAction( $app );
-                break;
-            
-            case 'redovisning':
-               $this->redovisningAction( $app, false );
-                break;
-            case 'redovisning?grid':
-                $this->redovisningAction( $app, true );
-                break;
-            case 'cflash':
-                
-                $this->flashtest( $app );
-                break;
-            case 'scource.php':
-                $app->theme->setTitle("Källkod");
-                $app->theme->addStylesheet('css/source.css');
-                $source = new \Mos\Source\CSource([
-                        'secure_dir' => '..', 
-                        'base_dir' => '..', 
-                        'add_ignore' => ['.htaccess'],
-                    ]);
-                $content = $source->View();
-                $app->views->add( 'me/source', [
-                        'content' => $content,
-                    ]);
-                
-                break;
-          
-            case 'add':
-              
-                $app->theme->setVariable('gridColor', '');
-                break;
-        
-            case 'regioner':
+                 case 'regioner':
                 
                 $this->regionerAction( $app );
                 break;
-            
-            case 'regioner?grid':
-                $this->regionerGridAction( $app );
                 
-                break;
-            case 'test':
-                $app->views->add('welcome/hello_world');
-                $app->views->add('test/quote', ['today' => date('r')], 'header');
-                $app->views->add('test/quote', ['today' => date('r')], 'footer');
-                break;
-            case 'font-awesome':
-                $this->fontAWAction( $app );
-                break;
-            
-            case 'cform':
-                    $this->cformAction( $app );
-                break;
-            
-            case 'show-id':
-                $this->showUserAction( $app ); 
-                break;
-            case 'ny':
-                $this->addUserAction( $app );
-                break;
-            case 'uppdateUser':
-                break;
-            case 'visa-alla':
-                $this->showUsersAction( $app );
-                break;
-            case 'uppdatera':
-            case 'visa-en-anv':
-                $this->showUserAction( $app ); 
-                break;
-            case 'visa-anv':
-                 
-                $CViewsComments = new CViewsComments( $app, $user,$param );
-                $CViewsComments->userComments( $app, $this->userID );
-                break;
-            
-            case 'skapa-tabell':
-                $this->createTableAction( $app );
-                break;
-            
-            // remove this code after install ------> or comment out with /*   */
-            case 'reset-kommentarer':
-            case 'reset-user':
-            case 'setup':
-                $this->restoreDb( $app );
-                break;
-            
-            // --------<
-            
-              case 'setup':
-                $this->setupAction($app);
-                break;
-            case 'om':
-                $this->omAction( $app );
-                break;
-            case 'index.php':
-            case 'hem':
                 
-             
-               $mangoFlash = $app->MangoFlash->get('notice');
-             
-               $app->views->add('default/article', ['content' => $mangoFlash], 'flash');
-               
-                $CViewsComments = new CViewsComments( $app, $user, $param );
-               
-                $CViewsComments->viewListWithComments( $param );
-                $this->listMostActive( $app );
+                // remove this code after install ------> or comment out with /*   */
+                case 'reset-kommentarer':
+                case 'reset-user':
+                case 'setup':
+                    $this->restoreDb( $app );
+                    break;
+                
+                // --------<
+                
+                  case 'setup':
+                    $this->setupAction($app);
+                    break;
+                case 'om':
+                    $this->omAction( $app );
+                    break;
+                case 'index.php':
+                case 'hem':
+                default:    
                  
-            break;
-            
-            
-        }
+                   $mangoFlash = $app->MangoFlash->get('notice');
+                 
+                   $app->views->add('default/article', ['content' => $mangoFlash], 'flash');
+                   
+                    $CViewsComments = new CViewsComments( $app, $user, $param );
+                   
+                    $CViewsComments->viewListWithComments( $param );
+                    $this->listMostActive( $app );
+                     
+                break;
+            }
+        
         
     }
   
@@ -581,7 +527,7 @@ EOD;
      *  showUser
      *  @param $add
      */
-    private function showUserAction( $app ){
+    private function showUserAction( $app, $userid = null ){
         
         $app->theme->setVariable('bodyColor', '');
         $app->theme->setVariable('wrapperClass', '');
@@ -593,15 +539,14 @@ EOD;
         $content = '';
        
         
-        
         $user = new \Anax\Users\User( $app );
         $user->isOnline();
         $online = $user->isUserOnline();
         
-        if ( $this->userID && $online === true ){
+        if ( $userid && $online === true ){
            $app->session(); // Will load the session service which also starts the session
         //    $this->app->views->add('users/list', ['content' => $user->getLogoutBtn()], 'sidebar');  
-           $content = $user->getUserToUpdate( $this->userID );
+           $content = $user->getUserToUpdate( $userid);
            if ( $content ){
                 $form = new  \Anax\CFormContact\CFormContact( $app, $user );
                 //
@@ -709,42 +654,7 @@ EOD;
         // output data
         $app->views->add('default/article', ['content' => $om], 'main');
     }
-    /**
-     *  meAction
-     *  @param $app
-     */
-    private function meAction( $app ) {
-        $app->theme->setTitle("Me");
-        $app->theme->setVariable('wrapperClass', '');
-        
-        $app->theme->setVariable('gridColor', '');
-        
-   
-  
-        
-        $me = $app->fileContent->get('me.md');
-        $me = $app->textFilter->doFilter($me, 'shortcode, markdown');
-        
-        $bas = $app->fileContent->get('bas.md');
-        $bas = $app->textFilter->doFilter($bas, 'shortcode, markdown');
-        
-        $byline = $app->fileContent->get('byline.md');
-        $byline = $app->textFilter->doFilter($byline, 'shortcode, markdown');
-        
-  
-        $app->views->add('default/article', ['content' => $me], 'main');
-        
-   
-        $app->views->add('me/simple', ['text_before' => 'Jag bor i', 'icon' => 'fa-building-o'], 'sidebar');
-        $app->views->add('me/simple', ['text_before' => 'När jag ska gå in behöver jag ', 'icon' => 'fa-key'], 'sidebar');
-        $app->views->add('me/simple', ['text_before' => 'Blir jag hungrig så fixar jag mat och plockar fram ', 'icon' => 'fa-cutlery', 'text_after' => 'och äter.'], 'sidebar');
-        $app->views->add('me/simple', ['text_before' => 'När timmen är sen och det snart är dax att sova använder jag', 'icon' => 'fa-headphones', 'text_after' => 'ofta framför datorn.'], 'sidebar');
-                
-        
-  
-        $app->views->add('me/sidebar', ['img' => $bas, 'byline' => $byline], 'triptych_1');
-       
-    }
+    
     
     
     

@@ -1,15 +1,16 @@
 {
-    "name": "anax/mvc",    
+    "name": "mango/wgtotw-mvc",    
     "type": "library",
-    "description": "Webtemplate to create websites",
-    "keywords": ["boilerplate", "framework", "mvc", "micro", "education"],
+    "description": "An Anax-MVC based forum for asking questions and receiving answers. (Swedish)",
+    "keywords": ["application", "framework", "mvc"],
     "homepage": "http://dbwebb.se",
     "license": "MIT",
     "authors": [
         {
-            "name": "Mikael Roos",
-            "email": "me@mikaelroos.se",
-            "homepage": "http://mikaelroos.se",
+            
+            "name": "Marcus Johansson",
+            "email": "git@marcusjohansson.net",
+            "homepage": "http://marcusjohansson.net",
             "role": "Developer"
         }
     ],

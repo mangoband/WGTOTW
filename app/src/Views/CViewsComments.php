@@ -42,6 +42,7 @@ class CViewsComments  {
         if ( isset( $this->param ) ){
             
             if ( $this->param['page'] == 'kommentera' ){
+                $this->showComment( $this->param['id'] );
            //     $this->commentActionWithDb( $this->app, $this->param['url'] );
             } else{
                 

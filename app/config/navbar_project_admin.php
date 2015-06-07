@@ -38,48 +38,29 @@ return [
                      // This is a menu item of the submenu
                     'item 3'  => [
                         'text'  => 'Lägg till användare',
-                        'url'   => $this->di->get('url')->create('ny'),
+                        'url'   => $this->di->get('url')->create('anv/ny'),
                         'title' => 'Lägg till ny användare'
                     ],
 
-                    // This is a menu item of the submenu
-                    'item 4'  => [
-                        'text'  => 'Visa alla användare',
-                        'url'   => $this->di->get('url')->create('visa-alla'),
-                        'title' => 'Visa alla användare',
-                       // 'class' => 'italic'
-                    ],
+                    
                     
                      // This is a menu item of the submenu
                     'item 5'  => [
                         'text'  => 'Uppdatera användare',
-                        'url'   => $this->di->get('url')->create('uppdatera'),
+                        'url'   => $this->di->get('url')->create('anv/uppdatera'),
                         'title' => 'Visa alla användare',
                        // 'class' => 'italic'
                     ],
 
-                    // This is a menu item of the submenu
-                    'item 6'  => [
-                        'text'  => 'Regioner',
-                        'url'   => $this->di->get('url')->create('regioner'),
-                        'title' => 'Regioner',
-                     //   'class' => 'italic'
-                    ],
                     
                     // This is a menu item of the submenu
                     'item 7'  => [
-                        'text'  => 'Återställ användare',
-                        'url'   => $this->di->get('url')->create('reset-user'),
-                        'title' => 'Återställer databas för användare'
+                        'text'  => 'Hantera databas',
+                        'url'   => $this->di->get('url')->create('setup'),
+                        'title' => 'Hantera databas'
                     ],
 
-                    // This is a menu item of the submenu
-                    'item 8'  => [
-                        'text'  => 'Återställ kommentarer',
-                        'url'   => $this->di->get('url')->create('reset-kommentarer'),
-                        'title' => 'Återställer kommentarer',
-                       // 'class' => 'italic'
-                    ],
+                    
                     'source' => [
                         'text'  =>'Källkod',
                         'url'   => $this->di->get('url')->create('source'),
