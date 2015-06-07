@@ -18,7 +18,7 @@
         "phpmvc/comment": "dev-master",
         "mos/cform": "2.*@dev",
         "mos/cdatabase": "dev-master",
-        "mango/cflash": "1.5.1"
+        "mango/cflash": "1.5"
     },
     
     "autoload": {

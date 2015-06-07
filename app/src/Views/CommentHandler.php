@@ -348,14 +348,14 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
      *  redirect
      */  
     public function deleteThisComment( $id ){
-        
+               
        if( $this->verbose == true ){
             dump( "rad: ".__LINE__." ".__METHOD__);
         }
         $msg = $this->deleteThisCommentFromDb( $id, $this->app->db );
-        $this->app->MangoFlash->set( $msg , $type = 'notice' );
+        $app->MangoFlash->set( $msg , $type = 'notice' );
    
-       dump( $msg);
+       
         $url = $this->app->url->create('hem');
         
         $this->app->response->redirect($url);
