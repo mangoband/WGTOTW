@@ -1188,7 +1188,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 
                 $res = $db->execute([$comment->id]);
                 
-                $msg .= "<p>{$comment->header}</p>\n";
+                $msg .= "{$comment->header}<br />\n";
             }
             
         } else{
@@ -1211,8 +1211,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 'comment2Category',
                 'commentid = ?'
             );
-            $res = $db->execute([$id]);
-            $msg .= "<p>".$check[0]->header."</p>\n";
+            $res = $db->execute([$id]); 
+            $msg .= "".$check[0]->header."<br />\n";
         }
        
         

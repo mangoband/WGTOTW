@@ -316,9 +316,10 @@ class CViewController extends CViewsFlash {
                 $flash = new \Mango\Flash\CFlash();
              //  $mangoFlash = $flash->get('notice');
                $mangoFlash = $app->MangoFlash->get('notice');
+             //  dump(  $mangoFlash);
                //$app->MangoFlash->get('notice');
-               $app->theme->setVariable('flash', $mangoFlash);
-               $this->app->views->add('default/article', ['content' => $mangoFlash], 'flash');
+             //  $app->theme->setVariable('flash', $mangoFlash);
+               $app->views->add('default/article', ['content' => $mangoFlash], 'flash');
                
                 $CViewsComments = new CViewsComments( $app, $user, $param );
                
