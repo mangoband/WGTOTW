@@ -21,12 +21,7 @@ class CDIFactoryMango extends CDIFactoryDefault{
             $db->connect( false ); 
             return $db;
         });
-     /*   $this->setShared('database', function() { 
-            $db = new \Mos\Database\CDatabaseBasic(); 
-            $db->setOptions(require ANAX_APP_PATH . 'config/database_mysql.php'); 
-            $db->connect( false ); 
-            return $db;
-        });*/
+    
       
         $this->setShared('MangoFlash', function()   {
             $flash = new \Mango\Flash\CFlash();
@@ -61,12 +56,8 @@ class CDIFactoryMango extends CDIFactoryDefault{
             echo "Fel i Factory ".$e->getMessage();
              die();
         }
-        /*
-        $this->set('FormController', function ()  {
-                $controller = new \Anax\HTMLForm\FormController();
-                $controller->setDI($this);
-                return $controller;
-        });*/
+        
+        
         
     }
     
