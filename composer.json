@@ -3,7 +3,7 @@
     "type": "library",
     "description": "An Anax-MVC based forum for asking questions and receiving answers. (Swedish)",
     "keywords": ["application", "framework", "mvc"],
-    "homepage": "http://dbwebb.se",
+    "homepage": "https://github.com/mangoband/WGTOTW",
     "license": "MIT",
     "authors": [
         {
