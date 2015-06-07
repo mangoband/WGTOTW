@@ -313,7 +313,7 @@ class CViewController extends CViewsFlash {
                 break;
             case 'index.php':
             case 'hem':
-                $flash = new \Mango\Flash\CFlash();
+             //   $flash = new \Mango\Flash\CFlash();
              //  $mangoFlash = $flash->get('notice');
                $mangoFlash = $app->MangoFlash->get('notice');
              //  dump(  $mangoFlash);
