@@ -92,7 +92,9 @@ class CFormContact extends \Mos\HTMLForm\CForm  {
          if ( $userid != 1 && $logged[0] == 1 || ( $userid != 2 && $logged[0] == 2 ) ){
          $this->AddElement(new h\CFormElementSubmit('Radera', array('label'=>'Radera','callback'=>array($this, 'DoRemove'))));
          }
-     }
+         
+         
+         }
             $this->SetValidation('name', array('not_empty'))
              ->SetValidation('email', array('not_empty', 'email_adress'))
              
@@ -119,6 +121,10 @@ class CFormContact extends \Mos\HTMLForm\CForm  {
         return true;
     }
     protected function DoUpdate(){
+     
+     
+     
+      
         $this->AddOutput("Data uppdaterad");
         $delete = 0;
         if ( isset( $_POST['deleted'] ) && ( $_POST['deleted'] == true)) {
@@ -132,8 +138,8 @@ class CFormContact extends \Mos\HTMLForm\CForm  {
             
           
         
-        return true;
-       
+     //   return true;
+     
     }
  
   /**

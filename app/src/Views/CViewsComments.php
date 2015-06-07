@@ -32,6 +32,8 @@ class CViewsComments  {
      */  
     public function doAction(){
         
+         
+         
         if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
             $callers=debug_backtrace();
             dump( "rad: ".__LINE__. " ".__METHOD__." ( option: ".$this->param['option']." ) function called by ". $callers[1]['function']);
@@ -113,6 +115,9 @@ class CViewsComments  {
      */
     public function viewListWithComments( $param = null, $data = null, $isTag = false, $tagid = null, $popular = null ){
         
+        function isparent( $parentid = null, $commentid = null ){
+            
+        }
        $callers=debug_backtrace();
        if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
             $callers=debug_backtrace();
@@ -158,6 +163,11 @@ class CViewsComments  {
             $totalAnswers = count( $comments ) - 1;
             
             $children = [];
+            $parent   = [];
+            foreach( $comments as $comment ){
+           //     $children[] = $comment->commentid;
+         //       $parent[] = $comment->parentid;
+            }
             
             // fill td in table
             foreach( $comments as $comment ){
@@ -167,19 +177,22 @@ class CViewsComments  {
               $commentTags = $CTagViews->getTagForComment( $comment, 'parent' );
               //$commentTags = null;
               
-              // $answers = ( isset($comment->answers ) ) ? $comment->answers : $this->returnAnswers($comment->parentid, $cc);
+              
                 $answers = $this->returnAnswers($comment->parentid, $cc); 
                 $p = array_search($comment->commentid, $children);
+                $pp = array_search( $comment->parentid , $parent);
                 
                 if( $parentID != $comment->parentid && $p == false  ){
                     
                     $children[] = $comment->commentid;
+                    $parent[] =     $comment->parentid;
+                   
                     $url = $this->app->url->create("kommentar/visa/".$comment->parentid);
                     
                  //   $htmlParent = ( isset($comment )) ? $this->createCommentStructure( $comment, $loggedUserid ) : '';
                     
                   //  dump( $htmlParent);
-                  if ( substr( $comment->header, 0, 3 ) !== "re:" ){
+                  if ( strtolower(substr( $comment->header, 0, 3 )) !== "re:" ){
                   
                     $content .= "\n\t<tr class='commentListRow'>".$this->createCommentRow([
                                                      'date'     => $comment->created,
@@ -212,7 +225,7 @@ class CViewsComments  {
             $content = "Inga inlägg gjorda under tagg";
         }
         
-        //$link = ( $commentid) ? "anv/visa" : "anv/visa";
+        
         $url = $this->app->url->create();
         $backUrl = "<a href='{$url}'>[Tillbaka]</a>";
         $content .= $backUrl;
@@ -319,7 +332,7 @@ class CViewsComments  {
      *  @return string header
      *  @return string email
      */
-    private function getHeaderFromAnswer( $commentid = null, $parentid = null, $ch = null ){
+    private function getHeaderFromAnswer( $commentid = null, $parentid = null, $ch = null, $gravatar = null ){
         
         if( $commentid && $ch ){
             $answers        = $ch->getGroupedComments($this->app->db, $commentid, 'child');
@@ -327,7 +340,7 @@ class CViewsComments  {
             $html = "<ul class='childComment'>";
             foreach( $answers as $key => $value ){
                 $url = $this->app->url->create("kommentar/visa/{$value->parentid}");
-                $html .= "<li>{$value->created} :<a href='{$url}'> {$value->header}</a>";
+                $html .= "<li>{$gravatar}{$value->created} :<a href='{$url}'> {$value->header}</a>";
                    
             }
             return $html."</ul>";
@@ -339,15 +352,13 @@ class CViewsComments  {
      *  @return string $html
      *
      */
-    private function createCommentStructure( $p = null, $loggedid = null, $viewChild = null, $ch = null ){
+    private function createCommentStructure( $p = null, $loggedid = null, $viewChild = null, $ch = null, $parent = null, $gravatar = null ){
          
         if( isset( $this->param['verbose'] ) && $this->param['verbose'] == true ){
             $callers=debug_backtrace();
             dump( "rad: ".__LINE__. " ".__METHOD__." function called by ". $callers[1]['function']);
         }
         
-       // dump( $p);
-       
        
         //
         // collect data from array $p
@@ -363,9 +374,13 @@ class CViewsComments  {
         $tagid       = ( isset( $p->tagid ) )   ? explode(',',$p->tagid)    : null;
         $answers    = ( isset( $p->answers))  ? $p->answers : '';
         
-        // getAnswerHeader
-        $answerHeader = ( $viewChild )? $this->getHeaderFromAnswer( $commentid, $id, $ch ) : null;
+        $urlGravatar           = ( isset( $p->email ) )      ?  $gravatar->get_gravatar( $p->email, 15, 'identicon', 'g', false ): null;
+        $img                = ( isset( $p->email ))       ? "<img src='{$urlGravatar}' title='{$user}' alt='{$user}' class='userlist_gravatar'  />" : null ;
         
+        // getAnswerHeader
+        $answerHeader = ( $viewChild )? $this->getHeaderFromAnswer( $commentid, $id, $ch, $img ) : null;
+        
+        $id = ( $parent == 'parent' ) ? $id : $commentid;
         
         $url = $this->app->url->create("kommentar/visa/".$id);
         $url2 = $this->app->url->create("kommentar/svara/".$id);
@@ -868,16 +883,16 @@ class CViewsComments  {
         $tags = $CTagViews->fillTagsfromDb( $this->app->db );
         
         $commentTags = $CTagViews->outputCheckboxes( $tags[0] );
-        
+        $gravatar = new \Anax\Users\Gravatar();
         
         // get parent comment
         $parent         = $ch->getGroupedComments($this->app->db, $commentID, 'parent');
         $answers        = $ch->getGroupedComments($this->app->db, $commentID, 'child');
-        $nextLevel      = null;
+      /*  $nextLevel      = null;
         foreach( $answers as $key => $ask ){
             $nextLevel[$ask->commentid]        = $ch->getGroupedComments($this->app->db, $ask->commentid, 'child');
             
-        }
+        }*/
       
         $answersNr       = $this->returnAnswers($commentID, $ch);
         
@@ -889,7 +904,7 @@ class CViewsComments  {
         
         $parentTags = $CTagViews->getTagForComment( $parent );
         
-        $htmlParent = ( isset($parent[0] )) ? $this->createCommentStructure( $parent[0], $userid, null, $ch ) : '';
+        $htmlParent = ( isset($parent[0] )) ? $this->createCommentStructure( $parent[0], $userid, null, $ch, 'parent', $gravatar ) : '';
         $this->app->views->add('default/article', ['header'=>null, 'content' => "<ul class='comment_holder'>{$htmlParent}</ul>"], 'main-wide');
        
         
@@ -899,7 +914,7 @@ class CViewsComments  {
         // get child data
         foreach( $answers as $key => $value ){
             if ( $value->parentid != $value->commentid ){
-                $htmlChild .= ( isset($answers )) ? $this->createCommentStructure( $value, $userid, true, $ch ) : '';    
+                $htmlChild .= ( isset($answers )) ? $this->createCommentStructure( $value, $userid, true, $ch, 'child', $gravatar ) : '';    
             }
             
             

@@ -355,7 +355,7 @@ class CommentHandler extends \Anax\MVC\CDatabaseModel
         $msg = $this->deleteThisCommentFromDb( $id, $this->app->db );
         $this->app->MangoFlash->set( $msg , $type = 'notice' );
    
-        $this->app->MangoFlash->get('notice');
+       dump( $msg);
         $url = $this->app->url->create('hem');
         
         $this->app->response->redirect($url);

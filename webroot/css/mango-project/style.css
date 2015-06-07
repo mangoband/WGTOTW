@@ -694,6 +694,10 @@ p.commentViews {
   margin: 0 0%;
   text-align: left;
 }
+article form fieldset div p {
+  display: inline-block;
+  padding-right: 5px;
+}
 #navbar {
   margin-bottom: 14px;
   display: block;
@@ -757,6 +761,7 @@ nav ul li a {
   left: 0;
   color: #95280c;
   border-color: #95280c;
+  background-color: #ffcc66;
 }
 nav ul ul {
   background-color: #ffcc66;
@@ -783,6 +788,7 @@ nav ul li li.selected {
 .navbar li li:hover {
   color: #95280c;
   border-color: #95280c;
+  background-color: #ffcc66;
 }
 .navbar li li.selected {
   color: #22f;
@@ -1334,13 +1340,20 @@ hr {
     width: 29.166666666667%;
     margin: 0 0%;
     margin-top: 5px;
-    background-color: blue;
   }
   #navbar {
-    display: inline;
-    float: left;
-    width: 67.083333333333%;
-    margin: 0 0%;
+    clear: left;
+    width: 100%;
+  }
+  nav ul ul {
+    padding: 4px;
+  }
+  nav ul li a {
+    padding: 5px;
+    border-radius: 0px;
+  }
+  nav ul li {
+    padding: 0px;
   }
   .commentHeader {
     display: inline;

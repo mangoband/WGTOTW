@@ -63,6 +63,8 @@ class CViewController extends CViewsFlash {
              return (substr($haystack, 0, $length) === $needle);
         }
         
+        
+        
         $param = null;
 
      
@@ -180,7 +182,7 @@ class CViewController extends CViewsFlash {
     
         switch($param['page']){
             case 'taggar':
-                $CTagViews = new \Mango\Views\CTagViews( $app, $param );
+                $CTagViews = new \Mango\Views\CTagViews( $app, $param, $user );
                 $CTagViews->doAction();
                 
                 break;
@@ -311,7 +313,10 @@ class CViewController extends CViewsFlash {
                 break;
             case 'index.php':
             case 'hem':
+                $notice = $app->MangoFlash->get('notice');
                 
+                $app->theme->setVariable('flash', $notice);
+                $this->app->views->add('default/article', [ 'content' => $notice], 'flash');
                 $CViewsComments = new CViewsComments( $app, $user, $param );
                
                 $CViewsComments->viewListWithComments( $param );

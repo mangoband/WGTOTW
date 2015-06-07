@@ -3,7 +3,7 @@
  * Config-file for Anax, theme related settings, return it all as array.
  *
  */
-$css = (is_file('css/mango-project/style.php')) ? 'css/mango-project/style.php' : 'css/wgtotw.css';
+
 return [
 
     /**
@@ -68,7 +68,7 @@ return [
         'title_append' => ' | We Gonna Take Over The World',
 
         // Stylesheets
-        'stylesheets' => [$css],
+        'stylesheets' => ['css/mango-project/style.php'],
         
         // BodyTheme
         'bodyClass' => 'bodyColorWhite',

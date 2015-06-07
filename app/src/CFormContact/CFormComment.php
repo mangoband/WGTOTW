@@ -147,11 +147,12 @@ class CFormComment extends h\CForm  {
     /**
      *  updateTags
      */
-    public function updateTagForm( $tagid = null, $name = null ){
+    public function updateTagForm( $tagid = null, $name = null, $option = null ){
         
+        $update = ( ! $option ) ? 'Spara' : 'Uppdatera';
         $this->AddElement(new h\CFormElementHidden('tagid', array('value' => $tagid )))
             ->AddElement(new h\CFormElementText('tagg', array('value' =>  $name, 'required' => true )))
-            ->AddElement(new h\CFormElementSubmit('Uppdatera', array('callback'=>array($this, 'DoUpdateTag'))))
+            ->AddElement(new h\CFormElementSubmit($update, array('callback'=>array($this, 'DoUpdateTag'))))
             ->AddElement(new h\CFormElementSubmit('Radera', array('callback'=>array($this, 'DoRemoveTag'))))
             ->AddElement(new h\CFormElementSubmit('Ny', array('callback'=>array($this, 'DoNewTag'))));
             

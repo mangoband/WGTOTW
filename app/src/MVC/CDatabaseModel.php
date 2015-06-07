@@ -16,7 +16,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
     function __construct( ){
         
         
-        //date_default_timezone_set('Europe/Stockholm');
+        
        
     }
     
@@ -62,7 +62,9 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     $tag
                     
             ]);
+            echo $db->dump();
         }
+       
     }
     
     
@@ -86,6 +88,25 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
     }
     
+    
+    /**
+     *  countTags
+     *  @param int $tagid
+     */
+    public function countTags( $catid = null, $db = null ){
+        
+        
+        if ( $catid && $db ) {
+            
+            $db->select("count(catid) as total")
+            ->from("comment2Category as c2c")
+            ->where("c2c.catid = ?");
+            
+            $res = $db->executeFetchAll( [$catid] );
+            
+            return $res;
+        }
+    }
     /**
      *  getTags
      *  @param array $db
@@ -112,8 +133,8 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                    $db->select("c.id, catid, count(catid) as popular, comment, header, category")
                     ->from("comment as c")
                     ->join("comment2Category as c2c", "c2c.commentid = c.id")
-                    ->join("commentCategory as cc", "cc.id = c2c.catid")
-                    ->groupby("catid")
+                    ->Join("commentCategory as cc", "cc.id = c2c.catid")
+                    ->groupby("cc.id")
                     ->orderby("popular desc");
                     
                     if ( $catid ){
@@ -140,7 +161,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                     } else{
                         $db->where('category = ?');    
                     }
-                    
+                    $db->orderby("category");
                     $res = ( is_null( $catid ) ) ? $db->executeFetchAll( [strtolower($category)] ) :$db->executeFetchAll( [strtolower($catid)] );
                     
                     
@@ -168,10 +189,10 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                         dump( __LINE__. " ". __METHOD__." get all categories 2.");
                     }
                   
-                    $db->select("category, id")
+                    $db->select("category, cc.id")
                     ->from("commentCategory as cc")
                     
-                    ->orderby("category");
+                    ->orderby("category asc");
                     $res = $db->executeFetchAll(  );
                     
                     return $res;
@@ -351,9 +372,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 
             } else {
                 // invalid password
-                //$url = $this->app->url->create('loggain');
-                
-               // header("Location: " . $url);
+              
                 return false;
                 
             }
@@ -561,7 +580,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
            }
            
             $db->groupby("c2c.parentid")
-            ->orderby('created desc, parentid desc, commentid desc, header' );
+            ->orderby('created desc, parentid asc, commentid asc, header' );
             
             // if parentid is set
            if ( ! is_null( $parentid ) ){
@@ -896,7 +915,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             'commentCategory',
             [
                     'id' => ['integer', 'primary key', 'not null', 'auto_increment'],
-                    'category' => ['varchar(255)'],                    
+                    'category' => ['varchar(255)', 'unique'],                    
                     
             ]
         )->execute();
@@ -1011,7 +1030,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
         $app->db->execute([
                 'Finns det någon bra ubass?',
-                'Ubass',
+                're: Köpa nytt',
                 $now,
                 null,
                 2,
@@ -1196,7 +1215,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 'commentid = ?'
             );
             $res = $db->execute([$id]);
-            $msg .= "<p>".$check[0]->header." är raderad</p>\n";
+            $msg .= "<p>".$check[0]->header."</p>\n";
         }
        
         
@@ -1253,8 +1272,9 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             
             foreach( $tags as $key => $value  ){
         
-                $value = htmlentities($value, ENT_COMPAT, 'UTF-8');
-                $value = html_entity_decode($value, ENT_COMPAT, 'UTF-8');
+        
+              //  $value = htmlentities($value, ENT_COMPAT, 'UTF-8');
+              //  $value = html_entity_decode($value, ENT_COMPAT, 'UTF-8');
                 //
                 //  get catId for the connection in db
                 //
@@ -1285,7 +1305,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
                 
                 
            }
-           //die();
+         //  die();
            $url = $app->url->create("kommentar/visa/{$parentid}"); 
            $app->response->redirect($url);
         }

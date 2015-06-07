@@ -2,4 +2,6 @@ Detta är ett slutprojekt i kursen Databasdrivna webbapplikationer med PHP och M
 
 På webbplatsen kan man ställa frågor och få dem besvarade av någon av de andra användarna.
 
+Dett är ett sätt för mig att visa upp de kunskaper jag inhämtat.
+
 juni 2015
