@@ -179,22 +179,24 @@ class CViewController extends CViewsFlash {
       
         $this->app->views->add('me/breadcrumb', [], 'breadcrumb');
         $app = $this->app;
-    
-        switch($param['page']){
-            case 'taggar':
-                $CTagViews = new \Mango\Views\CTagViews( $app, $param, $user );
-                $CTagViews->doAction();
+        
+        
+            switch($param['page']){
+                case 'taggar':
+                    $CTagViews = new \Mango\Views\CTagViews( $app, $param, $user );
+                    $CTagViews->doAction();
+                    
+                    break;
                 
-                break;
-            
-            case 'kommentar':
-            case 'kommentera':
-                $CViewsComments = new CViewsComments( $app, $user, $param, $currentUrl );
-                $CViewsComments->doAction( );
+                case 'kommentar':
+                case 'kommentera':
+                    $CViewsComments = new CViewsComments( $app, $user, $param, $currentUrl );
+                    $CViewsComments->doAction( );
+                    
+                    break;
                 
-                break;
-            
-        }
+            }
+       
         
         switch( $site ){
             
@@ -313,12 +315,10 @@ class CViewController extends CViewsFlash {
                 break;
             case 'index.php':
             case 'hem':
-             //   $flash = new \Mango\Flash\CFlash();
-             //  $mangoFlash = $flash->get('notice');
+                
+             
                $mangoFlash = $app->MangoFlash->get('notice');
-             //  dump(  $mangoFlash);
-               //$app->MangoFlash->get('notice');
-             //  $app->theme->setVariable('flash', $mangoFlash);
+             
                $app->views->add('default/article', ['content' => $mangoFlash], 'flash');
                
                 $CViewsComments = new CViewsComments( $app, $user, $param );
@@ -327,6 +327,8 @@ class CViewController extends CViewsFlash {
                 $this->listMostActive( $app );
                  
             break;
+            
+            
         }
         
     }

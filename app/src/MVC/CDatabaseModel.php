@@ -17,7 +17,296 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
        
     }
     
+    /*********************************************************************
+     *
+     *      Create databases and test data
+     *
+     ********************************************************************/
     
+    /**
+     *  comment2Category
+     *  @param object $app
+     */
+    protected function createComment2Category( $app ){
+        
+       
+        $app->db->dropTableIfExists('comment2Category')->execute();
+        
+        $app->db->createTable(
+            'comment2Category',
+            [
+                    'id' => ['integer', 'primary key', 'not null', 'auto_increment'],
+                    'catid'     => ['integer'],
+                    'commentid' => ['integer'],
+                    
+                    'parentid'    => ['integer']
+                    
+            ]
+        )->execute();
+        
+        // insert values into category
+        $app->db->insert(
+               'comment2Category',
+               ['catid', 'commentid',  'parentid']
+        );
+        
+        $app->db->execute([
+                1,1,1
+                
+        ]);
+        
+        // insert values into category
+        $app->db->insert(
+               'comment2Category',
+               ['catid', 'commentid', 'parentid']
+        );
+        
+        $app->db->execute([
+                2,2,1
+                
+        ]);
+        
+        // insert values into category
+        $app->db->insert(
+               'comment2Category',
+               ['catid', 'commentid',  'parentid']
+        );
+        
+        $app->db->execute([
+                1,3,3
+                
+        ]);
+        
+    }
+    
+    /**
+     *  createCommentCategory
+     *  @param $app
+     */  
+    protected function createCommentCategory( $app ){
+        
+        
+        $app->db->dropTableIfExists('commentCategory')->execute();
+        
+        $app->db->createTable(
+            'commentCategory',
+            [
+                    'id' => ['integer', 'primary key', 'not null', 'auto_increment'],
+                    'category' => ['varchar(255)', 'unique'],                    
+                    
+            ]
+        )->execute();
+        
+        // insert values into category
+        $app->db->insert(
+               'commentCategory',
+               ['category']
+        );
+        
+        $app->db->execute([
+                'elbas'
+                
+        ]);
+        
+        // insert values into category
+        $app->db->insert(
+               'commentCategory',
+               ['category']
+        );
+        
+        $app->db->execute([
+                'strängar'
+                
+        ]);
+        // insert values into category
+        $app->db->insert(
+               'commentCategory',
+               ['category']
+        );
+        
+        $app->db->execute([
+                'fritid'
+                
+        ]);
+        
+        // insert values into category
+        $app->db->insert(
+               'commentCategory',
+               ['category']
+        );
+        
+        $app->db->execute([
+                'musik'
+                
+        ]);
+        
+    }
+    /**
+     *  CreateTable
+     *  @param object $app
+     */
+    public function createCommentTable( $app ){
+        
+        // drops table and create a new one with some data
+        
+        //
+        //  create table for categories
+        //
+        $this->createComment2Category( $app );
+        //
+        //  create table for categories
+        //
+        $this->createCommentCategory( $app );
+        
+        
+        //
+        //  create table comment
+        //
+        try{
+            $app->db->dropTableIfExists('comment')->execute();    
+        } catch(EXCEPTION $e){
+            
+        }
+        
+        
+        $app->db->createTable(
+            'comment',
+            [
+                    'id' => ['integer', 'primary key', 'not null', 'auto_increment'],
+                    'header'  => ['varchar(80)'],
+                    'comment' => ['varchar(255)'],                    
+                    'created' => ['datetime'],
+                    'updated' => ['datetime'],
+                    'userid' => ['integer'],
+                    'ip'      => ['varchar(30)']
+                    
+            ]
+        )->execute();
+        $now = gmdate('Y-m-d H:i:s');
+        
+        $app->db->insert(
+               'comment',
+               ['comment', 'header', 'created', 'updated',  'userid', 'ip']
+        );
+        
+        $app->db->execute([
+                'Var hittar man en bra elbas?',
+                'Köpa nytt',
+                $now,
+                null,
+                1,
+                '127.1.1.1'
+                
+        ]);
+        $now = gmdate('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("j")+1, date("Y")));
+        
+        $app->db->insert(
+               'comment',
+               ['comment', 'header', 'created', 'updated',  'userid', 'ip']
+        );
+        
+        $app->db->execute([
+                'Finns det någon bra ubass?',
+                're: Köpa nytt',
+                $now,
+                null,
+                2,
+                '127.1.1.1'
+        ]);
+        
+        $now = gmdate('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("j")+2, date("Y")));
+        
+        $app->db->insert(
+               'comment',
+               ['comment', 'header', 'created', 'updated',  'userid', 'ip']
+        );
+        
+        $app->db->execute([
+                'Hitta noter',
+                'Finns det bra noter att köpa',
+                $now,
+                null,
+                2,
+                '127.1.1.1'
+        ]);
+        $id1 = $app->db->lastInsertId();
+         
+        
+        
+        return $id1;
+    }
+    
+    /**
+     *  restore table
+     *  user
+     *  
+     */  
+    public function restoreTable( $app ){
+        
+      //  $this->countTable( $app->db );
+      try{
+            $app->db->dropTableIfExists('user')->execute();
+        } catch(EXCEPTION $e){
+            
+        }
+        
+     
+        $app->db->createTable(
+            'user',
+            [
+                    'id' => ['integer', 'primary key', 'not null', 'auto_increment'],
+                    'acronym' => ['varchar(20)', 'unique', 'not null'],
+                    'email' => ['varchar(80)'],
+                    'name' => ['varchar(80)'],
+                    'password' => ['varchar(255)'],
+                    'created' => ['datetime'],
+                    'updated' => ['datetime'],
+                    'deleted' => ['integer'],
+                    'active' => ['datetime'],
+            ]
+        )->execute();
+        
+        $app->db->insert(
+               'user',
+               ['acronym', 'email', 'name', 'password', 'created', 'active', 'deleted']
+        );
+     
+        $now = gmdate('Y-m-d H:i:s');
+     
+        $app->db->execute([
+                'admin',
+                'admin@dbwebb.se',
+                'Administrator',
+                
+                password_hash('admin', PASSWORD_DEFAULT),
+                $now,
+                $now,
+                0
+        ]);
+     
+        $app->db->execute([
+                'doe',
+                'doe@dbwebb.se',
+                'John/Jane Doe',
+                
+                password_hash('doe', PASSWORD_DEFAULT),
+                $now,
+                $now,
+                0
+        ]);
+        
+         $app->db->execute([
+                'bond',
+                'bond@dbwebb.se',
+                'James Bond',
+                
+                password_hash('bond', PASSWORD_DEFAULT),
+                $now,
+                $now,
+                1
+        ]);
+      
+    }
     
     /*********************************************************************
      *
@@ -467,77 +756,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
         //SELECT count(*) > 0 FROM sqlite_master where tbl_name = "<table_name>" and type="table"
     }
-    /**
-     *  restore table
-     *  user
-     *  
-     */  
-    public function restoreTable( $app ){
-        
-      //  $this->countTable( $app->db );
-      try{
-            $app->db->dropTableIfExists('user')->execute();
-        } catch(EXCEPTION $e){
-            
-        }
-        
-     
-        $app->db->createTable(
-            'user',
-            [
-                    'id' => ['integer', 'primary key', 'not null', 'auto_increment'],
-                    'acronym' => ['varchar(20)', 'unique', 'not null'],
-                    'email' => ['varchar(80)'],
-                    'name' => ['varchar(80)'],
-                    'password' => ['varchar(255)'],
-                    'created' => ['datetime'],
-                    'updated' => ['datetime'],
-                    'deleted' => ['integer'],
-                    'active' => ['datetime'],
-            ]
-        )->execute();
-        
-        $app->db->insert(
-               'user',
-               ['acronym', 'email', 'name', 'password', 'created', 'active', 'deleted']
-        );
-     
-        $now = gmdate('Y-m-d H:i:s');
-     
-        $app->db->execute([
-                'admin',
-                'admin@dbwebb.se',
-                'Administrator',
-                
-                password_hash('admin', PASSWORD_DEFAULT),
-                $now,
-                $now,
-                0
-        ]);
-     
-        $app->db->execute([
-                'doe',
-                'doe@dbwebb.se',
-                'John/Jane Doe',
-                
-                password_hash('doe', PASSWORD_DEFAULT),
-                $now,
-                $now,
-                0
-        ]);
-        
-         $app->db->execute([
-                '007',
-                'bond@dbwebb.se',
-                'James Bond',
-                
-                password_hash('bond', PASSWORD_DEFAULT),
-                $now,
-                $now,
-                1
-        ]);
-      
-    }
+    
     
     /**********************************************************************
      *
@@ -570,9 +789,11 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             ->join("user","user.id = c.userid");
            
            
+           $db->where("deleted = 0");
            // if parentid is set
            if ( ! is_null( $parentid ) ){
-            $db->where("parentid = ?");
+            $db->andwhere("parentid = ?");
+            
             
            }
            
@@ -614,15 +835,16 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
             ->join("comment as c", "c.id = c2c.commentid")
             ->join("comment as p", "p.id = c2c.parentid")
             ->join("user ", "user.id = c.userid")
-            ->where("c2c.parentid = ?")
-           // ->andwhere("c2c.parentid != c.id")
+            ->where("deleted = 0")
+            ->andwhere("c2c.parentid = ?")
+          
             ->groupby("c2c.commentid")
             ->orderby(' commentid asc,created desc' );
             
             $data = $db->executeFetchAll( [$parentid] );
             
             return $data;
-          //group_concat(cc.category) as tag, group_concat(cc.id) as tagid,count(c2c.parentid) -1  as answers")
+          
         }
     }
     
@@ -803,36 +1025,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
          foreach( $data as $row ){
             $r[] = "id: {$row->id}, catid: {$row->catid}, commentid: {$row->commentid}, parent: {$row->parentid} category: {$row->category}, header: {$row->header}, userid: {$row->userid}, name: {$row->name}";
             
-            /*$m[] = $row->parentid;
-            if( $p == $c  ){
-                
-            }
             
-            dump( $row);
-            if ( $p && $p == $row->parentid ){
-                $commentkey = $p;
-            } else {
-               
-                $commentkey = $row->parentid;
-                
-            }
-            $p = array_search($row->parentid, $m); // $key = 2;
-            
-            $m[$commentkey] = [$row->commentid => [
-                    'id'        => $row->id,
-                    'catid'     => $row->catid,
-                    'commentid' => $row->commentid,
-                    'parentid'  => $row->parentid,
-                    'header'    => $row->header,
-                    'comment'   => $row->comment,
-                    'created'   => $row->created,
-                    'updated'   => $row->updated,
-                    'userid'    => $row->userid,
-                    'acronym'   => $row->acronym,
-                    'email'     => $row->email,
-                    'deleted'   => $row->deleted,
-                    ]
-                ];*/
          }
          
          
@@ -842,219 +1035,6 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         
          
    }
-    
-    /**
-     *  comment2Category
-     *  @param object $app
-     */
-    protected function createComment2Category( $app ){
-        
-       
-        $app->db->dropTableIfExists('comment2Category')->execute();
-        
-        $app->db->createTable(
-            'comment2Category',
-            [
-                    'id' => ['integer', 'primary key', 'not null', 'auto_increment'],
-                    'catid'     => ['integer'],
-                    'commentid' => ['integer'],
-                    
-                    'parentid'    => ['integer']
-                    
-            ]
-        )->execute();
-        
-        // insert values into category
-        $app->db->insert(
-               'comment2Category',
-               ['catid', 'commentid',  'parentid']
-        );
-        
-        $app->db->execute([
-                1,1,1
-                
-        ]);
-        
-        // insert values into category
-        $app->db->insert(
-               'comment2Category',
-               ['catid', 'commentid', 'parentid']
-        );
-        
-        $app->db->execute([
-                2,2,1
-                
-        ]);
-        
-        // insert values into category
-        $app->db->insert(
-               'comment2Category',
-               ['catid', 'commentid',  'parentid']
-        );
-        
-        $app->db->execute([
-                1,3,3
-                
-        ]);
-        
-    }
-    
-    /**
-     *  createCommentCategory
-     *  @param $app
-     */  
-    protected function createCommentCategory( $app ){
-        
-        
-        $app->db->dropTableIfExists('commentCategory')->execute();
-        
-        $app->db->createTable(
-            'commentCategory',
-            [
-                    'id' => ['integer', 'primary key', 'not null', 'auto_increment'],
-                    'category' => ['varchar(255)', 'unique'],                    
-                    
-            ]
-        )->execute();
-        
-        // insert values into category
-        $app->db->insert(
-               'commentCategory',
-               ['category']
-        );
-        
-        $app->db->execute([
-                'elbas'
-                
-        ]);
-        
-        // insert values into category
-        $app->db->insert(
-               'commentCategory',
-               ['category']
-        );
-        
-        $app->db->execute([
-                'strängar'
-                
-        ]);
-        // insert values into category
-        $app->db->insert(
-               'commentCategory',
-               ['category']
-        );
-        
-        $app->db->execute([
-                'fritid'
-                
-        ]);
-        
-        // insert values into category
-        $app->db->insert(
-               'commentCategory',
-               ['category']
-        );
-        
-        $app->db->execute([
-                'musik'
-                
-        ]);
-        
-    }
-    /**
-     *  CreateTable
-     *  @param object $app
-     */
-    public function createCommentTable( $app ){
-        
-        // drops table and create a new one with some data
-        
-        //
-        //  create table for categories
-        //
-        $this->createComment2Category( $app );
-        //
-        //  create table for categories
-        //
-        $this->createCommentCategory( $app );
-        
-        
-        //
-        //  create table comment
-        //
-        try{
-            $app->db->dropTableIfExists('comment')->execute();    
-        } catch(EXCEPTION $e){
-            
-        }
-        
-        
-        $app->db->createTable(
-            'comment',
-            [
-                    'id' => ['integer', 'primary key', 'not null', 'auto_increment'],
-                    'header'  => ['varchar(80)'],
-                    'comment' => ['varchar(255)'],                    
-                    'created' => ['datetime'],
-                    'updated' => ['datetime'],
-                    'userid' => ['integer'],
-                    'ip'      => ['varchar(30)']
-                    
-            ]
-        )->execute();
-        $now = gmdate('Y-m-d H:i:s');
-        
-        $app->db->insert(
-               'comment',
-               ['comment', 'header', 'created', 'updated',  'userid', 'ip']
-        );
-        
-        $app->db->execute([
-                'Var hittar man en bra elbas?',
-                'Köpa nytt',
-                $now,
-                null,
-                1,
-                '127.1.1.1'
-                
-        ]);
-        $now = gmdate('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("j")+1, date("Y")));
-        
-        $app->db->insert(
-               'comment',
-               ['comment', 'header', 'created', 'updated',  'userid', 'ip']
-        );
-        
-        $app->db->execute([
-                'Finns det någon bra ubass?',
-                're: Köpa nytt',
-                $now,
-                null,
-                2,
-                '127.1.1.1'
-        ]);
-        
-        $now = gmdate('Y-m-d H:i:s', mktime(date("H"), date("i"), date("s"), date("m"), date("j")+2, date("Y")));
-        
-        $app->db->insert(
-               'comment',
-               ['comment', 'header', 'created', 'updated',  'userid', 'ip']
-        );
-        
-        $app->db->execute([
-                'Hitta noter',
-                'Finns det bra noter att köpa',
-                $now,
-                null,
-                2,
-                '127.1.1.1'
-        ]);
-        $id1 = $app->db->lastInsertId();
-         
-        
-        
-        return $id1;
-    }
     
     
     
