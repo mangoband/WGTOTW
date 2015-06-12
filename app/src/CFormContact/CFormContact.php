@@ -31,6 +31,7 @@ class CFormContact extends \Mos\HTMLForm\CForm  {
          ->AddElement(new h\CFormElementText('name', array('label' => 'Namn:', 'required' => true)))
          ->AddElement(new h\CFormElementText('email', array( 'label' => 'E-post:', 'required' => true )))
          ->AddElement(new h\CFormElementPassword('password', array( 'label' => 'Lösenord:', 'required' => true )))
+         ->AddElement(new h\CFormElementPassword('repeatpassword', array( 'label' => 'Upprepa lösenord:', 'required' => true )))
          ->AddElement(new h\CFormElementSubmit('submit', array('callback'=>array($this, 'DoAddNewSubmit'))))
          ->AddElement(new h\CFormElementReset('reset', array('callback'=>array($this, 'DoSubmitFail'))));
         
@@ -58,8 +59,7 @@ class CFormContact extends \Mos\HTMLForm\CForm  {
         ]);
     }
        */
-    
- 
+
     /**
      *  create Update form
      */
@@ -81,7 +81,9 @@ class CFormContact extends \Mos\HTMLForm\CForm  {
         $this->AddElement(new h\CFormElementHidden('id', array('value'=>$user->id)))
          ->AddElement(new h\CFormElementText('acronym', array('label'=>'Användarnamn','value'=>removeQuotes($user->acronym), 'readonly' => true)))
          ->AddElement(new h\CFormElementText('name', array('label'=>'Namn','value'=>removeQuotes($user->name), 'required' => true)))
-         ->AddElement(new h\CFormElementText('email', array('label'=>'Epost','value'=>removeQuotes($user->email), 'required' => true)));
+         ->AddElement(new h\CFormElementText('email', array('label'=>'Epost','value'=>removeQuotes($user->email), 'required' => true)))
+         ->AddElement(new h\CFormElementPassword('password', array( 'label' => 'Lösenord:', 'required' => false )))
+         ->AddElement(new h\CFormElementPassword('repeatpassword', array( 'label' => 'Upprepa lösenord:', 'required' => false )));
          if ( $userid != 1 && $logged[0] == 1 || ( $userid != 2 && $logged[0] == 2 ) ){
          $this->AddElement(new h\CFormElementCheckbox('deleted', array('label'=>'Papperkorg.', 'value'=>true, 'checked'=>$delete )));
          }
@@ -96,9 +98,11 @@ class CFormContact extends \Mos\HTMLForm\CForm  {
          
          }
             $this->SetValidation('name', array('not_empty'))
+            
              ->SetValidation('email', array('not_empty', 'email_adress'))
              
-             ->SetValidation('acronym', array('not_empty'));     
+             ->SetValidation('acronym', array('not_empty'));
+             
      } else {
         return false;
        
@@ -122,10 +126,8 @@ class CFormContact extends \Mos\HTMLForm\CForm  {
     }
     protected function DoUpdate(){
      
-     
-     
-      
-        $this->AddOutput("Data uppdaterad");
+     if( $this->Value('password') == '' ){
+      $this->AddOutput("Data uppdaterad");
         $delete = 0;
         if ( isset( $_POST['deleted'] ) && ( $_POST['deleted'] == true)) {
             
@@ -135,6 +137,25 @@ class CFormContact extends \Mos\HTMLForm\CForm  {
                 $this->user->updateUser( array( 'id'=>$this->Value('id'), 'acronym'=> $this->Value('acronym'),
                                                 'name'=> $this->Value('name'), 'email'=> $this->Value('email'),
                                                 'deleted' => $delete ) ) );
+     } else if( $this->Value('password') != '' &&  $this->Value('password') == $this->Value('repeatpassword') ){
+      $delete = 0;
+        if ( isset( $_POST['deleted'] ) && ( $_POST['deleted'] == true)) {
+            
+            $delete = $_POST['deleted'];
+        }
+      $this->AddOutput(
+                $this->user->updateUser( array( 'id'=>$this->Value('id'), 'acronym'=> $this->Value('acronym'),
+                                                'name'=> $this->Value('name'), 'email'=> $this->Value('email'),
+                                                'deleted' => $delete, 'password' => $this->Value('password'),
+                                                'repeatpassword' => $this->Value('repeatpassword')) ) );
+      
+     } else {
+      $this->AddOutput('Ditt lösenord matchar inte...');
+      return false;
+     }
+     
+      
+        
             
           
         
@@ -153,6 +174,7 @@ class CFormContact extends \Mos\HTMLForm\CForm  {
              $this->saveInSession = false;
         return false;
     } else{
+    if( $this->Value('password') != '' &&  $this->Value('password') == $this->Value('repeatpassword') ){
  
         $this->validate( $this->Value('password') );
         $this->user->addUser( $this->Value('acronym'), $this->Value('name'), $this->Value('email'),$this->Value('password')  );
@@ -161,6 +183,10 @@ class CFormContact extends \Mos\HTMLForm\CForm  {
         $this->AddOutput("<p><b>Användarnamn: " . $this->Value('acronym') . "</b></p>");
         $this->saveInSession = true;
         return true;
+    } else {
+     $this->AddOutput("<p><i>Lösenord matchar inte...</i></p>");
+     return false;
+    }
     }
   }
    /**

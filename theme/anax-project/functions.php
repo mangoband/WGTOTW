@@ -101,7 +101,7 @@ function getProfileLink( $app ){
     $tmp  =  \Anax\Users\User::getUserID();
     $id = $tmp[0];
     $acronym = $tmp[1];
-    $link = ( is_null( $id ) ) ? $app->url->create("loggain") : $app->url->create("profil/show/id/{$id}/{$acronym}");
+    $link = ( is_null( $id ) ) ? $app->url->create("loggain") : $app->url->create("profil/show/{$id}/{$acronym}");
     
     return $link;
 }

@@ -240,6 +240,7 @@ private $online;
     public function isUserOnline(){
        
         if ( isset( $_SESSION['user']['acronym'] ) ){
+         
             $this->online = true;
             return true;
         } else {

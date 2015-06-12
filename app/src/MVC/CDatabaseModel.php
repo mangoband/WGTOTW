@@ -576,13 +576,24 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
       $delete = 0;
       
       
-      
-      
       if (  isset($row['deleted'])  ){
         $delete = $row['deleted'];
       }
-
       
+      if( $row['password'] != '' && $row['password'] === $row['repeatpassword'] ){
+        
+        // update password and user
+         $db->update(
+            'user',
+            ['name', 'email', 'acronym', 'password', 'deleted', 'updated'],
+            "id = ?"
+        );
+        $db->execute([
+            $row['name'], $row['email'], $row['acronym'],password_hash($row['password'], PASSWORD_DEFAULT), $delete, $now, $row['id']
+        ]);
+      } else{
+        
+        // update user
         $db->update(
             'user',
             ['name', 'email', 'acronym', 'deleted', 'updated'],
@@ -591,8 +602,15 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         $db->execute([
             $row['name'], $row['email'], $row['acronym'], $delete, $now, $row['id']
         ]);
+      }
+      
+      
+      
+
       
         
+      
+        return $now;
        
     }
     

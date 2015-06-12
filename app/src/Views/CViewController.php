@@ -208,7 +208,7 @@ class CViewController extends CViewsFlash {
                         case 'visa':
                          
                             $CViewsComments = new CViewsComments( $app, $user,$param );
-                            $CViewsComments->userComments( $app, $this->userID );
+                            $CViewsComments->userComments( $app, $param['id'] );
                             break;
                         
                         case 'ny':
@@ -230,13 +230,14 @@ class CViewController extends CViewsFlash {
                 case 'logout':
                 if ( isset($_SESSION['user'])){
                     unset($_SESSION['user']);
+                    unset($_SESSION['user']['acronym']);
                     $url = $this->app->url->create('hem');
                     $this->app->response->redirect($url);
                 }
                 break;
                 case 'profil':
                 case 'show-id':
-                    $this->showUserAction( $app ); 
+                    $this->showUserAction( $app, $param['id'] ); 
                     break;
                 
                  case 'regioner':
@@ -306,6 +307,10 @@ class CViewController extends CViewsFlash {
      
                header("Location: " . $_SERVER['PHP_SELF']);
            }
+           $url = $this->app->url->create('anv/ny');
+           
+           $content = "<a href='{$url}'>Skapa ny användare</a>";
+           $this->app->views->add('default/article', ['content' => $content], 'main');
         }
     }
     
@@ -383,10 +388,10 @@ EOD;
         
         $form = new  \Anax\CFormContact\CFormContact( $app, $user );
         $form->newUserAction();
-        $user->isOnline();
+       
         $online = $user->isUserOnline();
         
-        if ( $online === true ){
+      
            
             
             // Check the status of the form
@@ -408,14 +413,12 @@ EOD;
             }
             
             $content = $form->getHTML();
+            
+        if ( $online === true ){
             $user->getUsers();
             
         }
-        else {
-           
-            $content = 'För att kunna lägga till någon måste du vara inloggad...';
-            
-        }
+     
         
   
         $app->views->add('me/article', ['header'=>$header, 'content' => $content], 'main');
@@ -532,7 +535,7 @@ EOD;
         $app->theme->setVariable('bodyColor', '');
         $app->theme->setVariable('wrapperClass', '');
         $app->theme->setVariable('gridColor', '');
-        $title  = "Visa användare";
+        $title  = "Profil";
         // set pagetitle
         setPageTitle( 'Uppdatera', $app);
         $header = "<h2>{$title}</h2>";
