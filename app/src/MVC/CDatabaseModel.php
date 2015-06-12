@@ -580,7 +580,7 @@ class CDatabaseModel implements \Anax\DI\IInjectionAware
         $delete = $row['deleted'];
       }
       
-      if( $row['password'] != '' && $row['password'] === $row['repeatpassword'] ){
+      if( isset($row['password']) && isset($row['repeatpassword']) && $row['password'] != '' && $row['password'] === $row['repeatpassword'] ){
         
         // update password and user
          $db->update(
